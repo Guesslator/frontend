@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --------------------------------------
+// USER & ADMIN
+// --------------------------------------
+
+model Admin {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  passwordHash   String
+  name           String?
+  emailVerified  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  scores         Score[]
+  createdContent ContentItem[]
+}
+
+model Score {
+  id        String   @id @default(uuid())
+  userId    String?
+  guestName String?
+  contentId String
+  score     Int
+  createdAt DateTime @default(now())
+
+  user      User?        @relation(fields: [userId], references: [id])
+  content   ContentItem @relation(fields: [contentId], references: [id])
+}
+
+// --------------------------------------
+// CONTENT (Movies, Series, Games)
+// --------------------------------------
+
+enum ContentType {
+  MOVIE
+  SERIES
+  GAME
+  SPORTS
+}
+
+enum SportsSubcategory {
+  FOOTBALL
+  BASKETBALL
+  MMA
+}
+
+enum CreatorType {
+  ADMIN
+  USER
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ContentItem {
+  id                       String             @id @default(uuid())
+  type                     ContentType
+  posterUrl                String?
+  posterModerationStatus   ModerationStatus?
+  posterRejectionReason    String?
+  isPublished              Boolean            @default(false)
+  creatorId                String?
+  creatorType              CreatorType        @default(ADMIN)
+  subcategory              SportsSubcategory?
+  popularityScore          Int                @default(0)
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+
+  translations ContentItemTranslation[]
+  levels       QuizLevel[]
+  scores       Score[]
+  creator      User?              @relation(fields: [creatorId], references: [id], onDelete: SetNull)
+
+  @@index([creatorType])
+  @@index([type])
+  @@index([creatorId])
+  @@index([popularityScore])
+}
+
+model ContentItemTranslation {
+  id            String      @id @default(uuid())
+  contentItemId String
+  language      String      // 'tr', 'en', 'de'
+  title         String
+  description   String?
+  
+  content       ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+
+  @@unique([contentItemId, language])
+}
+
+// --------------------------------------
+// QUIZ STRUCTURE
+// --------------------------------------
+
+model QuizLevel {
+  id        String   @id @default(uuid())
+  contentId String
+  level     Int      // 1, 2, 3...
+  
+  content   ContentItem @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  questions Question[]
+
+  @@unique([contentId, level])
+}
+
+enum QuestionType {
+  TEXT
+  VIDEO
+  IMAGE
+}
+
+model Question {
+  id                      String            @id @default(uuid())
+  levelId                 String
+  type                    QuestionType
+
+  // Video Metadata (Only used if type == VIDEO)
+  videoUrl                String?
+  startTime               Int?     // Seconds
+  stopTime                Int?     // Seconds (Pause here for question)
+  endTime                 Int?     // Seconds (Resume until here)
+
+  // Image Metadata (Only used if type == IMAGE)
+  imageUrl                String?
+  imageModerationStatus   ModerationStatus?
+  imageRejectionReason    String?
+
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  level          QuizLevel @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  translations   QuestionTranslation[]
+  options        AnswerOption[]
+}
+
+model QuestionTranslation {
+  id         String   @id @default(uuid())
+  questionId String
+  language   String
+  text       String   // The question text
+  
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, language])
+}
+
+// --------------------------------------
+// ANSWERS
+// --------------------------------------
+
+model AnswerOption {
+  id           String   @id @default(uuid())
+  questionId   String
+  isCorrect    Boolean  @default(false)
+  
+  question     Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  translations AnswerOptionTranslation[]
+}
+
+model AnswerOptionTranslation {
+  id       String       @id @default(uuid())
+  optionId String
+  language String
+  text     String       // The answer text
+  
+  option   AnswerOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([optionId, language])
+}
