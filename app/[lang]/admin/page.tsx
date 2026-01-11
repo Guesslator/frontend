@@ -66,7 +66,7 @@ export default function AdminPage({ params: { lang } }: { params: { lang: string
 
     const performDeleteQuiz = async (id: string) => {
         try {
-            await deleteUserContent(id, session?.accessToken as string);
+            await deleteUserContent(session?.accessToken as string, id);
             setQuizzes(quizzes.filter(q => q.id !== id));
             toast.success('Quiz deleted');
         } catch (error) {

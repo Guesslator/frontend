@@ -283,10 +283,13 @@ export async function createContent(data: CreateContentDto) {
     return res.json();
 }
 
-export async function updateQuestions(data: AddQuestionsDto) {
+export async function updateQuestions(token: string, data: AddQuestionsDto) {
     const res = await fetch(`${API_URL}/quiz/questions`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(data),
     });
     if (!res.ok) {

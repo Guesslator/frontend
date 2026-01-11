@@ -47,7 +47,7 @@ export default function CreateUserQuizPage() {
         <div className="w-full">
 
           {/* @ts-ignore */}
-          <QuizWizard lang={lang} accessToken={session.user?.id || ''} />
+          <QuizWizard lang={lang} accessToken={(session as any).accessToken || ''} />
         </div>
       </div>
     </div>

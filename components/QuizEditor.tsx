@@ -8,6 +8,8 @@ import { updateQuestions, APIContentItem } from "@/lib/api";
 import { Loader2, Save, X } from "lucide-react";
 import { t } from "@/lib/i18n";
 
+import { useSession } from "next-auth/react";
+
 interface QuizEditorProps {
     item: APIContentItem;
     lang: string;
@@ -15,6 +17,7 @@ interface QuizEditorProps {
 
 export default function QuizEditor({ item, lang }: QuizEditorProps) {
     const router = useRouter();
+    const { data: session } = useSession();
     const [saving, setSaving] = useState(false);
 
     // Transform API item to Wizard FormData
@@ -54,6 +57,11 @@ export default function QuizEditor({ item, lang }: QuizEditorProps) {
     });
 
     const handleSave = async () => {
+        if (!session?.accessToken) {
+            toast.error(t(lang, 'loginRequired'));
+            return;
+        }
+
         setSaving(true);
         try {
             // Transform Wizard Data back to API DTO
@@ -92,7 +100,7 @@ export default function QuizEditor({ item, lang }: QuizEditorProps) {
                 };
             });
 
-            await updateQuestions({
+            await updateQuestions(session.accessToken, {
                 contentId: item.id,
                 questions: questionsDto
             });
