@@ -35,6 +35,7 @@ export interface APIContentItem {
     creator?: { id: string; name: string; email: string };
     subcategory?: 'FOOTBALL' | 'BASKETBALL' | 'MMA';
     quizType?: 'TEXT' | 'VIDEO' | 'IMAGE';
+    isPublished?: boolean;
     questions?: any[]; // For backwards compat or direct access
     stats?: {
         totalAttempts: number;
@@ -83,7 +84,8 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
             levels: [],
             creatorType: item.creatorType,
             creator: item.creator,
-            subcategory: item.subcategory
+            subcategory: item.subcategory,
+            isPublished: item.isPublished
         }));
     } catch (e) {
         console.error("Fetch content failed", e);
@@ -419,4 +421,14 @@ export async function registerQuestionAttempt(questionId: string, isCorrect: boo
     } catch (e) {
         console.error("Failed to register attempt", e);
     }
+}
+
+export async function updateContentStatus(id: string, isPublished: boolean) {
+    const res = await fetch(`${API_URL}/admin/quiz/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isPublished }),
+    });
+    if (!res.ok) throw new Error('Failed to update status');
+    return res.json();
 }
