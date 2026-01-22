@@ -104,7 +104,7 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                         <div className="flex gap-4">
                             <span className="bg-muted px-3 py-1 rounded-md text-sm font-bold text-muted-foreground">Q{qIndex + 1}</span>
                             <div className="flex gap-2 bg-muted/50 rounded-lg p-1">
-                                {['VIDEO', 'IMAGE', 'TEXT'].map((type) => (
+                                {['VIDEO', 'TEXT'].map((type) => (
                                     <button
                                         key={type}
                                         onClick={() => updateQuestion(qIndex, 'type', type)}
@@ -112,7 +112,6 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                                         title={t(lang, type.toLowerCase() as any)}
                                     >
                                         {type === 'VIDEO' && <Video size={16} />}
-                                        {type === 'IMAGE' && <ImageIcon size={16} />}
                                         {type === 'TEXT' && <Type size={16} />}
                                     </button>
                                 ))}
@@ -160,21 +159,6 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                                     />
                                 </div>
                             )}
-                        </div>
-                    )}
-
-                    {q.type === 'IMAGE' && (
-                        <div className="mb-6">
-                            <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
-                                {t(lang, 'uploadImage')}
-                            </label>
-                            <FileUploader
-                                lang={lang}
-                                bucket="quiz-images"
-                                onUploadComplete={(url, moderationStatus) => updateQuestion(qIndex, 'mediaUrl', url)}
-                                currentImageUrl={q.mediaUrl}
-                                accept="image/*"
-                            />
                         </div>
                     )}
 
