@@ -172,13 +172,19 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                                 </div>
 
                                 {/* Question Input */}
-                                <input
-                                    type="text"
-                                    placeholder={`${t(lang, 'enterQuestion')} (${l.toUpperCase()})`}
-                                    className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors"
-                                    value={q.translations[l]?.question || ''}
-                                    onChange={e => updateQuestionTranslation(qIndex, l, 'question', e.target.value)}
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        maxLength={100}
+                                        placeholder={`${t(lang, 'enterQuestion')} (${l.toUpperCase()})`}
+                                        className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors pr-16"
+                                        value={q.translations[l]?.question || ''}
+                                        onChange={e => updateQuestionTranslation(qIndex, l, 'question', e.target.value)}
+                                    />
+                                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground">
+                                        {(q.translations[l]?.question || '').length}/100
+                                    </span>
+                                </div>
 
                                 {/* Answers List */}
                                 <div className="space-y-2 mt-2">
@@ -191,31 +197,37 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
 
                                     {(q.translations[l]?.answers || ['']).map((ans: string, ansIndex: number) => (
                                         <div key={ansIndex} className="flex gap-2 items-center">
-                                            <input
-                                                type="text"
-                                                placeholder={`${t(lang, 'enterAnswer')} ${ansIndex + 1}`}
-                                                className={`flex-1 bg-background border ${q.correctAnswerIndex === ansIndex ? 'border-green-500' : 'border-input'} rounded-lg px-4 py-2 text-sm focus:border-green-500 focus:outline-none transition-colors text-foreground`}
-                                                value={ans}
-                                                onChange={e => {
-                                                    const newAnswers = [...(q.translations[l]?.answers || [''])];
-                                                    newAnswers[ansIndex] = e.target.value;
+                                            <div className="flex-1 relative">
+                                                <input
+                                                    type="text"
+                                                    maxLength={50}
+                                                    placeholder={`${t(lang, 'enterAnswer')} ${ansIndex + 1}`}
+                                                    className={`w-full bg-background border ${q.correctAnswerIndex === ansIndex ? 'border-green-500' : 'border-input'} rounded-lg px-4 py-2 text-sm focus:border-green-500 focus:outline-none transition-colors text-foreground pr-12`}
+                                                    value={ans}
+                                                    onChange={e => {
+                                                        const newAnswers = [...(q.translations[l]?.answers || [''])];
+                                                        newAnswers[ansIndex] = e.target.value;
 
-                                                    // Update state manually since we changed the structure
-                                                    const newLevels = [...formData.levels];
-                                                    const currentQ = newLevels[levelIndex].questions[qIndex];
-                                                    newLevels[levelIndex].questions[qIndex] = {
-                                                        ...currentQ,
-                                                        translations: {
-                                                            ...currentQ.translations,
-                                                            [l]: {
-                                                                ...currentQ.translations[l],
-                                                                answers: newAnswers
+                                                        // Update state manually since we changed the structure
+                                                        const newLevels = [...formData.levels];
+                                                        const currentQ = newLevels[levelIndex].questions[qIndex];
+                                                        newLevels[levelIndex].questions[qIndex] = {
+                                                            ...currentQ,
+                                                            translations: {
+                                                                ...currentQ.translations,
+                                                                [l]: {
+                                                                    ...currentQ.translations[l],
+                                                                    answers: newAnswers
+                                                                }
                                                             }
-                                                        }
-                                                    };
-                                                    setFormData({ ...formData, levels: newLevels });
-                                                }}
-                                            />
+                                                        };
+                                                        setFormData({ ...formData, levels: newLevels });
+                                                    }}
+                                                />
+                                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground">
+                                                    {ans.length}/50
+                                                </span>
+                                            </div>
 
                                             <div className="flex items-center gap-1">
                                                 <button

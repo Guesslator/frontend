@@ -103,15 +103,25 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
         }
     };
 
-    // For image quizzes, auto-advance after answering
+    // For image and text quizzes, auto-advance after answering
     useEffect(() => {
-        if (question.type === 'IMAGE' && isAnswered) {
+        if ((question.type === 'IMAGE' || question.type === 'TEXT') && isAnswered) {
             const timer = setTimeout(() => {
                 handleSceneComplete();
             }, 2000); // Wait 2 seconds to show feedback
             return () => clearTimeout(timer);
         }
     }, [isAnswered, question.type]);
+
+    // For TEXT questions, trigger "question point" immediately to show options
+    useEffect(() => {
+        if (question.type === 'TEXT' && !isQuestionActive && !isAnswered) {
+            const timer = setTimeout(() => {
+                handleQuestionPoint();
+            }, 500); // Small delay for smooth transition
+            return () => clearTimeout(timer);
+        }
+    }, [question.id, isQuestionActive, isAnswered]);
 
     if (quizComplete) {
         const percentage = Math.round((score / quiz.questions.length) * 100);
@@ -170,8 +180,13 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                         isAnswered={isAnswered}
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-muted">
-                        <p className="text-muted-foreground text-lg">Text question type - no media</p>
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-muted/20 p-8 text-center bg-gradient-to-br from-indigo-500/10 to-purple-500/10">
+                        <div className="mb-4">
+                            <span className="text-6xl">📝</span>
+                        </div>
+                        <p className="text-muted-foreground text-lg max-w-lg">
+                            {qText}
+                        </p>
                     </div>
                 )}
 
@@ -237,9 +252,9 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                                             animate={{ x: 0, opacity: 1 }}
                                             transition={{ delay: idx * 0.1 }}
                                             onClick={() => handleAnswer(opt.id, opt.isCorrect)}
-                                            className="group relative p-6 bg-card hover:bg-accent border border-border hover:border-primary/50 rounded-xl text-left transition-all hover:scale-[1.02] shadow-sm"
+                                            className="group relative p-6 bg-card hover:bg-accent border border-border hover:border-primary/50 rounded-xl text-left transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-center min-h-[100px]"
                                         >
-                                            <span className="text-xl md:text-2xl font-medium text-foreground group-hover:text-primary transition-colors">
+                                            <span className="text-lg md:text-xl font-medium text-foreground group-hover:text-primary transition-colors break-words whitespace-normal leading-tight">
                                                 {optText}
                                             </span>
                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">

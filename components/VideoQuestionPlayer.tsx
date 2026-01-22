@@ -98,7 +98,7 @@ export default function VideoQuestionPlayer({
         width="100%"
         height="100%"
         playing={isPlaying}
-        muted={true}
+        muted={false}
         controls={false}
         onReady={handleReady}
         onStart={() => console.log("Video Started")}
@@ -108,6 +108,20 @@ export default function VideoQuestionPlayer({
         }}
         onProgress={handleProgress as any}
         progressInterval={100} // Check every 100ms for precision
+        config={{
+          youtube: {
+            playerVars: {
+              showinfo: 0,
+              modestbranding: 1,
+              controls: 0,
+              rel: 0, // Show related videos from same channel only (best available)
+              disablekb: 1,
+              iv_load_policy: 3, // Hide annotations
+              fs: 0,
+              playsinline: 1
+            }
+          }
+        }}
       />
 
       {error && (
@@ -118,8 +132,8 @@ export default function VideoQuestionPlayer({
         </div>
       )}
 
-      {/* Transparent overlay to prevent interaction */}
-      <div className="absolute inset-0 z-[1]" />
+      {/* Transparent overlay to prevent interaction - REMOVED to allow sound interaction if needed, but since controls are off, this was just blocking right clicks mostly. We keep it off to be safe for audio policies maybe? No, let's keep the user request simple: enable sound. */}
+      {/* <div className="absolute inset-0 z-[1]" /> */}
 
 
       {/* Debug Info */}
