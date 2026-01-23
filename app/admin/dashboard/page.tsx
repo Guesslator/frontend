@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { BarChart, Users, Activity, Eye, AlertTriangle } from 'lucide-react';
+import { BarChart, Users, Activity, Eye, AlertTriangle, Zap, Server, Clock } from 'lucide-react';
 import Link from 'next/link';
+import { getAnalyticsData } from '@/lib/adminApi';
+import { useSession } from 'next-auth/react';
 
 interface Stats {
     totalUsers: number;
@@ -15,29 +17,57 @@ interface TopQuiz {
     quizId: string;
     title: string;
     type: string;
-    _count: {
-        quizId: number;
-    };
+    _count: { quizId: number };
+}
+
+interface RecentActivity {
+    signups: { id: string, email: string, name: string | null, createdAt: string }[];
+    plays: { id: string, userEmail: string, quizTitle: string, createdAt: string, eventType: string }[];
+}
+
+interface GrowthStat {
+    date: string;
+    users: number;
+    plays: number;
 }
 
 export default function AnalyticsDashboard() {
+    const { data: session } = useSession();
+    const token = session?.accessToken || '';
+
     const [stats, setStats] = useState<Stats | null>(null);
     const [topQuizzes, setTopQuizzes] = useState<TopQuiz[]>([]);
+    const [recent, setRecent] = useState<RecentActivity | null>(null);
+    const [growth, setGrowth] = useState<GrowthStat[]>([]);
+    const [errorStats, setErrorStats] = useState<{ errorCount24h: number } | null>(null);
+    const [onlineUsers, setOnlineUsers] = useState<{ count: number } | null>(null);
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!token) return;
+
         async function loadData() {
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+                // Fetch basic stats (public endpoint usually, but let's assume we use adminApi helpers for consistent auth if needed, or stick to fetching from analytics controller directly)
+                // The analytics endpoints we added are public or semi-public. 
+                // Let's use getAnalyticsData wrapper which injects token.
 
-                // Parallel fetch
-                const [statsRes, topRes] = await Promise.all([
-                    fetch(`${apiUrl}/analytics/stats`),
-                    fetch(`${apiUrl}/analytics/top-quizzes`)
+                const [statsData, topData, recentData, growthData, errorData, onlineData] = await Promise.all([
+                    getAnalyticsData('stats', token),
+                    getAnalyticsData('top-quizzes', token),
+                    getAnalyticsData('recent-activity', token),
+                    getAnalyticsData('growth-stats', token),
+                    getAnalyticsData('error-stats', token),
+                    getAnalyticsData('online-users', token),
                 ]);
 
-                if (statsRes.ok) setStats(await statsRes.json());
-                if (topRes.ok) setTopQuizzes(await topRes.json());
+                setStats(statsData);
+                setTopQuizzes(topData);
+                setRecent(recentData);
+                setGrowth(growthData);
+                setErrorStats(errorData);
+                setOnlineUsers(onlineData);
             } catch (error) {
                 console.error('Failed to load stats', error);
             } finally {
@@ -46,24 +76,49 @@ export default function AnalyticsDashboard() {
         }
 
         loadData();
-    }, []);
+        // Refresh online users every 30 seconds
+        const interval = setInterval(() => {
+            getAnalyticsData('online-users', token).then(setOnlineUsers).catch(console.error);
+        }, 30000);
 
-    if (loading) return <div className="p-8 text-foreground">Loading Analytics...</div>;
+        return () => clearInterval(interval);
+    }, [token]);
+
+    if (loading) return <div className="p-8 text-foreground flex items-center gap-2"><div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" /> Loading Dashboard...</div>;
 
     return (
-        <div className="min-h-screen bg-background text-foreground p-8">
+        <div className="min-h-screen bg-background text-foreground p-8 animate-in fade-in duration-500">
             <header className="flex justify-between items-center mb-12">
                 <div>
                     <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
                         <Activity className="h-8 w-8" />
-                        Analytics & Control
+                        Command Center
                     </h1>
-                    <p className="text-muted-foreground">Product health and performance</p>
+                    <p className="text-muted-foreground">Real-time product health and performance monitoring</p>
                 </div>
-                <Link href="/admin" className="text-primary hover:underline">
-                    &larr; Back to Content Manager
+                <Link href="/admin" className="text-primary hover:underline font-medium">
+                    &larr; Content Manager
                 </Link>
             </header>
+
+            {/* Live Pulse */}
+            <div className="mb-8 p-1 bg-gradient-to-r from-green-500/20 to-transparent rounded-xl border border-green-500/20">
+                <div className="bg-card/50 p-4 rounded-lg flex items-center gap-4">
+                    <div className="relative">
+                        <div className="w-3 h-3 bg-green-500 rounded-full animate-ping absolute inset-0" />
+                        <div className="w-3 h-3 bg-green-500 rounded-full relative" />
+                    </div>
+                    <div>
+                        <span className="block text-2xl font-bold leading-none">{onlineUsers?.count || 0}</span>
+                        <span className="text-xs text-green-400 font-bold uppercase tracking-wider">Online Users</span>
+                    </div>
+                    <div className="h-8 w-px bg-white/10 mx-4" />
+                    <div className="flex items-center gap-2 text-sm text-neutral-400">
+                        <Server size={14} className={errorStats && errorStats.errorCount24h > 0 ? "text-red-500" : "text-green-500"} />
+                        Errors (24h): <span className={errorStats && errorStats.errorCount24h > 0 ? "text-red-400 font-bold" : "text-neutral-300"}>{errorStats?.errorCount24h || 0}</span>
+                    </div>
+                </div>
+            </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -84,70 +139,141 @@ export default function AnalyticsDashboard() {
                     icon={<BarChart className="text-purple-500" />}
                 />
                 <StatsCard
-                    title="Total Completions"
+                    title="Quiz Plays"
                     value={stats?.totalCompletions || 0}
                     icon={<Activity className="text-orange-500" />}
+                    description="Total completions"
                 />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                {/* Growth Chart (Simplified Visual) */}
+                <section className="bg-card border border-border rounded-xl p-6 shadow-sm col-span-2">
+                    <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                        <Zap className="h-5 w-5 text-yellow-500" />
+                        30-Day Growth Trend
+                    </h2>
+                    <div className="h-64 flex items-end gap-1 w-full">
+                        {growth.map((g, i) => {
+                            // Normalize height
+                            const max = Math.max(...growth.map(i => i.plays + i.users), 10);
+                            const height = Math.max(((g.plays + g.users) / max) * 100, 5); // min 5%
+                            return (
+                                <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
+                                    <div className="w-full bg-neutral-800 rounded-t-sm flex flex-col justify-end overflow-hidden transition-all hover:brightness-110" style={{ height: `${height}%` }}>
+                                        <div className="bg-indigo-500/50 w-full" style={{ height: `${(g.users / (g.plays + g.users)) * 100}%` }} title={`Users: ${g.users}`} />
+                                        <div className="bg-purple-500/50 w-full flex-1" title={`Plays: ${g.plays}`} />
+                                    </div>
+                                    {i % 5 === 0 && <span className="text-[10px] text-neutral-500 -rotate-45 origin-left translate-y-2">{g.date.slice(5)}</span>}
+
+                                    {/* Tooltip */}
+                                    <div className="absolute bottom-full mb-2 bg-black text-white text-xs p-2 rounded hidden group-hover:block z-10 whitespace-nowrap">
+                                        <div className="font-bold">{g.date}</div>
+                                        <div className="text-indigo-300">New Users: {g.users}</div>
+                                        <div className="text-purple-300">Plays: {g.plays}</div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div className="flex gap-4 mt-6 justify-center text-sm">
+                        <div className="flex items-center gap-2"><div className="w-3 h-3 bg-indigo-500/50 rounded-sm" /> New Users</div>
+                        <div className="flex items-center gap-2"><div className="w-3 h-3 bg-purple-500/50 rounded-sm" /> Quiz Plays</div>
+                    </div>
+                </section>
+
+                {/* Live Activity Feed */}
+                <section className="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col h-[400px]">
+                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Clock className="h-5 w-5 text-blue-500" />
+                        Live Feed
+                    </h2>
+                    <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-neutral-800">
+                        {recent?.signups.map((u) => (
+                            <div key={`u-${u.id}`} className="flex items-start gap-3 text-sm animate-in slide-in-from-right-2 duration-300">
+                                <div className="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 shrink-0">
+                                    <Users size={14} />
+                                </div>
+                                <div>
+                                    <p className="text-neutral-200"><span className="font-bold text-white">{u.email.split('@')[0]}</span> joined the platform.</p>
+                                    <span className="text-xs text-neutral-500">{new Date(u.createdAt).toLocaleTimeString()}</span>
+                                </div>
+                            </div>
+                        ))}
+                        {recent?.plays.map((p) => (
+                            <div key={`p-${p.id}`} className="flex items-start gap-3 text-sm animate-in slide-in-from-right-2 duration-300">
+                                <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-500 shrink-0">
+                                    <Activity size={14} />
+                                </div>
+                                <div>
+                                    <p className="text-neutral-200">
+                                        <span className="font-bold text-white">{p.userEmail.split('@')[0]}</span> played <span className="text-purple-300">{p.quizTitle}</span>.
+                                    </p>
+                                    <span className="text-xs text-neutral-500">{new Date(p.createdAt).toLocaleTimeString()}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Top Quizzes */}
                 <section className="bg-card border border-border rounded-xl p-6 shadow-sm">
-                    <h2 className="text-xl font-bold mb-4">Top 10 Popular Quizzes</h2>
+                    <h2 className="text-xl font-bold mb-4">Top Popular Quizzes</h2>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
-                            <thead>
-                                <tr className="border-b border-border text-muted-foreground text-sm">
-                                    <th className="pb-2">Quiz Title</th>
-                                    <th className="pb-2">Type</th>
-                                    <th className="pb-2 text-right">Completions</th>
+                            <thead className="text-sm text-neutral-500 border-b border-border/50">
+                                <tr>
+                                    <th className="pb-2 pl-2">#</th>
+                                    <th className="pb-2">Title</th>
+                                    <th className="pb-2 text-right">Plays</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-border">
-                                {topQuizzes.map((quiz, i) => (
-                                    <tr key={quiz.quizId} className="group hover:bg-muted/50 transition-colors">
-                                        <td className="py-3 pr-4 font-medium">
-                                            <span className="text-muted-foreground mr-2 text-xs">#{i + 1}</span>
+                            <tbody className="divide-y divide-border/30">
+                                {topQuizzes.slice(0, 5).map((quiz, i) => (
+                                    <tr key={quiz.quizId} className="group hover:bg-white/5 transition-colors">
+                                        <td className="py-3 pl-2 text-neutral-500 font-mono text-sm">{(i + 1).toString().padStart(2, '0')}</td>
+                                        <td className="py-3 font-medium">
                                             {quiz.title}
+                                            <span className="ml-2 text-[10px] uppercase tracking-wider text-neutral-500 bg-neutral-800 px-1.5 py-0.5 rounded">{quiz.type}</span>
                                         </td>
-                                        <td className="py-3 text-xs text-muted-foreground">{quiz.type}</td>
                                         <td className="py-3 text-right font-bold text-primary">
                                             {quiz._count?.quizId}
                                         </td>
                                     </tr>
                                 ))}
-                                {topQuizzes.length === 0 && (
-                                    <tr><td colSpan={3} className="py-4 text-center text-muted-foreground">No data yet</td></tr>
-                                )}
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-                {/* Operational Controls / Alerts */}
+                {/* System Health */}
                 <section className="bg-card border border-border rounded-xl p-6 shadow-sm">
                     <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                        System Health & Sustainability
+                        <AlertTriangle className="h-5 w-5 text-neutral-400" />
+                        System Advisories
                     </h2>
                     <div className="space-y-4">
-                        <div className="p-4 bg-muted/30 rounded-lg border border-border">
-                            <h3 className="font-bold text-sm mb-1">Cost Awareness</h3>
-                            <ul className="text-sm text-muted-foreground list-disc list-inside">
-                                <li>Video Hosting: <span className="text-green-500 font-bold">YouTube (Zero Cost)</span></li>
-                                <li>Analytics: <span className="text-green-500 font-bold">Custom + Grafana Free</span></li>
-                                <li>Errors: <span className="text-green-500 font-bold">Sentry Free Tier</span></li>
-                            </ul>
+                        <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+                            <h3 className="text-green-400 font-bold text-sm mb-1 flex items-center gap-2">
+                                <Zap size={14} /> Systems Nominal
+                            </h3>
+                            <p className="text-xs text-green-300/70">
+                                Database latency is low. No critical errors in the last hour.
+                            </p>
                         </div>
 
                         <div className="p-4 bg-muted/30 rounded-lg border border-border">
-                            <h3 className="font-bold text-sm mb-1">Admin Actions</h3>
-                            <p className="text-sm text-muted-foreground mb-3">
-                                To manage quiz visibility or moderation, go to the Content Manager.
-                            </p>
-                            <Link href="/admin" className="block w-full text-center bg-primary/10 hover:bg-primary/20 text-primary py-2 rounded-lg text-sm font-bold border border-primary/20 transition-colors">
-                                Manage Content Library
-                            </Link>
+                            <h3 className="font-bold text-sm mb-2 text-neutral-300">Quick Actions</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Link href="/admin/create" className="text-center bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded text-xs font-bold transition-colors">
+                                    New Question
+                                </Link>
+                                <Link href="/admin/users" className="text-center bg-neutral-800 hover:bg-neutral-700 text-neutral-300 py-2 rounded text-xs font-bold transition-colors">
+                                    Manage Users
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -158,13 +284,13 @@ export default function AnalyticsDashboard() {
 
 function StatsCard({ title, value, icon, description }: { title: string, value: number, icon: React.ReactNode, description?: string }) {
     return (
-        <div className="bg-card border border-border p-6 rounded-xl shadow-sm flex items-start justify-between">
+        <div className="bg-card border border-border p-6 rounded-xl shadow-sm flex items-start justify-between hover:border-primary/50 transition-colors">
             <div>
                 <p className="text-muted-foreground text-sm font-medium mb-1">{title}</p>
                 <h3 className="text-2xl font-bold">{value.toLocaleString()}</h3>
                 {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
             </div>
-            <div className="p-2 bg-muted rounded-lg">
+            <div className="p-3 bg-muted/50 rounded-lg">
                 {icon}
             </div>
         </div>

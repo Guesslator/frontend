@@ -179,7 +179,7 @@ export default async function QuizzesPage({ searchParams }: { searchParams: Prom
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <QuizActions quizId={quiz.id} token={token} />
+                                            <QuizActions quizId={quiz.id} slug={quiz.slug} token={token} />
                                         </td>
                                     </tr>
                                 );

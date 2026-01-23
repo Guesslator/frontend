@@ -27,6 +27,7 @@ function transformTranslations(items: any[]) {
 
 export interface APIContentItem {
     id: string;
+    slug?: string;
     type: 'MOVIE' | 'SERIES' | 'GAME' | 'SPORTS';
     posterUrl: string;
     translations: any;
@@ -78,6 +79,7 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
 
         return items.map((item: any) => ({
             id: item.id,
+            slug: item.slug,
             type: item.type,
             posterUrl: item.posterUrl,
             translations: transformTranslations(item.translations),
@@ -119,6 +121,7 @@ export async function fetchContentPaginated(
         return {
             items: data.items.map((item: any) => ({
                 id: item.id,
+                slug: item.slug,
                 type: item.type,
                 posterUrl: item.posterUrl,
                 translations: transformTranslations(item.translations),
@@ -156,6 +159,7 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
 
         return {
             id: item.id,
+            slug: item.slug,
             type: item.type,
             posterUrl: item.posterUrl,
             translations: transformTranslations(item.translations),

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function QuizActions({ quizId, token }: { quizId: string, token: string }) {
+export default function QuizActions({ quizId, slug, token }: { quizId: string, slug?: string, token: string }) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -29,7 +29,7 @@ export default function QuizActions({ quizId, token }: { quizId: string, token: 
         <>
             <div className="flex justify-end items-center gap-2">
                 <Link
-                    href={`/quiz/${quizId}`}
+                    href={`/en/quiz/${slug || quizId}`}
                     target="_blank"
                     className="p-2 text-neutral-400 hover:text-indigo-400 hover:bg-neutral-800 rounded transition-colors"
                     title="Preview Quiz"

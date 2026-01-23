@@ -107,3 +107,19 @@ export async function setFlag(key: string, value: boolean, token: string) {
         body: JSON.stringify({ key, value })
     }, token);
 }
+
+// Analytics (Raw)
+export async function getAnalyticsData(path: string, token: string) {
+    // Note: Analytics controller is separate from Admin module usually, but accessible.
+    // Assuming backend exposes analytics at /analytics not /admin/analytics
+    // We'll skip adminFetch helper to point properly.
+    const headers: any = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+
+    // Use public analytics URL or authenticated one
+    const res = await fetch(`${API_URL}/analytics/${path}`, { headers });
+    if (!res.ok) throw new Error('Analytics fetch failed');
+    return res.json();
+}

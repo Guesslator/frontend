@@ -11,6 +11,7 @@ import { toast } from "sonner";
 
 interface ContentCardProps {
     id: string;
+    slug?: string;
     title: string;
     description: string;
     posterUrl: string;
@@ -23,6 +24,7 @@ interface ContentCardProps {
 
 export default function ContentCard({
     id,
+    slug,
     title,
     description,
     posterUrl,
@@ -91,7 +93,7 @@ export default function ContentCard({
             transition={{ duration: 0.4, delay: index * 0.05 }}
             className="relative"
         >
-            <Link href={`/${lang}/content/${id}`} className="group relative block aspect-video rounded-xl overflow-hidden bg-card shadow-lg border border-border">
+            <Link href={`/${lang}/content/${slug || id}`} className="group relative block aspect-video rounded-xl overflow-hidden bg-card shadow-lg border border-border">
                 <img
                     src={posterUrl || '/placeholder-banner.jpg'}
                     alt={title}

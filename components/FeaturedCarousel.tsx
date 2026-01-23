@@ -7,6 +7,7 @@ import { Play } from "lucide-react";
 
 interface FeaturedItem {
     id: string;
+    slug?: string;
     title: string;
     description: string;
     imageUrl: string;
@@ -87,7 +88,7 @@ export default function FeaturedCarousel({ items, lang }: FeaturedCarouselProps)
 
                     <div className="flex gap-4">
                         <Link
-                            href={`/${lang}/content/${currentItem.id}`}
+                            href={`/${lang}/content/${currentItem.slug || currentItem.id}`}
                             className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 group/btn"
                         >
                             <div className="bg-background text-primary rounded-full p-1 group-hover/btn:rotate-12 transition-transform">

@@ -131,7 +131,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
                         <div className="flex flex-col sm:flex-row items-center gap-6 mb-16">
                             <Link
-                                href={`/${lang}/quiz/${id}`}
+                                href={`/${lang}/quiz/${item.slug || id}`}
                                 className="relative z-50 w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 bg-gradient-to-r from-primary to-primary/80 text-black text-2xl font-black rounded-full hover:scale-105 hover:shadow-[0_0_30px_rgba(var(--primary),0.6)] transition-all duration-300"
                             >
                                 <Play size={36} fill="currentColor" className="text-black" />
