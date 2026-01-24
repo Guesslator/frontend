@@ -1,39 +1,33 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+import { authOptions } from "@/lib/auth";
 
 export async function PUT(req: Request) {
-    const session = await getServerSession();
-    if (!session || !session.user || !session.user.email) {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.accessToken) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        const { name, email, password } = await req.json();
+        const body = await req.json();
+        const backendUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://backend:3000';
 
-        // Find current user
-        const currentUser = await prisma.user.findUnique({
-            where: { email: session.user.email }
+        const res = await fetch(`${backendUrl}/users/profile`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.accessToken}`
+            },
+            body: JSON.stringify(body)
         });
 
-        if (!currentUser) {
-            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        if (!res.ok) {
+            const error = await res.json();
+            return NextResponse.json({ message: error.message || "Failed to update profile" }, { status: res.status });
         }
 
-        const updateData: any = {};
-        if (name) updateData.name = name;
-        if (email) updateData.email = email;
-        if (password) {
-            updateData.passwordHash = await bcrypt.hash(password, 10);
-        }
-
-        const updatedUser = await prisma.user.update({
-            where: { email: session.user.email },
-            data: updateData
-        });
-
-        return NextResponse.json({ message: "Profile updated successfully", user: { name: updatedUser.name, email: updatedUser.email } });
+        const updatedUser = await res.json();
+        return NextResponse.json({ message: "Profile updated successfully", user: updatedUser });
     } catch (error) {
         console.error("Update error:", error);
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });

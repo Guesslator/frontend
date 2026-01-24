@@ -1,7 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 
 export const authOptions: AuthOptions = {
@@ -16,7 +14,7 @@ export const authOptions: AuthOptions = {
                 if (!credentials?.email || !credentials?.password) return null;
 
                 try {
-                    const backendUrl = process.env.BACKEND_INTERNAL_URL || 'http://backend:3000';
+                    const backendUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://backend:3000';
                     const res = await fetch(`${backendUrl}/auth/login`, {
                         method: 'POST',
                         body: JSON.stringify({

@@ -1,43 +1,18 @@
-"use client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/auth";
+import Navbar from "@/components/Navbar";
+import { Language } from "@/lib/i18n";
+import QuizWizardWrapper from "@/components/quiz-wizard/QuizWizardWrapper";
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter, useParams } from 'next/navigation';
-import { createUserContent } from '@/lib/api';
-import { t, Language } from '@/lib/i18n';
-import { ArrowLeft, Save } from 'lucide-react';
-import Link from 'next/link';
-import FileUploader from '@/components/FileUploader';
-import QuizWizard from '@/components/quiz-wizard/QuizWizard';
-import Navbar from '@/components/Navbar';
+export default async function CreateUserQuizPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: rawLang } = await params;
+  const lang = (['tr', 'en', 'ar', 'de'].includes(rawLang) ? rawLang : 'en') as Language;
 
-export default function CreateUserQuizPage() {
-  const { data: session, status } = useSession();
-  const params = useParams();
-  const lang = (params.lang as Language) || 'en';
+  const session = await getServerSession(authOptions);
 
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
-  if (!session?.user?.id) {
-    return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-xl mb-4">{t(lang, 'loginRequired')}</p>
-          <Link
-            href={`/${lang}/auth/login`}
-            className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition shadow-lg"
-          >
-            {t(lang, 'login')}
-          </Link>
-        </div>
-      </div>
-    );
+  if (!session || !session.user || !(session as any).accessToken) {
+    redirect(`/${lang}/auth/login`);
   }
 
   return (
@@ -45,9 +20,8 @@ export default function CreateUserQuizPage() {
       <Navbar lang={lang} />
       <div className="pt-24 px-4 md:p-8 flex justify-center">
         <div className="w-full">
-
           {/* @ts-ignore */}
-          <QuizWizard lang={lang} accessToken={(session as any).accessToken || ''} />
+          <QuizWizardWrapper lang={lang} accessToken={(session as any).accessToken} />
         </div>
       </div>
     </div>

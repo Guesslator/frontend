@@ -18,10 +18,10 @@ export default function UserMenu({ lang }: { lang: string }) {
                 <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-secondary/10 hover:bg-secondary/20 border border-secondary/30 rounded-xl transition-all backdrop-blur-md group shadow-sm hover:shadow-secondary/20"
+                    className="flex items-center gap-2 px-3 py-2 rounded-full border border-input bg-card/50 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
                 >
-                    <User size={16} className="text-secondary group-hover:text-secondary-foreground transition-colors" />
-                    <span className="font-bold text-sm text-secondary group-hover:text-secondary-foreground uppercase tracking-wider">
+                    <User size={16} className="text-muted-foreground" />
+                    <span className="font-medium text-sm hidden md:inline">
                         {t(validLang, 'login')}
                     </span>
                 </motion.div>

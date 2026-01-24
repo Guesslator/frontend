@@ -2,32 +2,36 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     try {
+        console.log("REGISTER API HIT");
+
         const body = await req.json();
-        const { email, password, name } = body;
+        console.log("BODY:", body);
 
-        if (!email || !password) {
-            return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+        const backendUrl = process.env.API_URL;
+        console.log("API_URL:", backendUrl);
+
+        if (!backendUrl) {
+            throw new Error("API_URL is undefined");
         }
-
-        // Proxy to Backend Service
-        // Use 'http://backend:3000' for Docker internal network, or fallback to env var
-        const backendUrl = process.env.BACKEND_INTERNAL_URL || 'http://backend:3000';
 
         const res = await fetch(`${backendUrl}/auth/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, name }),
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
         });
 
-        const data = await res.json();
+        console.log("BACKEND STATUS:", res.status);
 
-        if (!res.ok) {
-            return NextResponse.json({ message: data.message || "Registration failed" }, { status: res.status });
-        }
+        const text = await res.text();
+        console.log("BACKEND RAW RESPONSE:", text);
 
-        return NextResponse.json(data);
-    } catch (error) {
-        console.error("Registration error:", error);
-        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+        return new Response(text, { status: res.status });
+    } catch (err) {
+        console.error("REGISTER ROUTE ERROR:", err);
+        return new Response(
+            JSON.stringify({ error: "Internal API error" }),
+            { status: 500 }
+        );
     }
 }
+
