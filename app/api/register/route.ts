@@ -7,8 +7,9 @@ export async function POST(req: Request) {
         const body = await req.json();
         console.log("BODY:", body);
 
-        const backendUrl = process.env.API_URL;
-        console.log("API_URL:", backendUrl);
+        // PRIORITY: Env > Fallback
+        const backendUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://backend:3000';
+        console.log("API_URL used:", backendUrl);
 
         if (!backendUrl) {
             throw new Error("API_URL is undefined");

@@ -15,6 +15,8 @@ export const authOptions: AuthOptions = {
 
                 try {
                     const backendUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://backend:3000';
+                    console.log(`[NextAuth] Authorizing credentials against: ${backendUrl}`);
+
                     const res = await fetch(`${backendUrl}/auth/login`, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -23,6 +25,8 @@ export const authOptions: AuthOptions = {
                         }),
                         headers: { "Content-Type": "application/json" }
                     });
+
+                    console.log(`[NextAuth] Backend response status: ${res.status}`);
 
                     const user = await res.json();
 
