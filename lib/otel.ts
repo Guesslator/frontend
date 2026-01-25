@@ -28,7 +28,7 @@ export function initializeOtel() {
         contextManager: new ZoneContextManager(),
     });
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
     // Create a regex from the API URL to allow trace propagation
     const apiRegex = new RegExp(apiUrl.replace(/^https?:\/\//, '').split('/')[0]);
 
@@ -37,8 +37,8 @@ export function initializeOtel() {
             new DocumentLoadInstrumentation(),
             new FetchInstrumentation({
                 propagateTraceHeaderCorsUrls: [
-                    /localhost:3001/,
-                    /127\.0\.0\.1:3001/,
+                    /localhost:3000/,
+                    /127\.0\.0\.1:3000/,
                     apiRegex
                 ],
             }),

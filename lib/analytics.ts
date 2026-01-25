@@ -1,7 +1,7 @@
 export async function trackEvent(eventType: string, data: any = {}) {
     try {
         // 1. Send to Backend (Product Analytics)
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
         // Fire and forget - don't await blocking UI
         fetch(`${apiUrl}/analytics/events`, {
