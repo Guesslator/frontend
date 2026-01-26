@@ -196,7 +196,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
                             animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
                             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-                            className="absolute inset-0 bg-background/80 z-20 flex flex-col items-center justify-center p-8 md:p-16"
+                            className="absolute inset-0 bg-background/80 z-20 flex flex-col items-center justify-center p-4 md:p-8 lg:p-16"
                         >
                             {/* Timer Display */}
                             <motion.div
@@ -204,8 +204,8 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                                 animate={{ scale: 1 }}
                                 className="absolute top-8 right-8 flex flex-col items-center gap-2"
                             >
-                                <div className="relative w-20 h-20">
-                                    <svg className="w-20 h-20 transform -rotate-90">
+                                <div className="relative w-12 h-12 md:w-20 md:h-20">
+                                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 80 80">
                                         <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="4" fill="none" className="text-muted/20" />
                                         <circle
                                             cx="40" cy="40" r="36"
@@ -222,7 +222,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                                         />
                                     </svg>
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className={`text-2xl font-bold ${timeRemaining > 10 ? 'text-green-500' :
+                                        <span className={`text-xl md:text-2xl font-bold ${timeRemaining > 10 ? 'text-green-500' :
                                             timeRemaining > 5 ? 'text-yellow-500' :
                                                 'text-red-500'
                                             }`}>
@@ -236,7 +236,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                             <motion.h2
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
-                                className="text-3xl md:text-5xl font-bold mb-12 text-center leading-tight drop-shadow-lg text-foreground"
+                                className="text-xl md:text-3xl lg:text-5xl font-bold mb-6 md:mb-12 text-center leading-tight drop-shadow-lg text-foreground w-full"
                             >
                                 {qText}
                             </motion.h2>
@@ -251,9 +251,9 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                                             animate={{ x: 0, opacity: 1 }}
                                             transition={{ delay: idx * 0.1 }}
                                             onClick={() => handleAnswer(opt.id, opt.isCorrect)}
-                                            className="group relative p-6 bg-card hover:bg-accent border border-border hover:border-primary/50 rounded-xl text-left transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-center min-h-[100px]"
+                                            className="group relative p-4 md:p-6 bg-card hover:bg-accent border border-border hover:border-primary/50 rounded-xl text-left transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-center min-h-[80px] md:min-h-[100px]"
                                         >
-                                            <span className="text-lg md:text-xl font-medium text-foreground group-hover:text-primary transition-colors break-words whitespace-normal leading-tight">
+                                            <span className="text-base md:text-xl font-medium text-foreground group-hover:text-primary transition-colors break-words whitespace-normal leading-tight">
                                                 {optText}
                                             </span>
                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -284,7 +284,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

@@ -36,7 +36,7 @@ export default function FeaturedCarousel({ items, lang }: FeaturedCarouselProps)
     const currentItem = items[currentIndex];
 
     return (
-        <div className="relative w-full h-[60vh] md:h-[70vh] rounded-3xl overflow-hidden mb-16 group border border-border shadow-[0_25px_50px_-12px_#0A1F44] bg-background">
+        <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] rounded-2xl md:rounded-3xl overflow-hidden mb-8 md:mb-16 group border border-border shadow-[0_25px_50px_-12px_#0A1F44] bg-background">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentItem.id}
@@ -58,7 +58,7 @@ export default function FeaturedCarousel({ items, lang }: FeaturedCarouselProps)
             </AnimatePresence>
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full md:w-2/3 z-20">
+            <div className="absolute bottom-0 left-0 p-6 md:p-12 lg:p-16 w-full md:w-3/4 lg:w-2/3 z-20">
                 <motion.div
                     key={currentIndex}
                     initial={{ opacity: 0, y: 20 }}
@@ -79,17 +79,17 @@ export default function FeaturedCarousel({ items, lang }: FeaturedCarouselProps)
                         </div>
                     </div>
 
-                    <h1 className="text-4xl md:text-6xl font-black text-foreground mb-4 leading-tight drop-shadow-xl">
+                    <h1 className="text-2xl md:text-4xl lg:text-6xl font-black text-foreground mb-2 md:mb-4 leading-tight drop-shadow-xl">
                         {currentItem.title}
                     </h1>
-                    <p className="text-muted-foreground text-lg md:text-xl mb-8 line-clamp-3 max-w-xl font-light leading-relaxed">
+                    <p className="text-muted-foreground text-sm md:text-lg lg:text-xl mb-4 md:mb-8 line-clamp-3 max-w-xl font-light leading-relaxed">
                         {currentItem.description}
                     </p>
 
                     <div className="flex gap-4">
                         <Link
                             href={`/${lang}/content/${currentItem.slug || currentItem.id}`}
-                            className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 group/btn"
+                            className="flex items-center gap-2 md:gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 md:px-8 md:py-4 rounded-full font-bold transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-primary/20 group/btn text-sm md:text-base"
                         >
                             <div className="bg-background text-primary rounded-full p-1 group-hover/btn:rotate-12 transition-transform">
                                 <Play size={16} fill="currentColor" />

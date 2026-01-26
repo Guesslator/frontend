@@ -62,7 +62,7 @@ export default async function ContentGridPage({
             {/* Navbar */}
             <Navbar lang={lang} />
 
-            <div className="pt-24 px-4 md:px-12 max-w-[1600px] mx-auto">
+            <div className="pt-20 md:pt-24 px-4 md:px-12 max-w-[1600px] mx-auto">
                 {/* Featured Carousel - Only on page 1 without filters */}
                 {showFeatured && featuredItems.length > 0 && (
                     <FeaturedCarousel items={featuredItems} lang={lang} />
@@ -81,8 +81,8 @@ export default async function ContentGridPage({
                     activeSortBy={sortBy}
                 />
 
-                {/* Content Grid (5x3 = 15 items per page) */}
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-6 md:gap-8">
+                {/* Content Grid (Responsive: 1 col mobile -> 5 cols xl) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
                     {items.map((item, index) => {
                         const itemT = item.translations[validLang] || item.translations['en'];
                         return (
