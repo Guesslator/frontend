@@ -45,7 +45,7 @@ export function initializeOtel() {
         ],
     });
 
-    // console.log('OpenTelemetry Web SDK initialized');
+
 }
 
 function parseHeaders(headersString?: string): Record<string, string> {

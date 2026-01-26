@@ -18,14 +18,10 @@ const getYouTubeId = (url: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
 
-    console.log(`YouTubeThumbnail: Processing URL: "${url}"`);
-
     // Standard YouTube ID is 11 characters.
     const id = (match && match[2].length === 11) ? match[2] : null;
 
-    if (id) {
-        console.log(`YouTubeThumbnail: Extracted ID: ${id}`);
-    } else {
+    if (!id) {
         console.error(`YouTubeThumbnail: Failed to extract ID from URL: "${url}"`);
     }
 
@@ -49,7 +45,6 @@ export default function YouTubeThumbnail({ videoUrl, alt, className }: YouTubeTh
     useEffect(() => {
         if (videoId) {
             const initialUrl = `https://img.youtube.com/vi/${videoId}/${qualities[0]}.jpg`;
-            console.log(`YouTubeThumbnail: Initializing for ID ${videoId}. Trying quality: ${qualities[0]} URL: ${initialUrl}`);
             setImgSrc(initialUrl);
             setCurrentQualityIndex(0);
         }
@@ -62,8 +57,6 @@ export default function YouTubeThumbnail({ videoUrl, alt, className }: YouTubeTh
         if (nextIndex < qualities.length && videoId) {
             const nextQuality = qualities[nextIndex];
             const nextUrl = `https://img.youtube.com/vi/${videoId}/${nextQuality}.jpg`;
-
-            console.log(`YouTubeThumbnail: Fallback to quality level ${nextIndex} (${nextQuality}). New URL: ${nextUrl}`);
 
             setCurrentQualityIndex(nextIndex);
             setImgSrc(nextUrl);
@@ -97,7 +90,7 @@ export default function YouTubeThumbnail({ videoUrl, alt, className }: YouTubeTh
                 src={imgSrc}
                 alt={alt}
                 onError={handleError}
-                onLoad={() => console.log(`YouTubeThumbnail: Successfully loaded image: ${imgSrc}`)}
+                onLoad={() => { }}
                 loading="lazy"
                 className="w-full h-full object-cover transition-opacity duration-300"
             />

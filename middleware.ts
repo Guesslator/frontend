@@ -21,7 +21,7 @@ function getLocale(request: NextRequest): string {
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
-    // console.log(`[Middleware] Processing: ${pathname}`);
+
 
     // Skip static assets and API
     if (
@@ -38,7 +38,7 @@ export function middleware(request: NextRequest) {
     const localeAdminRegex = new RegExp(`^/(${localeArg})/admin`);
     if (localeAdminRegex.test(pathname)) {
         const cleanPath = pathname.replace(localeAdminRegex, '/admin');
-        // console.log(`[Middleware] Redirecting localized admin path to: ${cleanPath}`);
+
         return NextResponse.redirect(new URL(cleanPath, request.url));
     }
 

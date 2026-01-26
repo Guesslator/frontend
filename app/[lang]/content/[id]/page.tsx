@@ -20,13 +20,10 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         return <div>Content not found</div>;
     }
 
-    console.log(`ContentDetailPage: Fetched item ${id}. Questions count: ${item.questions?.length}`);
     if (item.questions && item.questions.length > 0) {
-        item.questions.forEach((q, i) => {
-            console.log(`Question ${i + 1} Video URL: ${q.videoUrl}`);
-        });
+        // Questions available
     } else {
-        console.warn(`ContentDetailPage: No questions found for item ${id}`);
+        // No questions found
     }
 
     const translation = item.translations[validLang] || item.translations['en'];

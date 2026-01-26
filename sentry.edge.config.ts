@@ -20,7 +20,7 @@ if (SENTRY_DSN) {
     },
   });
 
-  console.log(`[Sentry] Edge runtime initialized in ${SENTRY_ENVIRONMENT}`);
+
 } else {
   console.warn('[Sentry] Edge DSN not configured');
 }

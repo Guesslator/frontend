@@ -70,10 +70,9 @@ export default function QuizWizard({ lang, accessToken }: QuizWizardProps) {
                     const videoId = firstVideoQ.mediaUrl.split('v=')[1]?.split('&')[0];
                     if (videoId) {
                         autoPosterUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                        console.log('Auto-generated banner from YouTube:', autoPosterUrl);
                     }
                 } catch (e) {
-                    console.warn('Failed to extract YouTube ID for banner generation', e);
+                    // Failed to extract YouTube ID
                 }
             }
 

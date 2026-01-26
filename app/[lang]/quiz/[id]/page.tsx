@@ -6,7 +6,7 @@ export default async function QuizPage({ params }: { params: Promise<{ lang: str
 
     // fetchQuizById expects (id, lang)
     const quiz = await fetchQuizById(id, lang);
-    console.log(`QuizPage: Fetching quiz ${id}. Found: ${!!quiz}`);
+
 
     // TODO: Improve Error UI
     if (!quiz) {

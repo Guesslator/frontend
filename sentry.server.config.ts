@@ -31,7 +31,7 @@ if (SENTRY_DSN) {
     },
   });
 
-  console.log(`[Sentry] Server initialized in ${SENTRY_ENVIRONMENT} environment`);
+
 } else {
   console.warn('[Sentry] Server DSN not configured');
 }

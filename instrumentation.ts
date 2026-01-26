@@ -12,6 +12,5 @@ export async function register() {
         // Given the constraints (Sentry + Grafana Free), and Next.js environment (Vercel),
         // initializing a full NodeSDK in instrumentation.ts might be heavy or conflict with Vercel's own OTEL.
         // But let's log that we are starting.
-        console.log('Instrumentation hook triggered');
     }
 }

@@ -67,13 +67,13 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
     }, [isQuestionActive, isAnswered]);
 
     const handleQuestionPoint = () => {
-        // console.log('❓ Question point reached');
+
         setIsQuestionActive(true);
         setTimeRemaining(ANSWER_TIME_LIMIT);
     };
 
     const handleAnswer = (optionId: string | null, correct: boolean) => {
-        // console.log('✅ Answer submitted:', { optionId, correct });
+
         setSelectedOption(optionId);
         setIsCorrect(correct);
         setIsAnswered(true);
@@ -85,14 +85,10 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
     };
 
     const handleSceneComplete = () => {
-        console.log('🎬 Scene complete!', {
-            current: currentQuestionIndex,
-            total: quiz.questions.length,
-            hasMore: currentQuestionIndex < quiz.questions.length - 1
-        });
+
 
         if (currentQuestionIndex < quiz.questions.length - 1) {
-            // console.log('➡️ Moving to next question...');
+
             setCurrentQuestionIndex(prev => prev + 1);
             setIsAnswered(false);
             setSelectedOption(null);

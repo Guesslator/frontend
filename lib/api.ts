@@ -152,7 +152,7 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
         const rawQuestions = (item as any).questions;
         /*
         if (rawQuestions) {
-            console.log('API: fetchContentDetail raw questions sample:', JSON.stringify(rawQuestions.slice(0, 1), null, 2));
+
         }
         */
 
@@ -230,10 +230,10 @@ export async function fetchQuizLevel(contentId: string, level: number, lang: str
 export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Quiz | null> {
     try {
         const url = `${API_URL}/quiz/${id}?lang=${lang}`;
-        // console.log(`API: fetchQuizById calling ${url}`);
+        // Fetching quiz URL
         const res = await fetch(url, { cache: 'no-store' });
 
-        // console.log(`API: fetchQuizById response status: ${res.status}`);
+
 
         if (!res.ok) {
             console.error(`API: fetchQuizById failed with status ${res.status} for ID ${id}`);

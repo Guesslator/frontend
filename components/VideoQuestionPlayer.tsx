@@ -27,7 +27,7 @@ export default function VideoQuestionPlayer({
   isQuestionActive,
   isAnswered
 }: VideoQuestionPlayerProps) {
-  // console.log("VideoPlayer URL:", videoUrl); // Reduced noise
+
   const playerRef = useRef<any>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +43,7 @@ export default function VideoQuestionPlayer({
 
   // Reset state when moving to a new question (videoUrl changes)
   useEffect(() => {
-    // console.log('New question loaded, resetting state');
+
     setHasReachedQuestion(false);
     setCurrentTime(0);
     setIsPlaying(true); // Auto-start
