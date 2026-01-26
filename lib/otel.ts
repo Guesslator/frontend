@@ -11,7 +11,6 @@ export function initializeOtel() {
 
     const endpoint = process.env.NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT;
     if (!endpoint) {
-        console.warn('OpenTelemetry Endpoint not configured. Tracing disabled.');
         return;
     }
 
