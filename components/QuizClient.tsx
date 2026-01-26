@@ -156,7 +156,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                 </div>
             </div>
 
-            <div className="w-full max-w-6xl aspect-video relative shadow-2xl bg-black rounded-2xl overflow-hidden border border-border">
+            <div className={`w-full max-w-6xl relative shadow-2xl bg-black rounded-2xl overflow-hidden border border-border transition-all duration-500 ease-in-out ${isQuestionActive ? 'min-h-[600px] md:min-h-0 md:aspect-video' : 'aspect-video'}`}>
                 {question.type === 'VIDEO' ? (
                     <VideoQuestionPlayer
                         key={`question-${currentQuestionIndex}-${question.videoUrl}`}

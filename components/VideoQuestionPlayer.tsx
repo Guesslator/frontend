@@ -139,7 +139,8 @@ export default function VideoQuestionPlayer({
               disablekb: 1,
               iv_load_policy: 3,
               fs: 0,
-              playsinline: 1
+              playsinline: 1,
+              origin: typeof window !== 'undefined' ? window.location.origin : undefined,
             }
           }
         }}
