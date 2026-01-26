@@ -45,6 +45,36 @@ export default function CategoryTabs({
 
   return (
     <div className="mb-12 space-y-6">
+      {/* Language Filter */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
+        <span className="text-xs text-muted-foreground uppercase tracking-wider whitespace-nowrap">
+          {t(lang, 'language')}:
+        </span>
+        {[
+          { key: undefined, label: 'All' },
+          { key: 'tr', label: 'TR' },
+          { key: 'en', label: 'EN' },
+          { key: 'de', label: 'DE' }
+        ].map(({ key, label }) => {
+          // Check URL param 'contentLang' directly or pass as prop. Using prop is cleaner.
+          // We need to add 'activeContentLang' to props.
+          const isActive = (searchParams.get('contentLang') || undefined) === key;
+
+          return (
+            <Link
+              key={label}
+              href={buildUrl({ contentLang: key })}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition-all border border-border ${isActive
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'bg-card text-muted-foreground hover:text-foreground'
+                }`}
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </div>
+
       {/* Sorting Filter */}
       <div className="flex items-center justify-end">
         <div className="flex items-center gap-2 bg-card p-1 rounded-lg border border-border">

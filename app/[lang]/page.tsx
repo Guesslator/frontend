@@ -25,10 +25,11 @@ export default async function ContentGridPage({
         search?: string;
         page?: string;
         sortBy?: string;
+        contentLang?: string;
     }>;
 }) {
     const { lang } = await params;
-    const { type, creatorType, subcategory, quizType, search, page, sortBy } = await searchParams;
+    const { type, creatorType, subcategory, quizType, search, page, sortBy, contentLang } = await searchParams;
     const validLang = (['tr', 'en', 'ar', 'de'].includes(lang) ? lang : 'en') as 'tr' | 'en' | 'ar' | 'de';
 
     // Fetch paginated content with filters
@@ -41,7 +42,8 @@ export default async function ContentGridPage({
         search,
         sortBy: sortBy as any,
         page: page ? parseInt(page, 10) : 1,
-        limit: 15
+        limit: 15,
+        contentLang
     });
 
     // For featured carousel on first page without filters

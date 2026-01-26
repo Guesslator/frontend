@@ -66,6 +66,7 @@ export interface ContentFilters {
     creatorId?: string;
     page?: number;
     limit?: number;
+    contentLang?: string;
 }
 
 export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[]> {
