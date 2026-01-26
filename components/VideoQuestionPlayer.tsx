@@ -27,7 +27,7 @@ export default function VideoQuestionPlayer({
   isQuestionActive,
   isAnswered
 }: VideoQuestionPlayerProps) {
-  console.log("VideoPlayer URL:", videoUrl);
+  // console.log("VideoPlayer URL:", videoUrl); // Reduced noise
   const playerRef = useRef<any>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,9 +36,14 @@ export default function VideoQuestionPlayer({
   const [ready, setReady] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
+  // Volume Control State
+  const [volume, setVolume] = useState(0.8);
+  const [muted, setMuted] = useState(false);
+  const [showVolumeControl, setShowVolumeControl] = useState(false); // Can be used for hover effects if needed
+
   // Reset state when moving to a new question (videoUrl changes)
   useEffect(() => {
-    console.log('New question loaded, resetting state');
+    // console.log('New question loaded, resetting state');
     setHasReachedQuestion(false);
     setCurrentTime(0);
     setIsPlaying(true); // Auto-start
@@ -86,37 +91,53 @@ export default function VideoQuestionPlayer({
     }
   };
 
-  const handleStart = () => {
-    setIsPlaying(true);
-  };
+  // Import Icons locally or assume they are available from lucide-react if imported at top
+  // Since we are replacing the whole function, let's assume we need to add imports if missing.
+  // BUT `replace_file_content` targets this block. The user didn't ask to change imports.
+  // I will use simple SVG icons inline to avoid import errors if Lucide isn't imported, 
+  // OR rely on existing imports if check. 
+  // Actually, Lucide isn't imported in the original file. I'll stick to SVG for safety or add import later.
+  // Safe bet: SVG inline.
 
   return (
-    <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl">
+    <div
+      className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl group"
+      onMouseEnter={() => setShowVolumeControl(true)}
+      onMouseLeave={() => setShowVolumeControl(false)}
+    >
+      {/* Title Mask - "Top of it center it" ?? No, title mask is top bar. Volume is "top of it center it". */}
+      {/* 
+         Title Mask: Hides the YouTube title/share info. 
+         YouTube shows title on hover. We put a div on top to block mouse events 
+         and visually obscure it.
+      */}
+      <div className="absolute top-0 left-0 w-full h-[60px] bg-black z-[15] pointer-events-auto" />
+
       <ReactPlayer
         ref={playerRef}
         url={videoUrl}
         width="100%"
         height="100%"
         playing={isPlaying}
-        muted={false}
+        muted={muted}
+        volume={volume}
         controls={false}
         onReady={handleReady}
-        onStart={() => console.log("Video Started")}
         onError={(e: any) => {
           console.error("Video Error:", e);
           setError("Failed to load video. Please check the URL.");
         }}
         onProgress={handleProgress as any}
-        progressInterval={100} // Check every 100ms for precision
+        progressInterval={100}
         config={{
           youtube: {
             playerVars: {
               showinfo: 0,
               modestbranding: 1,
               controls: 0,
-              rel: 0, // Show related videos from same channel only (best available)
+              rel: 0,
               disablekb: 1,
-              iv_load_policy: 3, // Hide annotations
+              iv_load_policy: 3,
               fs: 0,
               playsinline: 1
             }
@@ -127,19 +148,38 @@ export default function VideoQuestionPlayer({
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-20 text-red-500 font-bold p-4 text-center">
           {error}
-          <br />
-          <span className="text-xs text-neutral-400">{videoUrl}</span>
         </div>
       )}
 
-      {/* Transparent overlay to prevent interaction - REMOVED to allow sound interaction if needed, but since controls are off, this was just blocking right clicks mostly. We keep it off to be safe for audio policies maybe? No, let's keep the user request simple: enable sound. */}
-      {/* <div className="absolute inset-0 z-[1]" /> */}
+      {/* Volume Control - Centered at the top */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[20] flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 hover:opacity-100">
+        <button
+          onClick={() => setMuted(!muted)}
+          className="text-white hover:text-primary transition-colors focus:outline-none"
+        >
+          {muted || volume === 0 ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" /></svg>
+          ) : volume < 0.5 ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+          )}
+        </button>
 
-
-      {/* Debug Info */}
-      <div className="absolute top-2 left-2 text-xs text-green-400 font-mono bg-black/80 p-1 z-50">
-        Debug: {currentTime.toFixed(1)}s / Stop: {stopTime}s
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.1}
+          value={muted ? 0 : volume}
+          onChange={(e) => {
+            setVolume(parseFloat(e.target.value));
+            if (muted && parseFloat(e.target.value) > 0) setMuted(false);
+          }}
+          className="w-24 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:hover:scale-125 [&::-webkit-slider-thumb]:transition-transform"
+        />
       </div>
+
     </div>
   );
 }
