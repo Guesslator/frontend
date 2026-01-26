@@ -5,16 +5,17 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { submitScore, getTopScores, getPercentile, ScoreDto } from '@/lib/api';
 import PercentileChart from './PercentileChart';
-import { Trophy, Home, Loader2, ArrowRight } from 'lucide-react';
+import { Trophy, Home, Loader2, ArrowRight, Share2, Check } from 'lucide-react';
 
 interface ResultsViewProps {
     score: number;
     totalQuestions: number;
     contentId: string;
+    slug?: string;
     lang: string;
 }
 
-export default function ResultsView({ score, totalQuestions, contentId, lang }: ResultsViewProps) {
+export default function ResultsView({ score, totalQuestions, contentId, slug, lang }: ResultsViewProps) {
     const validLang = (['tr', 'en', 'de'].includes(lang) ? lang : 'en') as 'tr' | 'en' | 'de';
 
     // State
@@ -23,7 +24,7 @@ export default function ResultsView({ score, totalQuestions, contentId, lang }: 
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [topScores, setTopScores] = useState<ScoreDto[]>([]);
     const [percentile, setPercentile] = useState<number | null>(null);
-    const [loadingScores, setLoadingScores] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
 
     // Calculate percentage for theme
     const percentage = Math.round((score / totalQuestions) * 100);
@@ -79,6 +80,14 @@ export default function ResultsView({ score, totalQuestions, contentId, lang }: 
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const handleShare = () => {
+        const idToShare = slug || contentId;
+        const url = `${window.location.origin}/${lang}/quiz/${idToShare}`;
+        navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
     };
 
     return (
@@ -175,7 +184,7 @@ export default function ResultsView({ score, totalQuestions, contentId, lang }: 
                     </motion.div>
                 )}
 
-                <div className="mt-8">
+                <div className="mt-8 flex flex-col md:flex-row gap-4 justify-center">
                     <Link
                         href={`/${lang}`}
                         className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all hover:scale-105"
@@ -183,6 +192,16 @@ export default function ResultsView({ score, totalQuestions, contentId, lang }: 
                         <Home size={20} />
                         {validLang === 'tr' ? 'Ana Sayfaya Dön' : validLang === 'de' ? 'Zurück' : 'Back to Home'}
                     </Link>
+
+                    <button
+                        onClick={handleShare}
+                        className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl transition-all hover:scale-105 shadow-lg shadow-primary/20"
+                    >
+                        {isCopied ? <Check size={20} /> : <Share2 size={20} />}
+                        {isCopied
+                            ? (validLang === 'tr' ? 'Kopyalandı!' : validLang === 'de' ? 'Kopiert!' : 'Copied!')
+                            : (validLang === 'tr' ? 'Paylaş' : validLang === 'de' ? 'Teilen' : 'Share Quiz')}
+                    </button>
                 </div>
             </motion.div>
         </div>

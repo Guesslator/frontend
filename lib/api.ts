@@ -201,6 +201,7 @@ export async function fetchQuizLevel(contentId: string, level: number, lang: str
 
         return {
             id: data.id,
+            slug: data.slug,
             contentId: contentId,
             questions: data.questions.map((q: any) => ({
                 id: q.id,
@@ -242,6 +243,7 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
 
         return {
             id: data.id,
+            slug: data.slug,
             contentId: data.id, // Content IS the quiz container now
             questions: (data.questions || []).map((q: any) => ({
                 id: q.id,

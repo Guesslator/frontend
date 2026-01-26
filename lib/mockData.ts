@@ -8,6 +8,7 @@ export interface Translation {
 
 export interface ContentItem {
     id: string;
+    slug?: string;
     type: 'MOVIE' | 'SERIES' | 'GAME';
     posterUrl: string;
     translations: Translation;
@@ -34,6 +35,7 @@ export interface Question {
 
 export interface Quiz {
     id: string;
+    slug?: string;
     contentId: string; // [NEW] Needed for score submission
     questions: Question[];
 }

@@ -133,6 +133,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                 score={score}
                 totalQuestions={quiz.questions.length}
                 contentId={quiz.contentId}
+                slug={quiz.slug}
                 lang={validLang}
             />
         );
