@@ -10,18 +10,19 @@ export default async function AdminLayout({
 }) {
     const session = await getServerSession(authOptions);
 
-    console.log(`[AdminLayout] Visiting: /admin`);
-    console.log(`[AdminLayout] Session:`, JSON.stringify(session, null, 2));
+    // console.log(`[AdminLayout] Visiting: /admin`);
+    // console.log(`[AdminLayout] Session:`, JSON.stringify(session, null, 2));
 
     if (!session || !session.user) {
-        console.log("[AdminLayout] No session found, redirecting to /");
+        // console.log("[AdminLayout] No session found, redirecting to /");
         redirect("/");
     }
 
-    console.log("[AdminLayout] User role is", session.user.role);
+    const isAdmin = session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN";
+    // console.log("[AdminLayout] User role is", session.user.role);
 
-    if (!['ADMIN', 'SUPER_ADMIN'].includes(session.user.role)) {
-        console.log("[AdminLayout] Insufficient permissions, redirecting to /admin/unauthorized");
+    if (!isAdmin) {
+        // console.log("[AdminLayout] Insufficient permissions, redirecting to /admin/unauthorized");
         redirect("/admin/unauthorized");
     }
 

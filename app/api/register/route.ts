@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     try {
-        console.log("REGISTER API HIT");
+        // console.log("REGISTER API HIT");
 
         const body = await req.json();
-        console.log("BODY:", body);
+        // console.log("BODY:", body);
 
         // PRIORITY: Env > Fallback
         const backendUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://backend:3000';
-        console.log("API_URL used:", backendUrl);
+        // console.log("API_URL used:", backendUrl);
 
         if (!backendUrl) {
             throw new Error("API_URL is undefined");
@@ -21,10 +21,10 @@ export async function POST(req: Request) {
             body: JSON.stringify(body),
         });
 
-        console.log("BACKEND STATUS:", res.status);
+        // console.log("BACKEND STATUS:", res.status);
 
         const text = await res.text();
-        console.log("BACKEND RAW RESPONSE:", text);
+        // console.log("BACKEND RAW RESPONSE:", text);
 
         return new Response(text, { status: res.status });
     } catch (err) {

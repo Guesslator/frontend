@@ -31,11 +31,13 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
 
     // Debug logging
     useEffect(() => {
-        console.log('🎮 Quiz loaded:', {
-            totalQuestions: quiz.questions.length,
-            currentIndex: currentQuestionIndex,
-            isComplete: quizComplete
-        });
+        if (process.env.NODE_ENV === 'development') {
+            console.log('🎮 Quiz loaded:', {
+                totalQuestions: quiz.questions.length,
+                currentIndex: currentQuestionIndex,
+                isComplete: quizComplete
+            });
+        }
 
         // Increment popularity
         incrementContentPopularity(quiz.contentId);
@@ -53,7 +55,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
         const timer = setInterval(() => {
             setTimeRemaining(prev => {
                 if (prev <= 1) {
-                    console.log('⏰ Time expired! Auto-submitting as incorrect');
+                    if (process.env.NODE_ENV === 'development') console.log('⏰ Time expired! Auto-submitting as incorrect');
                     handleAnswer(null, false);
                     return 0;
                 }
@@ -65,13 +67,13 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
     }, [isQuestionActive, isAnswered]);
 
     const handleQuestionPoint = () => {
-        console.log('❓ Question point reached');
+        // console.log('❓ Question point reached');
         setIsQuestionActive(true);
         setTimeRemaining(ANSWER_TIME_LIMIT);
     };
 
     const handleAnswer = (optionId: string | null, correct: boolean) => {
-        console.log('✅ Answer submitted:', { optionId, correct });
+        // console.log('✅ Answer submitted:', { optionId, correct });
         setSelectedOption(optionId);
         setIsCorrect(correct);
         setIsAnswered(true);
@@ -90,7 +92,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
         });
 
         if (currentQuestionIndex < quiz.questions.length - 1) {
-            console.log('➡️ Moving to next question...');
+            // console.log('➡️ Moving to next question...');
             setCurrentQuestionIndex(prev => prev + 1);
             setIsAnswered(false);
             setSelectedOption(null);
@@ -98,7 +100,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
             setIsQuestionActive(false);
             setTimeRemaining(ANSWER_TIME_LIMIT);
         } else {
-            console.log('🏁 Quiz complete!');
+            // console.log('🏁 Quiz complete!');
             setQuizComplete(true);
         }
     };
@@ -175,7 +177,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                     <ImageQuestionPlayer
                         key={`question-${currentQuestionIndex}-${question.imageUrl}`}
                         imageUrl={question.imageUrl || ''}
-                        onImageLoaded={() => console.log('Image loaded')}
+                        onImageLoaded={() => { }}
                         onQuestionPointReached={handleQuestionPoint}
                         isQuestionActive={isQuestionActive}
                         isAnswered={isAnswered}
