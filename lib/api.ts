@@ -250,11 +250,17 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
 
         const validTranslations = transformTranslations(data.translations || []);
         const localeData = validTranslations[lang] || validTranslations['en'] || {};
+        const title = localeData.title || localeData.name || '';
+
+        // [CONTRACT ASSERTION]
+        if (!title) {
+            console.error(`[PublicQuiz Contract Violation] Quiz ${data.id} returned without a title/name!`, { contentId: data.id, slug: data.slug });
+        }
 
         return {
             id: data.id,
             slug: data.slug,
-            title: localeData.title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
+            title: title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
             description: localeData.description || null, // [CONTRACT] Guaranteed Description or null
             created_by: data.creatorId, // [CONTRACT] Guaranteed ID
             videos: [], // Placeholder handled by component logic or data.videos if available
