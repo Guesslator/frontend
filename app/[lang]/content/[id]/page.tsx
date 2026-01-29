@@ -48,6 +48,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     const getLangLabel = () => {
         if (supportedLangs.length > 1) return t(validLang, 'multipleLanguages') || 'Multiple Languages';
         const l = supportedLangs[0];
+        if (!l) return 'Unknown';
         const names: Record<string, string> = { en: "English", tr: "Turkish", ar: "Arabic", de: "German" };
         return names[l] || l.toUpperCase();
     };
