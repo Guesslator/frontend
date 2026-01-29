@@ -33,11 +33,19 @@ export interface Question {
     options: QuestionOption[];
 }
 
-export interface Quiz {
+export interface PublicQuiz {
     id: string;
-    slug?: string;
-    contentId: string; // [NEW] Needed for score submission
+    slug: string;
+    title: string;
+    description: string | null;
+    created_by: string;
+    videos: any[]; // Kept loose for now or define Video type if reusable
     questions: Question[];
+}
+
+export interface Quiz extends PublicQuiz {
+    contentId: string; // [NEW] Needed for score submission
+    // questions: Question[]; // Already in PublicQuiz
 }
 
 export const MOCK_CONTENT: ContentItem[] = [
@@ -78,6 +86,11 @@ export const MOCK_CONTENT: ContentItem[] = [
 
 export const MOCK_QUIZ: Quiz = {
     id: 'level-1',
+    slug: 'mock-quiz-slug',
+    title: 'Mock Quiz Title',
+    description: 'Mock Description',
+    created_by: 'mock-user-id',
+    videos: [],
     contentId: '1', // Mock content ID
     questions: [
         {

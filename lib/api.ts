@@ -166,23 +166,23 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
             type: item.type,
             posterUrl: item.posterUrl,
             translations: transformTranslations(item.translations),
-            questions: (item as any).questions?.map((q: any) => ({
-                id: q.id,
-                type: q.type,
-                videoUrl: q.videoUrl,
-                startTime: q.startTime,
-                stopTime: q.stopTime,
-                endTime: q.endTime,
-                imageUrl: q.imageUrl,
-                translations: transformTranslations(q.translations || []),
-                options: q.options?.map((o: any) => ({
-                    id: o.id,
-                    isCorrect: o.isCorrect,
-                    translations: transformTranslations(o.translations || [])
-                })) || [],
-                attempts: q.attempts || 0,
-                correctCount: q.correctCount || 0
-            })) || [],
+            questions: (Array.isArray((item as any).questions) ? (item as any).questions : []).filter((q: any) => !!q).map((q: any) => ({
+                id: q?.id,
+                type: q?.type || 'TEXT',
+                videoUrl: q?.videoUrl || '',
+                startTime: q?.startTime || 0,
+                stopTime: q?.stopTime || 0,
+                endTime: q?.endTime || 0,
+                imageUrl: q?.imageUrl || '',
+                translations: transformTranslations(q?.translations || []),
+                options: (Array.isArray(q?.options) ? q.options : []).map((o: any) => ({
+                    id: o?.id,
+                    isCorrect: !!o?.isCorrect,
+                    translations: transformTranslations(o?.translations || [])
+                })),
+                attempts: q?.attempts || 0,
+                correctCount: q?.correctCount || 0
+            })),
             levels: [], // Legacy compat or remove if possible
             creatorType: item.creatorType,
             creator: item.creator,
@@ -205,6 +205,10 @@ export async function fetchQuizLevel(contentId: string, level: number, lang: str
         return {
             id: data.id,
             slug: data.slug,
+            title: 'Level Quiz', // Placeholder as Levels might not have own titles? Or fetch them.
+            description: null,
+            created_by: '', // Legacy levels might not track this, or need new query. Punting with empty string to satisfy contract.
+            videos: [],
             contentId: contentId,
             questions: data.questions.map((q: any) => ({
                 id: q.id,
@@ -244,23 +248,30 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
         }
         const data = await res.json();
 
+        const validTranslations = transformTranslations(data.translations || []);
+        const localeData = validTranslations[lang] || validTranslations['en'] || {};
+
         return {
             id: data.id,
             slug: data.slug,
-            contentId: data.id, // Content IS the quiz container now
-            questions: (data.questions || []).map((q: any) => ({
-                id: q.id,
-                type: q.type,
-                videoUrl: q.videoUrl,
-                startTime: q.startTime,
-                stopTime: q.stopTime,
-                endTime: q.endTime,
-                imageUrl: q.imageUrl,
-                translations: transformTranslations(q.translations),
-                options: q.options.map((o: any) => ({
-                    id: o.id,
-                    isCorrect: o.isCorrect,
-                    translations: transformTranslations(o.translations)
+            title: localeData.title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
+            description: localeData.description || null, // [CONTRACT] Guaranteed Description or null
+            created_by: data.creatorId, // [CONTRACT] Guaranteed ID
+            videos: [], // Placeholder handled by component logic or data.videos if available
+            contentId: data.id,
+            questions: (Array.isArray(data.questions) ? data.questions : []).filter((q: any) => !!q).map((q: any) => ({
+                id: q?.id,
+                type: q?.type || 'TEXT',
+                videoUrl: q?.videoUrl || '',
+                startTime: q?.startTime || 0,
+                stopTime: q?.stopTime || 0,
+                endTime: q?.endTime || 0,
+                imageUrl: q?.imageUrl || '',
+                translations: transformTranslations(q?.translations || []),
+                options: (Array.isArray(q?.options) ? q.options : []).map((o: any) => ({
+                    id: o?.id,
+                    isCorrect: !!o?.isCorrect,
+                    translations: transformTranslations(o?.translations || [])
                 }))
             }))
         };
