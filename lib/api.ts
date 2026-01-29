@@ -238,8 +238,6 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
         // Fetching quiz URL
         const res = await fetch(url, { cache: 'no-store' });
 
-
-
         if (!res.ok) {
             console.error(`API: fetchQuizById failed with status ${res.status} for ID ${id}`);
             const text = await res.text();
@@ -248,7 +246,9 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
         }
         const data = await res.json();
 
-        const validTranslations = transformTranslations(data.translations || []);
+        // [CONTRACT] Backend now returns translations as Record<lang, ...>
+        // No transformation needed here if backend contract is met.
+        const validTranslations = data.translations || {};
         const localeData = validTranslations[lang] || validTranslations['en'] || {};
         const title = localeData.title || localeData.name || '';
 
@@ -262,24 +262,11 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
             slug: data.slug,
             title: title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
             description: localeData.description || null, // [CONTRACT] Guaranteed Description or null
-            created_by: data.creatorId, // [CONTRACT] Guaranteed ID
-            videos: [], // Placeholder handled by component logic or data.videos if available
-            contentId: data.id,
-            questions: (Array.isArray(data.questions) ? data.questions : []).filter((q: any) => !!q).map((q: any) => ({
-                id: q?.id,
-                type: q?.type || 'TEXT',
-                videoUrl: q?.videoUrl || '',
-                startTime: q?.startTime || 0,
-                stopTime: q?.stopTime || 0,
-                endTime: q?.endTime || 0,
-                imageUrl: q?.imageUrl || '',
-                translations: transformTranslations(q?.translations || []),
-                options: (Array.isArray(q?.options) ? q.options : []).map((o: any) => ({
-                    id: o?.id,
-                    isCorrect: !!o?.isCorrect,
-                    translations: transformTranslations(o?.translations || [])
-                }))
-            }))
+            created_by: data.contentId, // [CONTRACT] ID is sufficient
+            videos: [],
+            contentId: data.contentId,
+            // [CONTRACT] Backend guarantees 'questions' is a valid array of PublicQuestion objects
+            questions: data.questions || []
         };
     } catch (e) {
         console.error("Fetch quiz failed", e);
