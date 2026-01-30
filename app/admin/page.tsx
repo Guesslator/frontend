@@ -29,6 +29,7 @@ interface GrowthStat {
     date: string;
     users: number;
     plays: number;
+    quizzes: number;
 }
 
 export default function AdminDashboard() {
@@ -148,17 +149,27 @@ export default function AdminDashboard() {
                     </h2>
                     <div className="h-64 flex items-end gap-1 w-full">
                         {growth.map((g, i) => {
-                            const max = Math.max(...growth.map(i => i.plays + i.users), 10);
-                            const height = Math.max(((g.plays + g.users) / max) * 100, 5);
+                            const max = Math.max(...growth.map(i => i.plays + i.users + (i.quizzes || 0)), 10);
+                            const height = Math.max(((g.plays + g.users + (g.quizzes || 0)) / max) * 100, 5);
+
+                            const total = g.plays + g.users + (g.quizzes || 0);
+                            const userPct = total > 0 ? (g.users / total) * 100 : 0;
+                            const quizPct = total > 0 ? ((g.quizzes || 0) / total) * 100 : 0;
+
+                            // Remaining is plays
+
                             return (
                                 <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
                                     <div className="w-full bg-neutral-800 rounded-t-sm flex flex-col justify-end overflow-hidden transition-all hover:brightness-110" style={{ height: `${height}%` }}>
-                                        <div className="bg-indigo-500/50 w-full" style={{ height: `${(g.users / (g.plays + g.users)) * 100}%` }} title={`Users: ${g.users}`} />
-                                        <div className="bg-purple-500/50 w-full flex-1" title={`Plays: ${g.plays}`} />
+                                        {/* Stacked Bars: Users (Indigo) -> Quizzes (Green) -> Plays (Purple) */}
+                                        <div className="bg-indigo-500/50 w-full" style={{ height: `${userPct}%` }} />
+                                        <div className="bg-green-500/50 w-full" style={{ height: `${quizPct}%` }} />
+                                        <div className="bg-purple-500/50 w-full flex-1" />
                                     </div>
                                     <div className="absolute bottom-full mb-2 bg-black text-white text-xs p-2 rounded hidden group-hover:block z-50 whitespace-nowrap border border-neutral-700 shadow-xl">
                                         <div className="font-bold">{g.date}</div>
                                         <div className="text-indigo-300">New Users: {g.users}</div>
+                                        <div className="text-green-300">New Quizzes: {g.quizzes || 0}</div>
                                         <div className="text-purple-300">Plays: {g.plays}</div>
                                     </div>
                                 </div>

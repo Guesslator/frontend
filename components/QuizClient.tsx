@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, ArrowLeft, Clock } from 'lucide-react';
 import { Quiz } from '@/lib/mockData';
-import { incrementContentPopularity, registerQuestionAttempt } from '@/lib/api';
+import { incrementContentPopularity, registerQuestionAttempt, trackEvent } from '@/lib/api';
 
 interface QuizClientProps {
     quiz: Quiz;
@@ -97,6 +97,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
             setTimeRemaining(ANSWER_TIME_LIMIT);
         } else {
             // console.log('🏁 Quiz complete!');
+            trackEvent('quiz_completed', { quizId: quiz.contentId });
             setQuizComplete(true);
         }
     };

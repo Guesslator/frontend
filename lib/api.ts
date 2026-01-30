@@ -423,7 +423,19 @@ export const fetchUsers = async (token: string) => {
     if (!res.ok) throw new Error('Failed to fetch users');
     return res.json();
 };
-// --- Stats API ---
+// --- Analytics API ---
+export async function trackEvent(eventType: string, data: { userId?: string, quizId?: string, metadata?: any }) {
+    try {
+        await fetch(`${API_URL}/analytics/events`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ eventType, ...data }),
+        });
+    } catch (e) {
+        console.error("Failed to track event", e);
+    }
+}
+
 export async function registerQuestionAttempt(questionId: string, isCorrect: boolean) {
     try {
         await fetch(`${API_URL}/quiz/attempt`, {
