@@ -108,6 +108,22 @@ export async function setFlag(key: string, value: boolean, token: string) {
     }, token);
 }
 
+// User Actions
+export async function banUser(userId: string, isBanned: boolean, token: string) {
+    return adminFetch(`/users/${userId}/ban`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isBanned })
+    }, token);
+}
+
+// Quiz Actions
+export async function togglePublishQuiz(quizId: string, isPublished: boolean, token: string) {
+    return adminFetch(`/quizzes/${quizId}/publish`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isPublished })
+    }, token);
+}
+
 // Analytics (Raw)
 export async function getAnalyticsData(path: string, token: string) {
     // Note: Analytics controller is separate from Admin module usually, but accessible.

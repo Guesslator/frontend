@@ -1,15 +1,16 @@
 "use client";
 
-import { Eye, Trash2, AlertTriangle, X } from "lucide-react";
-import { deleteQuiz } from "@/lib/adminApi";
+import { Eye, Trash2, AlertTriangle, X, CheckCircle, Ban } from "lucide-react";
+import { deleteQuiz, togglePublishQuiz } from "@/lib/adminApi";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function QuizActions({ quizId, slug, token }: { quizId: string, slug?: string, token: string }) {
+export default function QuizActions({ quizId, slug, token, isPublished }: { quizId: string, slug?: string, token: string, isPublished: boolean }) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isToggling, setIsToggling] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
     const handleDelete = async () => {
@@ -25,9 +26,39 @@ export default function QuizActions({ quizId, slug, token }: { quizId: string, s
         }
     };
 
+    const handleTogglePublish = async () => {
+        setIsToggling(true);
+        try {
+            await togglePublishQuiz(quizId, !isPublished, token);
+            toast.success(isPublished ? "Quiz deactivated (unpublished)" : "Quiz activated (published)");
+            router.refresh(); // Refresh to update list
+        } catch (e) {
+            toast.error("Failed to update status");
+        } finally {
+            setIsToggling(false);
+        }
+    };
+
     return (
         <>
             <div className="flex justify-end items-center gap-2">
+                <button
+                    onClick={handleTogglePublish}
+                    disabled={isToggling}
+                    className={`p-2 rounded transition-colors ${isPublished
+                        ? 'text-green-400 hover:text-red-400 hover:bg-red-500/10'
+                        : 'text-neutral-500 hover:text-green-400 hover:bg-green-500/10'
+                        }`}
+                    title={isPublished ? "Deactivate (Unpublish)" : "Activate (Publish)"}
+                >
+                    {isToggling ? (
+                        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin block" />
+                    ) : isPublished ? (
+                        <CheckCircle className="w-4 h-4" />
+                    ) : (
+                        <Ban className="w-4 h-4" />
+                    )}
+                </button>
                 <Link
                     href={`/en/quiz/${slug || quizId}`}
                     target="_blank"
