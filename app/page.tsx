@@ -3,12 +3,19 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  LANGUAGES,
+  languageNames,
+  languageFlags,
+  languageGreetings,
+} from "@/lib/i18n";
 
-const languages = [
-  { code: 'tr', name: 'Türkçe', flag: '🇹🇷', greeting: 'Hoşgeldiniz' },
-  { code: 'en', name: 'English', flag: '🇬🇧', greeting: 'Welcome' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪', greeting: 'Willkommen' },
-];
+const languages = LANGUAGES.map((code) => ({
+  code,
+  name: languageNames[code] || code,
+  flag: languageFlags[code] || "🌐",
+  greeting: languageGreetings[code] || "Welcome",
+}));
 
 export default function LanguageSelectionPage() {
   return (
@@ -24,52 +31,63 @@ export default function LanguageSelectionPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-16 z-10"
+        className="text-center mb-8 mt-8 z-10"
       >
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-primary mb-4 drop-shadow-2xl">
+        <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-primary mb-2 drop-shadow-2xl">
           GUESSALATOR
         </h1>
-        <p className="text-muted-foreground text-lg md:text-xl tracking-widest uppercase font-light">
+        <p className="text-muted-foreground text-sm md:text-base tracking-widest uppercase font-light">
           The Ultimate Cinematic Quiz
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl z-10">
-        {languages.map((lang, index) => (
-          <Link key={lang.code} href={`/${lang.code}`} className="block w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + index * 0.1 }}
-              whileHover={{ scale: 1.02, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer border border-border bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-500 shadow-lg"
+      <div className="w-full max-w-7xl z-10 overflow-y-auto max-h-[70vh] px-4 custom-scrollbar">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pb-24">
+          {languages.map((lang, index) => (
+            <Link
+              key={lang.code}
+              href={`/${lang.code}`}
+              className="block w-full"
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-0" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * index }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="group relative h-40 rounded-xl overflow-hidden cursor-pointer border border-border bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-300 shadow-md"
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-0" />
 
-              {/* Hover Glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent" />
+                {/* Hover Glow */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent" />
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6">
-                <span className="text-7xl mb-6 filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  {lang.flag}
-                </span>
-                <h2 className="text-3xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {lang.name}
-                </h2>
-                <p className="text-muted-foreground text-sm font-light tracking-wider group-hover:text-foreground transition-colors">
-                  {lang.greeting}
-                </p>
-              </div>
-            </motion.div>
-          </Link>
-        ))}
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
+                  <span className="text-4xl mb-3 filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    {lang.flag}
+                  </span>
+                  <h2 className="text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors text-center line-clamp-1">
+                    {lang.name}
+                  </h2>
+                  <p className="text-muted-foreground text-xs font-light tracking-wider group-hover:text-foreground transition-colors text-center">
+                    {lang.greeting}
+                  </p>
+                </div>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
       </div>
 
-      <footer className="absolute bottom-8 text-muted-foreground text-xs uppercase tracking-widest flex gap-4">
+      <footer className="absolute bottom-4 text-muted-foreground text-[10px] md:text-xs uppercase tracking-widest flex gap-4 bg-background/80 backdrop-blur-sm py-2 px-4 rounded-full border border-border/50 shadow-sm z-50">
         <span>Experience the thrill</span>
-        <span className="text-foreground">|</span>
-        <Link href="/admin" className="hover:text-foreground transition-colors">Admin</Link>
+        <span className="text-foreground/50">|</span>
+        <Link
+          href="/admin"
+          className="hover:text-foreground transition-colors font-medium"
+        >
+          Admin
+        </Link>
       </footer>
     </main>
   );

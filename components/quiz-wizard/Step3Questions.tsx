@@ -1,7 +1,7 @@
 "use client";
 
 import { t, Language } from '@/lib/i18n';
-import { Plus, Trash, Image as ImageIcon, Video, Type } from 'lucide-react';
+import { Plus, Trash, Image as ImageIcon, Video, Type, Music } from 'lucide-react';
 import FileUploader from '@/components/FileUploader';
 
 interface Step3QuestionsProps {
@@ -104,7 +104,7 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                         <div className="flex gap-4">
                             <span className="bg-muted px-3 py-1 rounded-md text-sm font-bold text-muted-foreground">Q{qIndex + 1}</span>
                             <div className="flex gap-2 bg-muted/50 rounded-lg p-1">
-                                {['VIDEO', 'TEXT'].map((type) => (
+                                {['VIDEO', 'IMAGE', 'AUDIO', 'TEXT'].map((type) => (
                                     <button
                                         key={type}
                                         onClick={() => updateQuestion(qIndex, 'type', type)}
@@ -112,6 +112,8 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                                         title={t(lang, type.toLowerCase() as any)}
                                     >
                                         {type === 'VIDEO' && <Video size={16} />}
+                                        {type === 'IMAGE' && <ImageIcon size={16} />}
+                                        {type === 'AUDIO' && <Music size={16} />}
                                         {type === 'TEXT' && <Type size={16} />}
                                     </button>
                                 ))}
@@ -157,6 +159,30 @@ export default function Step3Questions({ lang, formData, setFormData }: Step3Que
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                     />
+                                </div>
+                            )}
+
+                            {q.type === 'AUDIO' && (
+                                <div className="mb-6 space-y-4">
+                                    <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                        Audio URL (MP3/WAV)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="https://example.com/audio.mp3"
+                                        className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors"
+                                        value={q.audioUrl || ''}
+                                        onChange={e => updateQuestion(qIndex, 'audioUrl', e.target.value)}
+                                    />
+                                    <p className="text-[10px] text-muted-foreground mt-1">
+                                        Direct link to an audio file is recommended.
+                                    </p>
+
+                                    {q.audioUrl && (
+                                        <div className="bg-muted/30 p-4 rounded-lg flex items-center justify-center">
+                                            <audio controls src={q.audioUrl} className="w-full" />
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

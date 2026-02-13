@@ -7,20 +7,23 @@
 :root {
   /* --- Primitives: Light --- */
   --color-brand-navy: #0A1F44;
-  --color-brand-navy-light: #143B73;
+  --color-brand-navy-light: #1E3A8A;
+  --color-brand-vivid-blue: #3B82F6; /* Blue 500 - Soft & Modern Blue */
+  --color-brand-dark-text: #111827; /* Gray 900 - Soft Black */
   --color-brand-orange: #FF6B00;
-  /* Vibrant Orange */
   --color-brand-orange-soft: #FF9E66;
   --color-brand-white: #FFFFFF;
   --color-brand-off-white: #F8FAFC;
   --color-brand-light-gray: #E2E8F0;
-  --color-brand-dark-gray: #4A5568;
+  --color-brand-dark-gray: #64748B; /* Slate 500 for softer text */
+  --color-brand-platinum: #F1F5F9; /* Slate 100 */
 
-  --color-status-success: #2ECC71;
-  --color-status-warning: #F1C40F;
-  --color-status-error: #E74C3C;
+  --color-status-success: #10B981; /* Emerald 500 - more vibrant */
+  --color-status-warning: #F59E0B; /* Amber 500 */
+  --color-status-error: #EF4444; /* Red 500 */
 
   /* --- Primitives: Dark --- */
+
   --color-dark-navy: #050A14;
   --color-deep-navy: #0A1F44;
   --color-dark-slate: #142840;
@@ -33,36 +36,36 @@
   --color-aqua-accent: #37E2D5;
 
   /* --- Semantic Tokens (Light Default) --- */
-  --background: var(--color-brand-off-white);
-  --foreground: var(--color-brand-navy);
+  --background: #FFFFFF;
+  --foreground: var(--color-brand-dark-text);
 
-  --card: var(--color-brand-white);
-  --card-foreground: var(--color-brand-navy);
-  --card-border: var(--color-brand-light-gray);
+  --card: #FFFFFF;
+  --card-foreground: var(--color-brand-dark-text);
+  --card-border: #F1F5F9; /* Very subtle border */
 
-  --popover: var(--color-brand-white);
-  --popover-foreground: var(--color-brand-navy);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--color-brand-dark-text);
 
-  --primary: var(--color-brand-navy);
-  --primary-foreground: var(--color-brand-white);
+  --primary: var(--color-brand-vivid-blue);
+  --primary-foreground: #FFFFFF;
 
-  --secondary: var(--color-brand-orange);
-  --secondary-foreground: var(--color-brand-white);
+  --secondary: var(--color-brand-platinum); /* Softer secondary background */
+  --secondary-foreground: var(--color-brand-dark-text);
 
-  --muted: var(--color-brand-light-gray);
+  --muted: #F1F5F9;
   --muted-foreground: var(--color-brand-dark-gray);
 
-  --accent: var(--color-brand-orange-soft);
-  --accent-foreground: var(--color-brand-navy);
+  --accent: #F8FAFC;
+  --accent-foreground: var(--color-brand-navy-light);
 
   --destructive: var(--color-status-error);
-  --destructive-foreground: var(--color-brand-white);
+  --destructive-foreground: #FFFFFF;
 
-  --border: var(--color-brand-light-gray);
-  --input: var(--color-brand-light-gray);
-  --ring: var(--color-brand-orange);
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: var(--color-brand-navy-light); /* Focus ring matches brand */
 
-  --radius: 0.5rem;
+  --radius: 1rem; /* More rounded premium look */
 }
 
 [data-theme="dark"] {
@@ -137,7 +140,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
@@ -179,6 +182,13 @@ body {
   /* Aqua glow */
 }
 
+.film-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+  opacity: 0.25;
+}
+
 @keyframes progress {
   0% {
     transform: scaleX(0);
@@ -213,4 +223,22 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
 }

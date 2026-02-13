@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import VideoQuestionPlayer from '@/components/VideoQuestionPlayer';
 import ImageQuestionPlayer from '@/components/ImageQuestionPlayer';
+import AudioQuestionPlayer from '@/components/AudioQuestionPlayer';
 import ResultsView from '@/components/ResultsView';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { CheckCircle, XCircle, ArrowLeft, Clock } from 'lucide-react';
 import { Quiz } from '@/lib/mockData';
 import { incrementContentPopularity, registerQuestionAttempt, trackEvent } from '@/lib/api';
@@ -104,7 +105,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
 
     // For image and text quizzes, auto-advance after answering
     useEffect(() => {
-        if ((question.type === 'IMAGE' || question.type === 'TEXT') && isAnswered) {
+        if ((question.type === 'IMAGE' || question.type === 'TEXT' || question.type === 'AUDIO') && isAnswered) {
             const timer = setTimeout(() => {
                 handleSceneComplete();
             }, 2000); // Wait 2 seconds to show feedback
@@ -138,17 +139,26 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
         );
     }
 
+    const shouldReduceMotion = useReducedMotion();
+
+    const overlayVariants = {
+        initial: { opacity: 0, backdropFilter: "blur(0px)" },
+        animate: { opacity: 1, backdropFilter: shouldReduceMotion ? "blur(0px)" : "blur(10px)" },
+        exit: { opacity: 0, backdropFilter: "blur(0px)" }
+    };
+
     return (
         <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center relative transition-colors duration-300">
             {/* Header Area */}
             <div className="w-full max-w-6xl flex justify-between items-end mb-4 px-2">
-                <Link href={`/${lang}`} className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group">
+
+                <Link href={`/${lang}`} aria-label="Exit Quiz" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group">
                     <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                    <span className="text-sm font-bold tracking-wide">EXIT QUIZ</span>
+                    <span className="text-sm font-bold tracking-wide">{t(lang, 'exitQuiz')}</span>
                 </Link>
 
                 <div className="flex flex-col items-end">
-                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Question</span>
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">{t(lang, 'questionLabel')}</span>
                     <div className="text-3xl font-black text-primary leading-none flex items-baseline gap-1">
                         <span>{String(currentQuestionIndex + 1).padStart(2, '0')}</span>
                         <span className="text-lg text-muted-foreground font-medium">/</span>
@@ -162,6 +172,18 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                     <VideoQuestionPlayer
                         key={`question-${currentQuestionIndex}-${question.videoUrl}`}
                         videoUrl={question.videoUrl || ''}
+                        startTime={question.startTime || 0}
+                        stopTime={question.stopTime || 0}
+                        endTime={question.endTime || 0}
+                        onQuestionPointReached={handleQuestionPoint}
+                        onSceneComplete={handleSceneComplete}
+                        isQuestionActive={isQuestionActive}
+                        isAnswered={isAnswered}
+                    />
+                ) : question.type === 'AUDIO' ? (
+                    <AudioQuestionPlayer
+                        key={`question-${currentQuestionIndex}-${question.audioUrl}`}
+                        audioUrl={question.audioUrl || ''}
                         startTime={question.startTime || 0}
                         stopTime={question.stopTime || 0}
                         endTime={question.endTime || 0}
@@ -194,9 +216,10 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                 <AnimatePresence>
                     {isQuestionActive && (
                         <motion.div
-                            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-                            animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
-                            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                            variants={overlayVariants}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
                             className="absolute inset-0 bg-background/80 z-20 flex flex-col items-center justify-center p-4 md:p-8 lg:p-16"
                         >
                             {/* Timer Display */}
@@ -280,7 +303,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                         >
                             {isCorrect ? <CheckCircle size={24} /> : <XCircle size={24} />}
                             <span className="text-lg">
-                                {isCorrect ? 'Correct! Watch this...' : 'Wrong! See what happens...'}
+                                {isCorrect ? t(lang, 'correctFeedback') : t(lang, 'wrongFeedback')}
                             </span>
                         </motion.div>
                     )}

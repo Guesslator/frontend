@@ -44,7 +44,6 @@ export default function RootLayout({
       >
         <Providers>
           {children}
-          <ScrollToTop />
         </Providers>
         <Analytics />
       </body>

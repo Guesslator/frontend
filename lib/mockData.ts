@@ -23,8 +23,9 @@ export interface QuestionOption {
 
 export interface Question {
     id: string;
-    type: 'TEXT' | 'VIDEO' | 'IMAGE';
+    type: 'TEXT' | 'VIDEO' | 'IMAGE' | 'AUDIO';
     videoUrl?: string; // Made optional as TEXT/IMAGE type questions might not have it
+    audioUrl?: string; // [NEW] For AUDIO type questions
     startTime?: number; // Made optional
     stopTime?: number; // Made optional
     endTime?: number; // Made optional

@@ -3,7 +3,7 @@ import { fetchContentDetail } from '../../../../lib/api';
 import Leaderboard from '@/components/Leaderboard';
 import { Film, Image as ImageIcon, Play, Globe, Edit } from 'lucide-react';
 import { t } from '@/lib/i18n';
-import Navbar from '@/components/Navbar';
+
 import YouTubeThumbnail from '@/components/YouTubeThumbnail';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -57,7 +57,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
     return (
         <div className="min-h-screen bg-background text-foreground relative overflow-hidden transition-colors duration-300">
-            <Navbar lang={lang} />
+
             {/* Background Ambience */}
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-30 blur-3xl scale-110 pointer-events-none"

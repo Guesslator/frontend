@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import Navbar from "@/components/Navbar";
+
 import { Language } from "@/lib/i18n";
 import QuizWizardWrapper from "@/components/quiz-wizard/QuizWizardWrapper";
 
@@ -17,7 +17,7 @@ export default async function CreateUserQuizPage({ params }: { params: Promise<{
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 transition-colors duration-300">
-      <Navbar lang={lang} />
+
       <div className="pt-24 px-4 md:p-8 flex justify-center">
         <div className="w-full">
           {/* @ts-ignore */}

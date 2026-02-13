@@ -1,4 +1,6 @@
 import { ContentItem, Quiz } from './mockData';
+import { z } from 'zod';
+import { ContentItemSchema, QuizSchema } from './schemas';
 
 // In Docker: server-side uses internal network, client-side uses localhost
 const getApiUrl = () => {
@@ -69,6 +71,11 @@ export interface ContentFilters {
     contentLang?: string;
 }
 
+export interface FetchOptions {
+    cache?: RequestCache;
+    revalidate?: number;
+}
+
 export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[]> {
     try {
         const res = await fetch(`${API_URL}/content?lang=${lang}`, { cache: 'no-store' });
@@ -78,7 +85,7 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
         // Handle both old format (array) and new format (object with items)
         const items = Array.isArray(data) ? data : data.items || [];
 
-        return items.map((item: any) => ({
+        const mappedItems = items.map((item: any) => ({
             id: item.id,
             slug: item.slug,
             type: item.type,
@@ -90,6 +97,18 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
             subcategory: item.subcategory,
             isPublished: item.isPublished
         }));
+
+        // Zod Validation
+        const validatedItems = mappedItems.map((item: any) => {
+            const result = ContentItemSchema.safeParse(item);
+            if (!result.success) {
+                console.error("ContentItem Validation Failed", result.error, item);
+                return null;
+            }
+            return result.data;
+        }).filter((item: any) => item !== null);
+
+        return validatedItems as APIContentItem[];
     } catch (e) {
         console.error("Fetch content failed", e);
         return [];
@@ -97,7 +116,8 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
 }
 
 export async function fetchContentPaginated(
-    filters: ContentFilters
+    filters: ContentFilters,
+    options?: FetchOptions
 ): Promise<PaginatedResponse<APIContentItem>> {
     try {
         const params = new URLSearchParams();
@@ -109,7 +129,15 @@ export async function fetchContentPaginated(
             }
         });
 
-        const res = await fetch(`${API_URL}/content?${params}`, { cache: 'no-store' });
+        const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
+            cache: options?.cache ?? 'no-store'
+        };
+
+        if (options?.revalidate !== undefined) {
+            fetchOptions.next = { revalidate: options.revalidate };
+        }
+
+        const res = await fetch(`${API_URL}/content?${params}`, fetchOptions);
         if (!res.ok) {
             return {
                 items: [],
@@ -130,7 +158,8 @@ export async function fetchContentPaginated(
                 creatorType: item.creatorType,
                 creator: item.creator,
                 subcategory: item.subcategory,
-                quizType: item.quizType
+                quizType: item.quizType,
+                stats: item.stats
             })),
             pagination: data.pagination
         };
@@ -257,7 +286,7 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
             console.error(`[PublicQuiz Contract Violation] Quiz ${data.id} returned without a title/name!`, { contentId: data.id, slug: data.slug });
         }
 
-        return {
+        const quizObj = {
             id: data.id,
             slug: data.slug,
             title: title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
@@ -268,6 +297,14 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
             // [CONTRACT] Backend guarantees 'questions' is a valid array of PublicQuestion objects
             questions: data.questions || []
         };
+
+        const result = QuizSchema.safeParse(quizObj);
+        if (!result.success) {
+            console.error("Quiz Validation Failed", result.error, quizObj);
+            return null;
+        }
+
+        return result.data as Quiz;
     } catch (e) {
         console.error("Fetch quiz failed", e);
         return null;
