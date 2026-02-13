@@ -43,6 +43,28 @@ export const QuestionSchema = z.object({
     })),
     attempts: z.number().optional(),
     correctCount: z.number().optional()
+}).superRefine((data, ctx) => {
+    if (data.type === 'VIDEO' && !data.videoUrl) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Video URL is required for video questions",
+            path: ["videoUrl"]
+        });
+    }
+    if (data.type === 'IMAGE' && !data.imageUrl) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Image URL is required for image questions",
+            path: ["imageUrl"]
+        });
+    }
+    if (data.type === 'AUDIO' && !data.audioUrl) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Audio URL is required for audio questions",
+            path: ["audioUrl"]
+        });
+    }
 });
 
 export const ContentItemSchema = z.object({
