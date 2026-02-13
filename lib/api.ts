@@ -37,7 +37,7 @@ export interface APIContentItem {
     creatorType?: 'ADMIN' | 'USER';
     creator?: { id: string; name: string; email: string };
     subcategory?: 'FOOTBALL' | 'BASKETBALL' | 'MMA';
-    quizType?: 'TEXT' | 'VIDEO' | 'IMAGE';
+    quizType?: 'TEXT' | 'VIDEO' | 'IMAGE' | 'AUDIO';
     isPublished?: boolean;
     questions?: any[]; // For backwards compat or direct access
     stats?: {
