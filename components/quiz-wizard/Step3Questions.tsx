@@ -7,7 +7,6 @@ import {
   Image as ImageIcon,
   Video,
   Type,
-  Music,
 } from "lucide-react";
 import FileUploader from "@/components/FileUploader";
 
@@ -93,12 +92,11 @@ export default function Step3Questions({
   const derivedBannerUrl = questions.find(
     (q: any) => q.type === "VIDEO" && q.mediaUrl,
   )?.mediaUrl
-    ? `https://img.youtube.com/vi/${
-        questions
-          .find((q: any) => q.type === "VIDEO" && q.mediaUrl)
-          .mediaUrl.split("v=")[1]
-          ?.split("&")[0]
-      }/hqdefault.jpg`
+    ? `https://img.youtube.com/vi/${questions
+      .find((q: any) => q.type === "VIDEO" && q.mediaUrl)
+      .mediaUrl.split("v=")[1]
+      ?.split("&")[0]
+    }/hqdefault.jpg`
     : "/placeholder-banner.jpg";
 
   return (
@@ -136,7 +134,7 @@ export default function Step3Questions({
                 Q{qIndex + 1}
               </span>
               <div className="flex gap-2 bg-muted/50 rounded-lg p-1">
-                {["VIDEO", "IMAGE", "AUDIO", "TEXT"].map((type) => (
+                {["VIDEO", "IMAGE", "TEXT"].map((type) => (
                   <button
                     key={type}
                     onClick={() => updateQuestion(qIndex, "type", type)}
@@ -145,7 +143,6 @@ export default function Step3Questions({
                   >
                     {type === "VIDEO" && <Video size={16} />}
                     {type === "IMAGE" && <ImageIcon size={16} />}
-                    {type === "AUDIO" && <Music size={16} />}
                     {type === "TEXT" && <Type size={16} />}
                   </button>
                 ))}
@@ -200,32 +197,7 @@ export default function Step3Questions({
             </div>
           )}
 
-          {q.type === "AUDIO" && (
-            <div className="mb-6 space-y-4">
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                Audio URL (MP3/WAV)
-              </label>
-              <input
-                type="text"
-                placeholder="https://example.com/audio.mp3"
-                className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors"
-                value={q.mediaUrl || ""}
-                onChange={(e) =>
-                  updateQuestion(qIndex, "mediaUrl", e.target.value)
-                }
-              />
-              <p className="text-[10px] text-muted-foreground mt-1">
-                Direct link to an audio file is recommended. Supported formats:
-                MP3, WAV, OGG.
-              </p>
 
-              {q.mediaUrl && (
-                <div className="bg-muted/30 p-4 rounded-lg flex items-center justify-center border border-border">
-                  <audio controls src={q.mediaUrl} className="w-full" />
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Question Content Per Language */}
           <div className="grid grid-cols-1 gap-6">
