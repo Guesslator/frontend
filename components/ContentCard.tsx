@@ -105,7 +105,7 @@ export default function ContentCard({
       },
       cancel: {
         label: t(lang as Language, "cancel"),
-        onClick: () => {},
+        onClick: () => { },
       },
     });
   };
@@ -238,28 +238,6 @@ export default function ContentCard({
               <span>{t(lang as Language, "statsSoon")}</span>
             </div>
           )}
-
-          {/* Footer separator line */}
-          <div className="h-px w-full bg-border/40 mt-auto" />
-
-          {/* Bottom Meta */}
-          <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-            <div className="flex items-center gap-1.5 group/creator">
-              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold">
-                {(creator?.name?.[0] || "A").toUpperCase()}
-              </div>
-              <span className="truncate max-w-[100px] group-hover/creator:text-foreground transition-colors">
-                {creatorType === "ADMIN"
-                  ? "Editors' Pick"
-                  : creator?.name || t(lang as Language, "user")}
-              </span>
-            </div>
-
-            {/* Date or Type Label */}
-            <span className="text-[10px] uppercase tracking-wider opacity-70">
-              {quizTypeInfo ? quizTypeInfo.label : "Quiz"}
-            </span>
-          </div>
         </div>
 
         {/* Delete Button (only for own content) */}
