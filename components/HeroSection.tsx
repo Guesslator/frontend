@@ -167,7 +167,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
               className="flex flex-wrap items-center gap-4 pt-4"
             >
               <Link
-                href={`/${lang}/content/${currentItem.slug || currentItem.id}`}
+                href={`/${lang}/content/${currentItem.id}`}
                 className="group relative inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
               >
                 <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -178,7 +178,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
               </Link>
 
               <Link
-                href={`/${lang}/content/${currentItem.slug || currentItem.id}`}
+                href={`/${lang}/content/${currentItem.id}`}
                 className="group flex items-center gap-2 px-6 py-4 rounded-full bg-background/40 border-2 border-primary/10 hover:border-primary/50 text-foreground backdrop-blur-sm transition-all font-semibold"
               >
                 <Info
@@ -198,11 +198,10 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
               <button
                 key={item.id}
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === currentIndex
-                    ? "w-8 bg-primary shadow-glow"
-                    : "w-2 bg-foreground/20 hover:bg-foreground/40"
-                }`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex
+                  ? "w-8 bg-primary shadow-glow"
+                  : "w-2 bg-foreground/20 hover:bg-foreground/40"
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}

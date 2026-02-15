@@ -268,9 +268,9 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
         const res = await fetch(url, { cache: 'no-store' });
 
         if (!res.ok) {
-            console.error(`API: fetchQuizById failed with status ${res.status} for ID ${id}`);
+            console.warn(`API: fetchQuizById failed with status ${res.status} for ID ${id}`);
             const text = await res.text();
-            console.error(`API: Error body: ${text}`);
+            console.warn(`API: Error body: ${text}`);
             return null;
         }
         const data = await res.json();

@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: [] } : false,
+  },
 };
 
 export default withSentryConfig(nextConfig, {

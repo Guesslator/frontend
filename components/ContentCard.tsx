@@ -139,7 +139,7 @@ export default function ContentCard({
       className="group relative h-full flex flex-col"
     >
       <Link
-        href={`/${lang}/content/${slug || id}`}
+        href={`/${lang}/content/${id}`}
         className="block flex-1 bg-card rounded-2xl overflow-hidden border border-border shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all duration-500 ease-out hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 dark:bg-card/90 dark:border-border/50 dark:hover:border-primary/30"
       >
         {/* Image Container */}
@@ -232,12 +232,6 @@ export default function ContentCard({
             </p>
           </div>
 
-          {!stats && (
-            <div className="mt-auto pt-2 flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground/60 font-bold">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-              <span>{t(lang as Language, "statsSoon")}</span>
-            </div>
-          )}
         </div>
 
         {/* Delete Button (only for own content) */}
