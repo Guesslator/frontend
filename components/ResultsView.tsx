@@ -97,7 +97,7 @@ export default function ResultsView({ score, totalQuestions, contentId, slug, la
             <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className={`text-center max-w-2xl w-full bg-neutral-900/80 backdrop-blur-xl p-8 md:p-12 rounded-3xl border ${theme.borderColor} shadow-2xl overflow-y-auto max-h-[90vh]`}
+                className={`text-center max-w-2xl w-full bg-neutral-900/80 backdrop-blur-xl p-6 sm:p-8 md:p-12 rounded-3xl border ${theme.borderColor} shadow-2xl overflow-y-auto max-h-[90vh]`}
             >
                 {/* Header */}
                 <h1 className={`text-4xl md:text-5xl font-black mb-6 ${theme.textColor}`}>
