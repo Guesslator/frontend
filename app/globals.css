@@ -35,69 +35,68 @@
   --color-slate-border: #2D3748;
   --color-aqua-accent: #37E2D5;
 
-  /* --- Semantic Tokens (Light Default) --- */
-  --background: #FFFFFF;
-  --foreground: var(--color-brand-dark-text);
+  /* --- Semantic Tokens (Light - "Modern Crisp & Playful") --- */
+  --background: #FFFFFF; /* Pure White - Clean canvas for content */
+  --foreground: #18181B; /* Zinc 900 - Sharp, high contrast text */
 
-  --card: #FFFFFF;
-  --card-foreground: var(--color-brand-dark-text);
-  --card-border: #F1F5F9; /* Very subtle border */
+  --card: #FAFAFA; /* Zinc 50 - Subtle distinction */
+  --card-foreground: #18181B;
+  --card-border: #E4E4E7; /* Zinc 200 */
 
   --popover: #FFFFFF;
-  --popover-foreground: var(--color-brand-dark-text);
+  --popover-foreground: #18181B;
 
-  --primary: var(--color-brand-vivid-blue);
+  /* Primary: Violet-Indigo Branding (Intellectual but Fun) */
+  --primary: #6366f1; /* Indigo 500 - Focused, trustworthy, energetic */
   --primary-foreground: #FFFFFF;
 
-  --secondary: var(--color-brand-platinum); /* Softer secondary background */
-  --secondary-foreground: var(--color-brand-dark-text);
+  --secondary: #F4F4F5; /* Zinc 100 */
+  --secondary-foreground: #18181B;
 
-  --muted: #F1F5F9;
-  --muted-foreground: var(--color-brand-dark-gray);
+  --muted: #F4F4F5;
+  --muted-foreground: #71717A; /* Zinc 500 */
 
-  --accent: #F8FAFC;
-  --accent-foreground: var(--color-brand-navy-light);
+  --accent: #F4F4F5;
+  --accent-foreground: #18181B;
 
-  --destructive: var(--color-status-error);
+  --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
 
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: var(--color-brand-navy-light); /* Focus ring matches brand */
+  --border: #E4E4E7;
+  --input: #E4E4E7;
+  --ring: #6366f1; /* Inspect focus matches brand */
 
-  --radius: 1rem; /* More rounded premium look */
+  --radius: 1rem; /* Curvier, friendlier UI */
 }
 
 [data-theme="dark"] {
-  /* --- Semantic Tokens (Dark) --- */
-  --background: var(--color-dark-navy);
-  --foreground: var(--color-text-light);
+  /* --- Semantic Tokens (Dark - "Deep Immersion & Focus") --- */
+  --background: #09090B; /* Zinc 950 - Deepest black-gray, better than pure black */
+  --foreground: #FAFAFA; /* Zinc 50 */
 
-  --card: var(--color-dark-slate);
-  --card-foreground: var(--color-text-light);
-  --card-border: var(--color-slate-border);
+  --card: #18181B; /* Zinc 900 */
+  --card-foreground: #FAFAFA;
+  --card-border: #27272A; /* Zinc 800 */
 
-  --popover: var(--color-dark-slate);
-  --popover-foreground: var(--color-text-light);
+  --popover: #18181B;
+  --popover-foreground: #FAFAFA;
 
-  --primary: var(--color-aqua-accent);
-  --primary-foreground: var(--color-dark-navy);
+  /* Primary: Electric Indigo Glow */
+  --primary: #818cf8; /* Indigo 400 - Lighter, glowing against dark */
+  --primary-foreground: #000000;
 
-  --secondary: var(--color-deep-navy);
-  --secondary-foreground: var(--color-text-light);
+  --secondary: #27272A; /* Zinc 800 */
+  --secondary-foreground: #FAFAFA;
 
-  --muted: var(--color-deep-navy);
-  --muted-foreground: var(--color-text-secondary);
+  --muted: #27272A;
+  --muted-foreground: #A1A1AA; /* Zinc 400 */
 
-  --accent: var(--color-slate-hover);
-  --accent-foreground: var(--color-text-light);
+  --accent: #27272A;
+  --accent-foreground: #FAFAFA;
 
-  --destructive: #cf6679;
-  --destructive-foreground: #000;
-
-  --border: var(--color-slate-border);
-  --input: var(--color-slate-border);
-  --ring: var(--color-aqua-accent);
+  --border: #27272A;
+  --input: #27272A;
+  --ring: #818cf8;
 }
 
 @theme inline {

@@ -142,7 +142,7 @@ export default function ContentCard({
     >
       <Link
         href={`/${lang}/content/${id}`}
-        className="block flex-1 bg-card rounded-2xl overflow-hidden border border-border shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all duration-500 ease-out hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 dark:bg-card/90 dark:border-border/50 dark:hover:border-primary/30"
+        className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5 dark:hover:border-primary/50 dark:hover:shadow-primary/20"
       >
         {/* Image Container */}
         <div className="relative aspect-[3/4] overflow-hidden w-full bg-muted">
@@ -151,14 +151,15 @@ export default function ContentCard({
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             onError={() => {
               setImgSrc("/placeholder-banner.jpg");
             }}
           />
 
-          {/* Overlay Gradient - Cinematic Fade */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+          {/* Overlay Gradient - Cinematic Fade (Intellectual Blue Tint) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Top Info Bar */}
           <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-start z-10">

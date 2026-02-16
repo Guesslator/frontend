@@ -109,7 +109,9 @@ export default function LanguageSwitcher({
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <span className="text-lg">{lang.flag}</span>
+                    <span className="text-xs font-bold px-1.5 py-0.5 rounded-md border border-current opacity-60 w-8 text-center uppercase">
+                      {lang.code}
+                    </span>
                     {lang.label}
                   </span>
                   {currentLang === lang.code && (

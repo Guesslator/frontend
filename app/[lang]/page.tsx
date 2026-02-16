@@ -144,7 +144,25 @@ async function PaginatedContentList({
       {/* Empty State */}
       {items.length === 0 && (
         <div className="flex flex-col items-center justify-center py-32 text-muted-foreground">
-          <div className="text-6xl mb-4">😕</div>
+          <div className="text-6xl mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="64"
+              height="64"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-search-x"
+            >
+              <path d="m13.5 8.5-5 5" />
+              <path d="m8.5 8.5 5 5" />
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
           <p className="text-xl font-light">{t(lang, "noResults")}</p>
         </div>
       )}

@@ -38,28 +38,28 @@ export default function Navbar({ lang }: NavbarProps) {
     <div
       className={cn(
         "fixed top-0 left-0 right-0 z-50 flex justify-center transition-all duration-500 pointer-events-none",
-        isScrolled ? "pt-2 px-2 md:px-4" : "pt-0 px-0",
+        isScrolled ? "pt-1 px-1 md:pt-2 md:px-4" : "pt-0 px-0",
       )}
     >
       <nav
         className={cn(
           "relative pointer-events-auto w-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
           isScrolled
-            ? "max-w-[98%] md:max-w-7xl mx-auto rounded-full py-2 md:py-2.5 px-3 md:px-6 shadow-lg shadow-black/[0.03]"
-            : "max-w-full rounded-none py-3 md:py-4 px-3 md:px-12 shadow-sm border-b border-white/5",
+            ? "max-w-full md:max-w-7xl mx-auto py-2 px-3 md:px-6 shadow-sm"
+            : "max-w-full py-3 px-4 md:py-4 md:px-12",
         )}
       >
         {/* Background & Effects Layer (Clipped) */}
         <div
           className={cn(
-            "absolute inset-0 overflow-hidden transition-all duration-500 bg-background/95 backdrop-blur-xl dark:bg-card/90",
+            "absolute inset-0 overflow-hidden transition-all duration-500 backdrop-blur-xl",
             isScrolled
-              ? "rounded-full border border-border/40 dark:border-white/5"
-              : "rounded-none border-b border-border/20 dark:border-white/5",
+              ? "rounded-xl md:rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-lg shadow-black/5 border border-zinc-200/50 dark:border-white/10"
+              : "rounded-none bg-transparent border-b border-transparent",
           )}
         >
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-70" />
-          <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-30" />
+          {/* Subtle top highlight for 3D feel in dark mode */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 dark:opacity-100" />
         </div>
 
         <div className="relative z-10 flex justify-between items-center gap-2 md:gap-4">
@@ -69,7 +69,7 @@ export default function Navbar({ lang }: NavbarProps) {
           >
             <span
               className={cn(
-                "text-lg sm:text-xl md:text-3xl font-black tracking-tighter transition-all duration-300",
+                "text-xl sm:text-2xl md:text-3xl font-black tracking-tighter transition-all duration-300",
                 !isScrolled && "drop-shadow-sm", // Ensure readability on hero
               )}
             >
@@ -83,16 +83,16 @@ export default function Navbar({ lang }: NavbarProps) {
             <Link
               href={`/${lang}/create`}
               className={cn(
-                "group relative overflow-hidden rounded-full font-bold text-xs md:text-sm transition-all duration-300",
+                "group relative overflow-hidden rounded-xl md:rounded-2xl font-bold text-xs md:text-sm transition-all duration-300",
                 "bg-primary text-primary-foreground shadow-lg hover:shadow-primary/25",
-                "px-2 md:px-4 h-8 md:h-10 flex items-center gap-1.5 md:gap-2",
+                "px-3 md:px-6 h-9 md:h-12 flex items-center gap-2",
               )}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <Plus
                 size={16}
                 strokeWidth={3}
-                className="transition-transform group-hover:rotate-90"
+                className="transition-transform group-hover:rotate-90 md:w-[18px] md:h-[18px]"
               />
               <span className="hidden md:inline">
                 {t(validLang, "createQuiz")}

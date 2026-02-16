@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { Play, Info, TrendingUp } from "lucide-react";
+import { Play, Info } from "lucide-react";
 import { t } from "@/lib/i18n";
 
 interface HeroItem {
@@ -22,10 +22,16 @@ interface HeroSectionProps {
 
 export default function HeroSection({ items, lang }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFirstMount, setIsFirstMount] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Check for mobile device
   useEffect(() => {
-    setIsFirstMount(false);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Auto-advance
@@ -37,7 +43,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
     return () => clearInterval(timer);
   }, [items.length]);
 
-  // Reset index when items change to avoid out-of-bounds errors
+  // Reset index when items change
   useEffect(() => {
     setCurrentIndex(0);
   }, [items]);
@@ -46,166 +52,172 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
 
   const currentItem = items[currentIndex] || items[0];
 
-  if (!currentItem) return null;
-
-  // Animation variants
-  const containerVariants = {
-    initial: { opacity: 0 },
-    animate: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.4 },
-    },
-  };
-
-  const itemVariants = {
-    initial: { opacity: 0, y: 30 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-      },
-    },
-    exit: { opacity: 0, y: -20 },
+  const handleDragEnd = (event: any, info: any) => {
+    const threshold = 50;
+    if (info.offset.x < -threshold) {
+      // Swipe Left - Next
+      setCurrentIndex((prev) => (prev + 1) % items.length);
+    } else if (info.offset.x > threshold) {
+      // Swipe Right - Prev
+      setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
+    }
   };
 
   return (
-    <div className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-background group">
+    <div className="relative w-full h-[80vh] min-h-[550px] overflow-hidden bg-background group touch-pan-y">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentItem.id}
+          className="absolute inset-0 w-full h-full will-change-transform"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0"
+          transition={{ duration: 0.5 }}
+          drag={isMobile ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
         >
-          {/* Background Image with Ken Burns effect */}
-          <motion.div
-            className="absolute inset-0"
-            initial={{ scale: isFirstMount ? 1 : 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "linear" }}
-          >
-            <Image
-              src={currentItem.imageUrl}
-              alt={currentItem.title}
-              fill
-              priority={currentIndex === 0}
-              fetchPriority={currentIndex === 0 ? "high" : undefined}
-              className="object-cover"
-              sizes="100vw"
-            />
-          </motion.div>
+          {/* Background Image - Modern Cinematic Spotlight Design - Theme Adapted */}
+          <div className="absolute inset-0 bg-background transition-colors duration-500">
+            <motion.div
+              className="relative w-full h-full"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 12, ease: "linear" }}
+            >
+              <Image
+                src={currentItem.imageUrl}
+                alt={currentItem.title}
+                fill
+                priority={currentIndex === 0}
+                className="object-cover opacity-100 dark:opacity-80"
+                sizes="100vw"
+              />
 
-          {/* ADAPTIVE OVERLAYS: The magic happens here */}
+              {/* 1. Grain Texture: Subtle high-end texture (not dirty) */}
+              <div
+                className="absolute inset-0 opacity-[0.07] dark:opacity-[0.15] mix-blend-overlay pointer-events-none"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                }}
+              />
+            </motion.div>
 
-          {/* 1. Base Overlay for contrast maintenance */}
-          <div className="absolute inset-0 bg-black/10 dark:bg-black/40 transition-colors duration-500" />
+            {/* 2. Spotlight Vignette: Focuses attention to center, hides edges */}
+            {/* Creates a 'stage light' feel. Center is clearer, edges fade to background color. */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(255,255,255,0.8)_120%)] dark:bg-[radial-gradient(circle_at_center,transparent_10%,rgba(0,0,0,0.8)_110%)] mix-blend-normal" />
 
-          {/* 2. Theme-aware Gradient (Left to Right on Desktop, Bottom to Top on Mobile) */}
-          {/* Light Mode: White/Platinum Fade | Dark Mode: Navy/Black Fade */}
-          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-background via-background/60 to-transparent opacity-95 dark:opacity-90 transition-all duration-500" />
+            {/* 3. Smooth Gradient Overlays for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-100 dark:opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-transparent to-transparent opacity-80" />
 
-          {/* 3. Subtle Accent Glow */}
-          <div className="absolute -left-[10%] -bottom-[20%] w-[60%] h-[60%] bg-primary/10 blur-[120px] rounded-full pointer-events-none mix-blend-overlay" />
+            {/* 4. Color Grading Overlay: Adds a premium tint without washing out details */}
+            <div className="absolute inset-0 bg-blue-900/10 dark:bg-blue-900/20 mix-blend-overlay" />
+          </div>
+
+          {/* Content Container */}
+          <div className="absolute inset-0 z-20 flex flex-col justify-end pb-16 md:pb-24 lg:pb-32 pt-20 md:pt-32 pointer-events-none">
+            <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pointer-events-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+                className="max-w-4xl space-y-4 md:space-y-6 lg:space-y-8"
+              >
+                {/* 1. Category/Tag Pill - Translucent Glass */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-center gap-3"
+                >
+                  <div className="flex items-center gap-2 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full bg-background/80 dark:bg-white/10 backdrop-blur-md border border-foreground/5 dark:border-white/10 shadow-sm">
+                    <span className="relative flex h-1.5 w-1.5 md:h-2 md:w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 md:h-2 md:w-2 bg-primary"></span>
+                    </span>
+                    <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase text-foreground/70 dark:text-white/80">
+                      {t(lang, "featured") || "FEATURED"}
+                    </span>
+                  </div>
+                </motion.div>
+
+                {/* 2. Title - Massive & dynamic with gradient text */}
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 dark:from-white dark:to-white/60 leading-[0.95] md:leading-[0.9] tracking-tighter drop-shadow-sm">
+                  {currentItem.title}
+                </h1>
+
+                {/* 3. Meta Data Row - Duration, Rating, etc. (Mocked for visual) */}
+                <div className="flex items-center gap-3 md:gap-4 text-xs md:text-base font-medium text-muted-foreground dark:text-gray-300">
+                  <span className="flex items-center gap-1">
+                    <Play
+                      size={14}
+                      className="fill-current w-3 h-3 md:w-4 md:h-4"
+                    />{" "}
+                    Quiz
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-current opacity-30" />
+                  <span>20 Questions</span>
+                  <span className="w-1 h-1 rounded-full bg-current opacity-30" />
+                  <span className="px-1.5 py-0.5 rounded border border-current opacity-50 text-[10px]">
+                    HD
+                  </span>
+                </div>
+
+                {/* 4. Description - Limited width for readability */}
+                <p className="text-base sm:text-lg md:text-xl text-foreground/80 dark:text-gray-200 font-normal leading-relaxed max-w-xl md:max-w-2xl line-clamp-3 md:line-clamp-4">
+                  {currentItem.description}
+                </p>
+
+                {/* 5. Action Area - Primary CTA pops out */}
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 pt-2">
+                  <Link
+                    href={`/${lang}/content/${currentItem.id}`}
+                    className="group relative px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-primary text-primary-foreground font-bold text-base md:text-lg transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-primary/20 overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    <div className="relative flex items-center gap-2 md:gap-3">
+                      <div className="p-1 bg-white/20 rounded-full">
+                        <Play
+                          fill="currentColor"
+                          size={14}
+                          className="w-3 h-3 md:w-4 md:h-4"
+                        />
+                      </div>
+                      <span>{t(lang, "playNow")}</span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href={`/${lang}/content/${currentItem.id}`}
+                    className="group relative px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-background/40 dark:bg-white/5 border border-foreground/10 dark:border-white/10 backdrop-blur-md hover:bg-background/60 dark:hover:bg-white/10 text-foreground dark:text-white transition-all hover:scale-105 active:scale-95 font-semibold text-base md:text-lg overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    <span>{t(lang, "moreInfo")}</span>
+                  </Link>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Content Container */}
-      <div className="relative z-20 h-full max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col justify-center md:pb-0 pb-12">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentItem.id}
-            className="max-w-3xl space-y-6 md:pl-4"
-            variants={containerVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            {/* Badge */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-center gap-3"
-            >
-              <span className="flex items-center gap-1.5 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg shadow-primary/30">
-                <TrendingUp size={14} strokeWidth={2.5} />
-                {t(lang, "featured")}
-              </span>
-              <span className="flex items-center gap-1.5 bg-background/50 backdrop-blur-md border border-foreground/10 text-foreground/80 px-3 py-1 rounded-full text-xs font-medium tracking-wide">
-                NEW ARRIVAL
-              </span>
-            </motion.div>
-
-            {/* Title */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl md:text-6xl lg:text-7xl font-black text-foreground leading-[1] tracking-tighter drop-shadow-sm dark:drop-shadow-2xl line-clamp-2 md:min-h-[7.5rem]"
-            >
-              {currentItem.title}
-            </motion.h1>
-
-            {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-lg md:text-2xl text-muted-foreground font-medium leading-relaxed max-w-2xl line-clamp-3"
-            >
-              {currentItem.description}
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap items-center gap-4 pt-4"
-            >
-              <Link
-                href={`/${lang}/content/${currentItem.id}`}
-                className="group relative inline-flex items-center justify-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
-              >
-                <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="relative flex items-center gap-2">
-                  <Play fill="currentColor" size={18} />
-                  {t(lang, "playNow")}
-                </span>
-              </Link>
-
-              <Link
-                href={`/${lang}/content/${currentItem.id}`}
-                className="group flex items-center gap-2 px-6 py-4 rounded-full bg-background/40 border-2 border-primary/10 hover:border-primary/50 text-foreground backdrop-blur-sm transition-all font-semibold"
-              >
-                <Info
-                  size={20}
-                  className="text-primary group-hover:scale-110 transition-transform"
-                />
-                <span>{t(lang, "moreInfo")}</span>
-              </Link>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Carousel Indicators */}
-        <div className="absolute bottom-8 left-0 w-full px-6 md:px-12">
-          <div className="flex items-center gap-2 md:pl-4">
-            {items.map((item, idx) => (
-              <button
-                key={item.id}
-                onClick={() => setCurrentIndex(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex
-                  ? "w-8 bg-primary shadow-glow"
-                  : "w-2 bg-foreground/20 hover:bg-foreground/40"
-                  }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
+      {/* Indicators */}
+      <div className="absolute bottom-8 left-0 w-full z-30">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex gap-2">
+          {items.map((item, idx) => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentIndex(idx)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                idx === currentIndex
+                  ? "w-8 bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
+                  : "w-2 bg-white/30 hover:bg-white/50"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>

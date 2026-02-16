@@ -3,17 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import {
-  LANGUAGES,
-  languageNames,
-  languageFlags,
-  languageGreetings,
-} from "@/lib/i18n";
+import { LANGUAGES, languageNames, languageGreetings } from "@/lib/i18n";
 
 const languages = LANGUAGES.map((code) => ({
   code,
   name: languageNames[code] || code,
-  flag: languageFlags[code] || "🌐",
   greeting: languageGreetings[code] || "Welcome",
 }));
 
@@ -63,8 +57,8 @@ export default function LanguageSelectionPage() {
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
-                  <span className="text-4xl mb-3 filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    {lang.flag}
+                  <span className="text-2xl font-black mb-3 text-primary border-2 border-primary/30 rounded-lg px-3 py-1 bg-primary/5 uppercase tracking-wider backdrop-blur-sm group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 shadow-sm">
+                    {lang.code}
                   </span>
                   <h2 className="text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors text-center line-clamp-1">
                     {lang.name}

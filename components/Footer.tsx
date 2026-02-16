@@ -17,10 +17,10 @@ export default function Footer({ lang = "en" }: FooterProps) {
     | "de";
 
   return (
-    <footer className="relative bg-background text-foreground mt-32 border-t border-white/10 overflow-hidden">
-      {/* Cinematic Top Glow */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-primary/20 blur-xl" />
+    <footer className="relative bg-zinc-50 dark:bg-zinc-950 text-foreground mt-32 border-t border-zinc-200 dark:border-white/5 overflow-hidden">
+      {/* Cinematic Top Glow & Grid Texture */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay"></div>
 
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-16 md:py-20 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-16 mb-16">
@@ -30,7 +30,7 @@ export default function Footer({ lang = "en" }: FooterProps) {
               href={`/${lang}`}
               className="inline-block text-3xl font-black tracking-tighter hover:opacity-80 transition-opacity"
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-indigo-400 dark:to-indigo-300">
                 GUESSALATOR
               </span>
             </Link>
