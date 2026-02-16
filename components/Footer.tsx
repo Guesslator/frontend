@@ -118,11 +118,11 @@ export default function Footer({ lang = "en" }: FooterProps) {
                   Questions? Feedback? We'd love to hear from you.
                 </p>
                 <Link
-                  href="mailto:hello@guessalator.com"
+                  href="mailto:info@bytenflow.com"
                   className="flex items-center gap-2 text-sm text-primary hover:underline"
                 >
                   <Mail size={14} />
-                  hello@guessalator.com
+                  info@bytenflow.com
                 </Link>
               </div>
             </div>

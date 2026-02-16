@@ -8,6 +8,7 @@ import ClientSearchPanel from "@/components/ClientSearchPanel";
 import Pagination from "@/components/Pagination";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { t } from "@/lib/i18n";
+import { PageSearchParams } from "@/types/types";
 
 // This is a Server Component
 export default async function ContentGridPage({
@@ -15,16 +16,7 @@ export default async function ContentGridPage({
   searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{
-    type?: string;
-    creatorType?: string;
-    subcategory?: string;
-    quizType?: string;
-    search?: string;
-    page?: string;
-    sortBy?: string;
-    contentLang?: string;
-  }>;
+  searchParams: Promise<PageSearchParams>;
 }) {
   const { lang } = await params;
   const {

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import {
   PlayCircle,
@@ -48,6 +49,7 @@ export default function ContentCard({
 }: ContentCardProps) {
   const { data: session } = useSession();
   const [deleting, setDeleting] = useState(false);
+  const [imgSrc, setImgSrc] = useState(posterUrl || "/placeholder-banner.jpg");
 
   const canDelete = creatorType === "USER" && session?.user?.id === creator?.id;
 
@@ -105,7 +107,7 @@ export default function ContentCard({
       },
       cancel: {
         label: t(lang as Language, "cancel"),
-        onClick: () => { },
+        onClick: () => {},
       },
     });
   };
@@ -144,14 +146,14 @@ export default function ContentCard({
       >
         {/* Image Container */}
         <div className="relative aspect-[3/4] overflow-hidden w-full bg-muted">
-          <img
-            src={posterUrl || "/placeholder-banner.jpg"}
+          <Image
+            src={imgSrc}
             alt={title}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "/placeholder-banner.jpg";
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            onError={() => {
+              setImgSrc("/placeholder-banner.jpg");
             }}
           />
 
@@ -190,30 +192,30 @@ export default function ContentCard({
 
           {/* Stats Overlay on Image (Bottom) - Only shows if Stats exist */}
           {stats && (
-            <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1 text-center">
-              <div className="bg-black/60 backdrop-blur-md rounded-lg p-1.5 border border-white/5 flex flex-col items-center">
-                <span className="text-[10px] text-white/60 font-medium uppercase">
+            <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1 text-center z-10">
+              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
+                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
                   {t(lang as Language, "attempts").slice(0, 3)}
                 </span>
-                <span className="text-xs font-bold text-white">
+                <span className="text-xs font-bold text-white drop-shadow-sm">
                   {attemptsLabel}
                 </span>
               </div>
-              <div className="bg-black/60 backdrop-blur-md rounded-lg p-1.5 border border-white/5 flex flex-col items-center">
-                <span className="text-[10px] text-white/60 font-medium uppercase">
+              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
+                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
                   {t(lang as Language, "passRate").slice(0, 4)}
                 </span>
                 <span
-                  className={`text-xs font-bold ${stats.passRate > 0.7 ? "text-green-400" : "text-white"}`}
+                  className={`text-xs font-bold drop-shadow-sm ${stats.passRate > 0.7 ? "text-green-400" : "text-white"}`}
                 >
                   {passRatePct}%
                 </span>
               </div>
-              <div className="bg-black/60 backdrop-blur-md rounded-lg p-1.5 border border-white/5 flex flex-col items-center">
-                <span className="text-[10px] text-white/60 font-medium uppercase">
+              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
+                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
                   {t(lang as Language, "avgScore").slice(0, 3)}
                 </span>
-                <span className="text-xs font-bold text-secondary">
+                <span className="text-xs font-bold text-secondary drop-shadow-sm">
                   {avgScoreLabel}
                 </span>
               </div>
@@ -231,7 +233,6 @@ export default function ContentCard({
               {description}
             </p>
           </div>
-
         </div>
 
         {/* Delete Button (only for own content) */}
