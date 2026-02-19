@@ -13,6 +13,8 @@ interface HeroItem {
   title: string;
   description: string;
   imageUrl: string;
+  questionCount?: number;
+  quizType?: string;
 }
 
 interface HeroSectionProps {
@@ -148,17 +150,17 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                   {currentItem.title}
                 </h1>
 
-                {/* 3. Meta Data Row - Duration, Rating, etc. (Mocked for visual) */}
+                {/* 3. Meta Data Row - Duration, Rating, etc. (Real Data) */}
                 <div className="flex items-center gap-3 md:gap-4 text-xs md:text-base font-medium text-muted-foreground dark:text-gray-300">
                   <span className="flex items-center gap-1">
                     <Play
                       size={14}
                       className="fill-current w-3 h-3 md:w-4 md:h-4"
                     />{" "}
-                    Quiz
+                    {currentItem.quizType || "Quiz"}
                   </span>
                   <span className="w-1 h-1 rounded-full bg-current opacity-30" />
-                  <span>20 Questions</span>
+                  <span>{currentItem.questionCount || 0} Questions</span>
                   <span className="w-1 h-1 rounded-full bg-current opacity-30" />
                   <span className="px-1.5 py-0.5 rounded border border-current opacity-50 text-[10px]">
                     HD
@@ -210,11 +212,10 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
             <button
               key={item.id}
               onClick={() => setCurrentIndex(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                idx === currentIndex
-                  ? "w-8 bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
-                  : "w-2 bg-white/30 hover:bg-white/50"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex
+                ? "w-8 bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
+                : "w-2 bg-white/30 hover:bg-white/50"
+                } cursor-pointer`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}

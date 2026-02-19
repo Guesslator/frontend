@@ -56,8 +56,9 @@ export default function LanguageSwitcher({
       pathSegments.push(newLang);
     }
 
-    const params = searchParams.toString();
-    const newPath = `${pathSegments.join("/")}${params ? `?${params}` : ""}`;
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('contentLang'); // Clear content filter when switching UI language
+    const newPath = `${pathSegments.join("/")}${params.toString() ? `?${params.toString()}` : ""}`;
 
     router.push(newPath, { scroll: false });
     setIsOpen(false);
@@ -102,11 +103,10 @@ export default function LanguageSwitcher({
                 <button
                   key={lang.code}
                   onClick={() => handleLanguageChange(lang.code)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${
-                    currentLang === lang.code
+                  className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${currentLang === lang.code
                       ? "bg-accent text-accent-foreground font-medium"
                       : "hover:bg-muted text-foreground"
-                  }`}
+                    }`}
                 >
                   <span className="flex items-center gap-3">
                     <span className="text-xs font-bold px-1.5 py-0.5 rounded-md border border-current opacity-60 w-8 text-center uppercase">

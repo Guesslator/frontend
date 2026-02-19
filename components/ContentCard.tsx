@@ -107,7 +107,7 @@ export default function ContentCard({
       },
       cancel: {
         label: t(lang as Language, "cancel"),
-        onClick: () => {},
+        onClick: () => { },
       },
     });
   };
@@ -241,7 +241,7 @@ export default function ContentCard({
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="absolute top-2 right-2 p-2.5 rounded-full bg-destructive text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-30 shadow-lg translate-x-2 group-hover:translate-x-0"
+            className="absolute top-2 right-2 p-2.5 rounded-full bg-destructive text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-30 shadow-lg translate-x-2 group-hover:translate-x-0 cursor-pointer"
             title={t(lang as Language, "deleteQuiz")}
           >
             <Trash2 size={16} />

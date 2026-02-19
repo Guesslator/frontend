@@ -40,6 +40,7 @@ export interface APIContentItem {
     quizType?: 'TEXT' | 'VIDEO' | 'IMAGE' | 'AUDIO';
     isPublished?: boolean;
     questions?: any[]; // For backwards compat or direct access
+    questionCount?: number;
     stats?: {
         totalAttempts: number;
         avgScore: number;
@@ -95,7 +96,8 @@ export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[
             creatorType: item.creatorType,
             creator: item.creator,
             subcategory: item.subcategory,
-            isPublished: item.isPublished
+            isPublished: item.isPublished,
+            questionCount: item.questions?.length || 0
         }));
 
         // Zod Validation
@@ -159,7 +161,8 @@ export async function fetchContentPaginated(
                 creator: item.creator,
                 subcategory: item.subcategory,
                 quizType: item.quizType,
-                stats: item.stats
+                stats: item.stats,
+                questionCount: item.questions?.length || 0
             })),
             pagination: data.pagination
         };

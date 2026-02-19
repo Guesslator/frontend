@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   // Force rebuild for scroll fix - 2026-02-12
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

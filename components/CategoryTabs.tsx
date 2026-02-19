@@ -179,11 +179,11 @@ export default function CategoryTabs({
                       buildUrl({ type: key, subcategory: undefined }),
                     )
                   }
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all whitespace-nowrap overflow-hidden group flex-shrink-0 ${
-                    isActive
+                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all whitespace-nowrap overflow-hidden group flex-shrink-0 ${isActive
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
                       : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-md"
-                  }`}
+                    } cursor-pointer`
+                  }
                 >
                   {isActive && (
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
@@ -198,11 +198,10 @@ export default function CategoryTabs({
         {/* Filter Toggle Button */}
         <button
           onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-          className={`group flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${
-            isFiltersOpen || activeFilterCount > 0
+          className={`group flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${isFiltersOpen || activeFilterCount > 0
               ? "bg-secondary text-secondary-foreground border-secondary shadow-lg shadow-secondary/20"
               : "bg-background border-border hover:border-foreground/20 hover:bg-muted/50"
-          }`}
+            } cursor-pointer`}
         >
           <Filter size={16} className={isFiltersOpen ? "animate-pulse" : ""} />
           <span className="hidden md:inline">{t(lang, "filter")}</span>
@@ -234,7 +233,7 @@ export default function CategoryTabs({
                 }),
               )
             }
-            className="px-3 py-1 rounded-full text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors flex items-center gap-1"
+            className="px-3 py-1 rounded-full text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors flex items-center gap-1 cursor-pointer"
           >
             <X size={12} strokeWidth={3} />
             {t(lang, "clearAll")}
@@ -250,7 +249,7 @@ export default function CategoryTabs({
                   }),
                 )
               }
-              className="group flex items-center gap-1.5 pl-3 pr-2 py-1 rounded-full text-xs font-semibold bg-muted text-foreground border border-transparent hover:border-destructive/30 hover:bg-destructive/5 hover:text-destructive transition-all"
+              className="group flex items-center gap-1.5 pl-3 pr-2 py-1 rounded-full text-xs font-semibold bg-muted text-foreground border border-transparent hover:border-destructive/30 hover:bg-destructive/5 hover:text-destructive transition-all cursor-pointer"
               aria-label={`Clear ${chip.label}`}
             >
               {chip.label}
@@ -289,12 +288,11 @@ export default function CategoryTabs({
                         onClick={() =>
                           handleNavigation(buildUrl({ sortBy: s.key }))
                         }
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                          activeSortBy === s.key ||
-                          (!activeSortBy && s.key === "recent")
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSortBy === s.key ||
+                            (!activeSortBy && s.key === "recent")
                             ? "bg-background border-primary text-primary shadow-sm"
                             : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         {t(lang, s.label)}
                       </button>
@@ -320,11 +318,10 @@ export default function CategoryTabs({
                         onClick={() =>
                           handleNavigation(buildUrl({ quizType: key }))
                         }
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                          activeQuizType === key || (!activeQuizType && !key)
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeQuizType === key || (!activeQuizType && !key)
                             ? "bg-background border-primary text-primary shadow-sm"
                             : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                        }`}
+                          }`}
                       >
                         <Icon size={14} strokeWidth={2.5} />
                         {t(lang, label)}
@@ -347,7 +344,7 @@ export default function CategoryTabs({
                               buildUrl({ creatorType: undefined }),
                             )
                           }
-                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${!activeCreatorType ? "bg-background border-secondary text-secondary shadow-sm" : "bg-background border-transparent text-muted-foreground hover:border-border"}`}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${!activeCreatorType ? "bg-background border-secondary text-secondary shadow-sm" : "bg-background border-transparent text-muted-foreground hover:border-border"} cursor-pointer`}
                         >
                           {t(lang, "all")}
                         </button>
@@ -355,7 +352,7 @@ export default function CategoryTabs({
                           onClick={() =>
                             handleNavigation(buildUrl({ creatorType: "USER" }))
                           }
-                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeCreatorType === "USER" ? "bg-background border-secondary text-secondary shadow-sm" : "bg-background border-transparent text-muted-foreground hover:border-border"}`}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeCreatorType === "USER" ? "bg-background border-secondary text-secondary shadow-sm" : "bg-background border-transparent text-muted-foreground hover:border-border"} cursor-pointer`}
                         >
                           {t(lang, "userQuizzes")}
                         </button>
@@ -381,12 +378,11 @@ export default function CategoryTabs({
                             onClick={() =>
                               handleNavigation(buildUrl({ subcategory: key }))
                             }
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                              activeSubcategory === key ||
-                              (!activeSubcategory && !key)
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSubcategory === key ||
+                                (!activeSubcategory && !key)
                                 ? "bg-background border-primary text-primary shadow-sm"
                                 : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                            }`}
+                              } cursor-pointer`}
                           >
                             {t(lang, label)}
                           </button>

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { PageSearchParams } from "@/types/types";
 import { fetchContent, fetchContentPaginated } from "../../lib/api";
 import HeroSection from "@/components/HeroSection";
 import ContentCard from "@/components/ContentCard";
@@ -8,8 +9,6 @@ import ClientSearchPanel from "@/components/ClientSearchPanel";
 import Pagination from "@/components/Pagination";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { t } from "@/lib/i18n";
-import { PageSearchParams } from "@/types/types";
-
 // This is a Server Component
 export default async function ContentGridPage({
   params,
@@ -29,6 +28,7 @@ export default async function ContentGridPage({
     sortBy,
     contentLang,
   } = await searchParams;
+
   const validLang = (["tr", "en", "ar", "de"].includes(lang) ? lang : "en") as
     | "tr"
     | "en"
@@ -51,14 +51,20 @@ export default async function ContentGridPage({
 
   const showHero = !search && !creatorType && (!page || page === "1");
   const heroItems = heroResponse.items
-    .filter((item) => !!item.translations[validLang]?.title)
-    .map((item) => ({
-      id: item.id,
-      slug: item.slug,
-      title: item.translations[validLang].title,
-      description: item.translations[validLang].description || "",
-      imageUrl: item.posterUrl,
-    }));
+    .map((item) => {
+      const t = item.translations[validLang] || item.translations['en'] || Object.values(item.translations)[0];
+      if (!t) return null;
+      return {
+        id: item.id,
+        slug: item.slug,
+        title: t.title,
+        description: t.description || "",
+        imageUrl: item.posterUrl,
+        questionCount: item.questionCount,
+        quizType: item.quizType,
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => item !== null);
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 transition-colors duration-300">
@@ -95,14 +101,14 @@ export default async function ContentGridPage({
               sortBy: sortBy as any,
               page: page ? parseInt(page, 10) : 1,
               limit: 15,
-              contentLang: contentLang || validLang,
+              contentLang: contentLang, // Allow undefined to show all
             }}
           />
         </Suspense>
       </div>
     </div>
   );
-}
+}//selam
 
 // Separate component for the streamed content list
 async function PaginatedContentList({
@@ -112,16 +118,21 @@ async function PaginatedContentList({
   lang: "tr" | "en" | "ar" | "de";
   filters: any;
 }) {
-  const { items, pagination } = await fetchContentPaginated(filters);
+  const { items, pagination } = await fetchContentPaginated(filters, {
+    revalidate: 60, // Cache for 60 seconds to improve performance
+  });
 
   return (
     <>
       {/* Content Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 lg:gap-10 pb-12">
         {items
-          .filter((item) => !!item.translations[lang]?.title)
           .map((item, index) => {
-            const itemT = item.translations[lang];
+            // FALLBACK LOGIC: Current Lang -> English -> First Available
+            const itemT = item.translations[lang] || item.translations['en'] || Object.values(item.translations)[0];
+
+            if (!itemT) return null;
+
             return (
               <ContentCard
                 key={item.id}
@@ -138,7 +149,7 @@ async function PaginatedContentList({
                 stats={item.stats}
               />
             );
-          })}
+          }).filter(Boolean)}
       </div>
 
       {/* Empty State */}

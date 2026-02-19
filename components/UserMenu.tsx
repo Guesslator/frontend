@@ -42,7 +42,7 @@ export default function UserMenu({ lang }: { lang: string }) {
             {session.user.name?.split(" ")[0]}
           </span>
           <span className="text-[10px] text-muted-foreground leading-none">
-            Member
+            {session.user.role === "ADMIN" ? "SUPER ADMIN" : "Member"}
           </span>
         </div>
         <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 text-white flex items-center justify-center font-bold text-xs md:text-sm shadow-md ring-2 ring-background group-hover:ring-offset-2 transition-all">
