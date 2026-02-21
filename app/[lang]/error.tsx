@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { t, Language } from "@/lib/i18n";
 
 export default function Error({
   error,
   reset,
-  params: { lang },
 }: {
   error: Error & { digest?: string };
   reset: () => void;
-  params: { lang: string };
 }) {
+  const params = useParams();
+  const lang = params?.lang as string;
   useEffect(() => {
     console.error(error);
   }, [error]);

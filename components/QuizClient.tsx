@@ -68,8 +68,8 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
     return <div className="p-8 text-white">Quiz not found or empty.</div>;
 
   const qText =
-    question.translations[validLang]?.text ||
-    question.translations["en"]?.text ||
+    (question.translations as any)[validLang]?.text ||
+    (question.translations as any)["en"]?.text ||
     "Question";
 
   // Timer effect - countdown when question is active
@@ -235,7 +235,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
           <ImageQuestionPlayer
             key={`question-${currentQuestionIndex}-${question.imageUrl}`}
             imageUrl={question.imageUrl || ""}
-            onImageLoaded={() => {}}
+            onImageLoaded={() => { }}
             onQuestionPointReached={handleQuestionPoint}
             isQuestionActive={isQuestionActive}
             isAnswered={isAnswered}
@@ -288,25 +288,23 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                       fill="none"
                       strokeDasharray={`${2 * Math.PI * 36}`}
                       strokeDashoffset={`${2 * Math.PI * 36 * (1 - timeRemaining / ANSWER_TIME_LIMIT)}`}
-                      className={`transition-all duration-1000 ${
-                        timeRemaining > 10
+                      className={`transition-all duration-1000 ${timeRemaining > 10
                           ? "text-green-500"
                           : timeRemaining > 5
                             ? "text-yellow-500"
                             : "text-red-500"
-                      }`}
+                        }`}
                       strokeLinecap="round"
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span
-                      className={`text-xl md:text-2xl font-bold ${
-                        timeRemaining > 10
+                      className={`text-xl md:text-2xl font-bold ${timeRemaining > 10
                           ? "text-green-500"
                           : timeRemaining > 5
                             ? "text-yellow-500"
                             : "text-red-500"
-                      }`}
+                        }`}
                     >
                       {timeRemaining}
                     </span>
@@ -326,8 +324,8 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                 {question.options.map((opt, idx) => {
                   const optText =
-                    opt.translations[validLang]?.text ||
-                    opt.translations["en"]?.text ||
+                    (opt.translations as any)[validLang]?.text ||
+                    (opt.translations as any)["en"]?.text ||
                     "Option";
                   return (
                     <motion.button
@@ -359,11 +357,10 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
-              className={`absolute bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-bold z-30 flex items-center gap-3 shadow-2xl backdrop-blur-md border border-border ${
-                isCorrect
+              className={`absolute bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-bold z-30 flex items-center gap-3 shadow-2xl backdrop-blur-md border border-border ${isCorrect
                   ? "bg-green-500/20 text-green-500"
                   : "bg-red-500/20 text-red-500"
-              }`}
+                }`}
             >
               {isCorrect ? <CheckCircle size={24} /> : <XCircle size={24} />}
               <span className="text-lg">

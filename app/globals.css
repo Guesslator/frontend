@@ -208,7 +208,7 @@ body {
   background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 3px 3px;
   mix-blend-mode: soft-light;
-  opacity: 0.25;
+  opacity: 0.08;
 }
 
 @keyframes progress {
@@ -247,17 +247,62 @@ body {
   }
 }
 
+@keyframes marquee-pulse {
+
+  0%,
+  100% {
+    opacity: 0.2;
+    filter: blur(2px);
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.6;
+    filter: blur(0px);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px var(--primary);
+  }
+}
+
+@keyframes cinema-sweep {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.2;
+  }
+
+  80% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+.animate-marquee-pulse {
+  animation: marquee-pulse 4s infinite ease-in-out;
+}
+
+.animate-cinema-sweep {
+  animation: cinema-sweep 8s infinite linear;
+}
+
 @keyframes spotlight {
 
   0%,
   100% {
     transform: translate(-50%, -50%) scale(1);
-    opacity: 0.3;
+    opacity: 0.15;
   }
 
   50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.25;
   }
 }
 

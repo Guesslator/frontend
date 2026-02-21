@@ -178,6 +178,13 @@ export const translations = {
     allRightsReserved: 'Tüm hakları saklıdır.',
     madeWith: 'ile Melik tarafından yapıldı',
     footerDesc: 'En iyi bilgi yarışması deneyimi. Video, resim ve metin testleriyle kendinizi kanıtlayın.',
+    english: 'İngilizce',
+    turkish: 'Türkçe',
+    arabic: 'Arapça',
+    german: 'Almanca',
+    multipleLanguages: 'Çoklu Dil',
+    noDescription: 'Bu dil için açıklama bulunmamaktadır.',
+    testLanguage: 'Test Dili'
   },
   en: {
     search: 'Search',
@@ -313,6 +320,13 @@ export const translations = {
     allRightsReserved: 'All rights reserved.',
     madeWith: 'by Melik',
     footerDesc: 'The ultimate movie & game quiz experience. Challenge yourself with video, image, and text quizzes.',
+    english: 'English',
+    turkish: 'Turkish',
+    arabic: 'Arabic',
+    german: 'German',
+    multipleLanguages: 'Multiple Languages',
+    noDescription: 'No description available for this language.',
+    testLanguage: 'Test Language'
   },
   ar: {
     // ... existing ...
@@ -439,6 +453,12 @@ export const translations = {
     allRightsReserved: 'جميع الحقوق محفوظة.',
     madeWith: 'بواسطة مليك',
     footerDesc: 'تجربة مسابقة الأفلام والألعاب النهائية. تحدى نفسك بمسابقات الفيديو والصور والنصوص.',
+    english: 'الإنجليزية',
+    turkish: 'التركية',
+    arabic: 'العربية',
+    german: 'الألمانية',
+    multipleLanguages: 'لغات متعددة',
+    noDescription: 'لا يوجد وصف متاح لهذه اللغة.'
   },
   de: {
     search: 'Suchen',
@@ -563,6 +583,12 @@ export const translations = {
     allRightsReserved: 'Alle Rechte vorbehalten.',
     madeWith: 'von Melik',
     footerDesc: 'Das ultimative Film- und Spiele-Quiz-Erlebnis. Fordern Sie sich mit Video-, Bild- und Text-Quizzen heraus.',
+    english: 'Englisch',
+    turkish: 'Türkisch',
+    arabic: 'Arabisch',
+    german: 'Deutsch',
+    multipleLanguages: 'Mehrere Sprachen',
+    noDescription: 'Keine Beschreibung für diese Sprache verfügbar.'
   },
 };
 

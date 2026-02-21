@@ -38,31 +38,43 @@ export default function Leaderboard({ contentId }: { contentId: string }) {
     }, [contentId]);
 
     return (
-        <div className="bg-card/90 backdrop-blur-md rounded-2xl p-6 border border-border w-full max-w-sm shadow-xl">
-            <div className="flex items-center gap-3 mb-6">
-                <Trophy className="text-warning" size={24} />
-                <h3 className="text-xl font-bold text-card-foreground tracking-wide">High Scores</h3>
+        <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-8 border border-white/10 w-full max-w-sm shadow-[0_30px_60px_rgba(0,0,0,0.4)] min-h-[400px]">
+            <div className="flex items-center gap-4 mb-8">
+                <div className="p-2 bg-warning/20 rounded-xl">
+                    <Trophy className="text-warning" size={24} />
+                </div>
+                <h3 className="text-xl font-black text-foreground tracking-[0.1em] uppercase">High Scores</h3>
             </div>
 
-            <div className="space-y-4">
-                {scores.map((s, idx) => (
-                    <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/50"
-                    >
-                        <div className="flex items-center gap-3">
-                            <span className={`text-lg font-bold w-6 text-center ${idx === 0 ? 'text-yellow-500' : idx === 1 ? 'text-gray-400' : idx === 2 ? 'text-amber-600' : 'text-muted-foreground'}`}>
-                                {idx + 1}
-                            </span>
-                            <span className="text-foreground font-medium">{s.userName}</span>
-                        </div>
-                        <span className="text-primary font-bold">{s.score} pts</span>
-                    </motion.div>
-                ))}
+            <div className="space-y-3">
+                {loading ? (
+                    [...Array(5)].map((_, i) => (
+                        <div key={`sk-${i}`} className="h-[60px] w-full bg-white/5 rounded-xl animate-pulse border border-white/5" />
+                    ))
+                ) : (
+                    scores.map((s, idx) => (
+                        <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.05 }}
+                            whileHover={{ x: 5, backgroundColor: "rgba(255,255,255,0.05)" }}
+                            className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 transition-all duration-300 shadow-sm"
+                        >
+                            <div className="flex items-center gap-4">
+                                <span className={`text-lg font-black w-6 text-center ${idx === 0 ? 'text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]' : idx === 1 ? 'text-zinc-400' : idx === 2 ? 'text-amber-600' : 'text-muted-foreground'}`}>
+                                    {idx + 1}
+                                </span>
+                                <span className="text-foreground/90 font-bold tracking-tight">{s.userName}</span>
+                            </div>
+                            <span className="text-primary font-black tracking-wider">{s.score} <span className="text-[10px] opacity-50 font-medium">PTS</span></span>
+                        </motion.div>
+                    ))
+                )}
             </div>
+            {scores.length === 0 && !loading && (
+                <p className="text-center text-muted-foreground text-xs font-medium py-4">No scores yet. Be the first!</p>
+            )}
         </div>
     );
 }

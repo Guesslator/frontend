@@ -15,15 +15,46 @@ const getApiUrl = () => {
 
 const API_URL = getApiUrl();
 
-function transformTranslations(items: any[]) {
+function transformTranslations(items: any) {
     const map: any = {};
-    items.forEach(item => {
-        map[item.language] = {
-            title: item.title,
-            description: item.description,
-            text: item.text
-        };
+    if (!items) return map;
+
+    const langMapper: Record<string, string> = {
+        'turkish': 'tr', 'turkce': 'tr', 'türkçe': 'tr',
+        'english': 'en', 'ingilizce': 'en',
+        'arabic': 'ar', 'arapça': 'ar',
+        'german': 'de', 'almanca': 'de'
+    };
+
+    // Helper to extract data from an item
+    const extract = (obj: any) => ({
+        title: obj.title || obj.name || obj.label || obj.displayName || obj.text || '',
+        description: obj.description || obj.desc || obj.summary || '',
+        text: obj.text || obj.message || ''
     });
+
+    // Handle Object format (e.g., { 'en': { title: '...' } })
+    if (typeof items === 'object' && !Array.isArray(items)) {
+        Object.entries(items).forEach(([key, value]) => {
+            const lowerKey = key.toLowerCase();
+            const finalKey = langMapper[lowerKey] || lowerKey;
+            map[finalKey] = extract(value);
+        });
+        return map;
+    }
+
+    // Handle Array format (e.g., [{ language: 'tr', title: '...' }])
+    if (Array.isArray(items)) {
+        items.forEach(item => {
+            if (!item) return;
+            const langKey = item.language || item.lang || item.code || item.locale;
+            if (langKey) {
+                const lowerKey = langKey.toLowerCase();
+                const finalKey = langMapper[lowerKey] || lowerKey;
+                map[finalKey] = extract(item);
+            }
+        });
+    }
     return map;
 }
 
@@ -41,6 +72,7 @@ export interface APIContentItem {
     isPublished?: boolean;
     questions?: any[]; // For backwards compat or direct access
     questionCount?: number;
+    language?: string;
     stats?: {
         totalAttempts: number;
         avgScore: number;
@@ -161,6 +193,7 @@ export async function fetchContentPaginated(
                 creator: item.creator,
                 subcategory: item.subcategory,
                 quizType: item.quizType,
+                language: item.language || item.lang || item.original_language,
                 stats: item.stats,
                 questionCount: item.questions?.length || 0
             })),
@@ -177,7 +210,11 @@ export async function fetchContentPaginated(
 
 export async function fetchContentDetail(id: string, lang: string = 'en'): Promise<APIContentItem | null> {
     try {
-        const res = await fetch(`${API_URL}/content/${id}?lang=${lang}`, { cache: 'no-store' });
+        // [SENIOR FIX] Do NOT pass ?lang= to ensure we get ALL translations. 
+        // The remote backend filters out other translations if ?lang= is present.
+        const res = await fetch(`${API_URL}/content/${id}`, {
+            cache: 'no-store' // Temporary no-store to ensure the user sees the fix
+        });
         if (!res.ok) return null;
         const item = await res.json();
 
@@ -220,6 +257,7 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
             creator: item.creator,
             subcategory: item.subcategory,
             quizType: quizType,
+            language: item.language || item.lang || item.original_language,
             stats: (item as any).stats
         };
     } catch (e) {
