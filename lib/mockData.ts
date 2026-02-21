@@ -39,6 +39,7 @@ export interface PublicQuiz {
     slug: string;
     title: string;
     description: string | null;
+    posterUrl?: string; // Added for start screen
     created_by: string;
     videos: any[]; // Kept loose for now or define Video type if reusable
     questions: Question[];

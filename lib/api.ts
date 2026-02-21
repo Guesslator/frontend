@@ -292,6 +292,7 @@ export async function fetchQuizById(id: string, lang: string = 'en'): Promise<Qu
         const quizObj = {
             id: data.id,
             slug: data.slug,
+            posterUrl: data.posterUrl,
             title: title || 'Untitled Quiz', // [CONTRACT] Guaranteed Title
             description: localeData.description || null, // [CONTRACT] Guaranteed Description or null
             created_by: data.contentId, // [CONTRACT] ID is sufficient

@@ -7,7 +7,15 @@ import AudioQuestionPlayer from "@/components/AudioQuestionPlayer";
 import ResultsView from "@/components/ResultsView";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { CheckCircle, XCircle, ArrowLeft, Clock } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  ArrowLeft,
+  Clock,
+  Play,
+  Trophy,
+  Info,
+} from "lucide-react";
 import { Quiz } from "@/lib/mockData";
 import {
   incrementContentPopularity,
@@ -38,6 +46,8 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
   const [quizComplete, setQuizComplete] = useState(false);
   const [score, setScore] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(ANSWER_TIME_LIMIT);
+
+  const shouldReduceMotion = useReducedMotion();
 
   // Debug logging
   useEffect(() => {
@@ -152,8 +162,6 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
       />
     );
   }
-
-  const shouldReduceMotion = useReducedMotion();
 
   const overlayVariants = {
     initial: { opacity: 0, backdropFilter: "blur(0px)" },
