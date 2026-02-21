@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { PlayCircle, ImageOff } from "lucide-react";
 
 interface YouTubeThumbnailProps {
@@ -86,13 +87,14 @@ export default function YouTubeThumbnail({ videoUrl, alt, className }: YouTubeTh
 
     return (
         <div className={`relative overflow-hidden group ${className}`}>
-            <img
+            <Image
                 src={imgSrc}
                 alt={alt}
+                fill
                 onError={handleError}
-                onLoad={() => { }}
                 loading="lazy"
                 className="w-full h-full object-cover transition-opacity duration-300"
+                sizes="(max-width: 768px) 100vw, 384px"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">
                 <PlayCircle className="text-white/80 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 drop-shadow-lg" size={48} />

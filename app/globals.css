@@ -8,19 +8,26 @@
   /* --- Primitives: Light --- */
   --color-brand-navy: #0A1F44;
   --color-brand-navy-light: #1E3A8A;
-  --color-brand-vivid-blue: #3B82F6; /* Blue 500 - Soft & Modern Blue */
-  --color-brand-dark-text: #111827; /* Gray 900 - Soft Black */
+  --color-brand-vivid-blue: #3B82F6;
+  /* Blue 500 - Soft & Modern Blue */
+  --color-brand-dark-text: #111827;
+  /* Gray 900 - Soft Black */
   --color-brand-orange: #FF6B00;
   --color-brand-orange-soft: #FF9E66;
   --color-brand-white: #FFFFFF;
   --color-brand-off-white: #F8FAFC;
   --color-brand-light-gray: #E2E8F0;
-  --color-brand-dark-gray: #64748B; /* Slate 500 for softer text */
-  --color-brand-platinum: #F1F5F9; /* Slate 100 */
+  --color-brand-dark-gray: #64748B;
+  /* Slate 500 for softer text */
+  --color-brand-platinum: #F1F5F9;
+  /* Slate 100 */
 
-  --color-status-success: #10B981; /* Emerald 500 - more vibrant */
-  --color-status-warning: #F59E0B; /* Amber 500 */
-  --color-status-error: #EF4444; /* Red 500 */
+  --color-status-success: #10B981;
+  /* Emerald 500 - more vibrant */
+  --color-status-warning: #F59E0B;
+  /* Amber 500 */
+  --color-status-error: #EF4444;
+  /* Red 500 */
 
   /* --- Primitives: Dark --- */
 
@@ -36,25 +43,32 @@
   --color-aqua-accent: #37E2D5;
 
   /* --- Semantic Tokens (Light - "Modern Crisp & Playful") --- */
-  --background: #FFFFFF; /* Pure White - Clean canvas for content */
-  --foreground: #18181B; /* Zinc 900 - Sharp, high contrast text */
+  --background: #FFFFFF;
+  /* Pure White - Clean canvas for content */
+  --foreground: #18181B;
+  /* Zinc 900 - Sharp, high contrast text */
 
-  --card: #FAFAFA; /* Zinc 50 - Subtle distinction */
+  --card: #FAFAFA;
+  /* Zinc 50 - Subtle distinction */
   --card-foreground: #18181B;
-  --card-border: #E4E4E7; /* Zinc 200 */
+  --card-border: #E4E4E7;
+  /* Zinc 200 */
 
   --popover: #FFFFFF;
   --popover-foreground: #18181B;
 
   /* Primary: Violet-Indigo Branding (Intellectual but Fun) */
-  --primary: #6366f1; /* Indigo 500 - Focused, trustworthy, energetic */
+  --primary: #6366f1;
+  /* Indigo 500 - Focused, trustworthy, energetic */
   --primary-foreground: #FFFFFF;
 
-  --secondary: #F4F4F5; /* Zinc 100 */
+  --secondary: #F4F4F5;
+  /* Zinc 100 */
   --secondary-foreground: #18181B;
 
   --muted: #F4F4F5;
-  --muted-foreground: #71717A; /* Zinc 500 */
+  --muted-foreground: #71717A;
+  /* Zinc 500 */
 
   --accent: #F4F4F5;
   --accent-foreground: #18181B;
@@ -64,32 +78,41 @@
 
   --border: #E4E4E7;
   --input: #E4E4E7;
-  --ring: #6366f1; /* Inspect focus matches brand */
+  --ring: #6366f1;
+  /* Inspect focus matches brand */
 
-  --radius: 1rem; /* Curvier, friendlier UI */
+  --radius: 1rem;
+  /* Curvier, friendlier UI */
 }
 
 [data-theme="dark"] {
   /* --- Semantic Tokens (Dark - "Deep Immersion & Focus") --- */
-  --background: #09090B; /* Zinc 950 - Deepest black-gray, better than pure black */
-  --foreground: #FAFAFA; /* Zinc 50 */
+  --background: #09090B;
+  /* Zinc 950 - Deepest black-gray, better than pure black */
+  --foreground: #FAFAFA;
+  /* Zinc 50 */
 
-  --card: #18181B; /* Zinc 900 */
+  --card: #18181B;
+  /* Zinc 900 */
   --card-foreground: #FAFAFA;
-  --card-border: #27272A; /* Zinc 800 */
+  --card-border: #27272A;
+  /* Zinc 800 */
 
   --popover: #18181B;
   --popover-foreground: #FAFAFA;
 
   /* Primary: Electric Indigo Glow */
-  --primary: #818cf8; /* Indigo 400 - Lighter, glowing against dark */
+  --primary: #818cf8;
+  /* Indigo 400 - Lighter, glowing against dark */
   --primary-foreground: #000000;
 
-  --secondary: #27272A; /* Zinc 800 */
+  --secondary: #27272A;
+  /* Zinc 800 */
   --secondary-foreground: #FAFAFA;
 
   --muted: #27272A;
-  --muted-foreground: #A1A1AA; /* Zinc 400 */
+  --muted-foreground: #A1A1AA;
+  /* Zinc 400 */
 
   --accent: #27272A;
   --accent-foreground: #FAFAFA;
@@ -198,8 +221,91 @@ body {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%);
+  }
+
+  50% {
+    transform: translateX(-60%);
+  }
+
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spotlight {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.5;
+  }
+}
+
 .animate-progress {
   animation: progress 5s linear;
+}
+
+.animate-shimmer {
+  animation: shimmer 2.5s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-spotlight {
+  animation: spotlight 8s ease-in-out infinite;
+}
+
+.shimmer-mask {
+  mask-image: linear-gradient(to right, transparent, black, transparent);
+}
+
+.text-gradient-premium {
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 50%, var(--foreground) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: text-shine 5s linear infinite;
+}
+
+@keyframes text-shine {
+  from {
+    background-position: 0% center;
+  }
+
+  to {
+    background-position: 200% center;
+  }
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px -5px var(--primary);
+}
+
+.glow-primary-lg {
+  box-shadow: 0 0 40px -10px var(--primary);
 }
 
 /* RTL Support */
@@ -223,6 +329,7 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 /* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;

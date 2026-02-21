@@ -13,24 +13,27 @@ const languages = LANGUAGES.map((code) => ({
 
 export default function LanguageSelectionPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-background transition-colors duration-300">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background -z-10" />
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-background transition-colors duration-500">
+      {/* Background Ambience - Cinematic Spotlight */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[120px] rounded-full animate-spotlight pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_var(--background)_80%)]" />
+      </div>
 
       <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-8 mt-8 z-10"
+        initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-center mb-12 mt-8 z-10"
       >
-        <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-primary mb-2 drop-shadow-2xl">
+        <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary/50 mb-4 drop-shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">
           GUESSALATOR
         </h1>
-        <p className="text-muted-foreground text-sm md:text-base tracking-widest uppercase font-light">
+        <p className="text-muted-foreground text-xs md:text-sm tracking-[0.4em] uppercase font-black opacity-80">
           The Ultimate Cinematic Quiz
         </p>
       </motion.div>
@@ -47,23 +50,25 @@ export default function LanguageSelectionPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 * index }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative h-40 rounded-xl overflow-hidden cursor-pointer border border-border bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-300 shadow-md"
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.98 }}
+                className="group relative h-48 rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-card/30 backdrop-blur-md hover:border-primary/50 transition-all duration-500 shadow-2xl"
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 z-0" />
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                </div>
 
-                {/* Hover Glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 z-0" />
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
-                  <span className="text-2xl font-black mb-3 text-primary border-2 border-primary/30 rounded-lg px-3 py-1 bg-primary/5 uppercase tracking-wider backdrop-blur-sm group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 shadow-sm">
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6">
+                  <span className="text-xl font-black mb-4 text-primary border border-primary/20 rounded-lg px-4 py-1.5 bg-primary/5 uppercase tracking-widest group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-500 shadow-xl">
                     {lang.code}
                   </span>
-                  <h2 className="text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors text-center line-clamp-1">
+                  <h2 className="text-xl font-black text-foreground mb-1 group-hover:text-primary transition-colors text-center line-clamp-1">
                     {lang.name}
                   </h2>
-                  <p className="text-muted-foreground text-xs font-light tracking-wider group-hover:text-foreground transition-colors text-center">
+                  <p className="text-muted-foreground text-[10px] font-black tracking-widest uppercase opacity-60 group-hover:opacity-100 transition-all text-center">
                     {lang.greeting}
                   </p>
                 </div>

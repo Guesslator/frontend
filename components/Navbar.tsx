@@ -54,12 +54,15 @@ export default function Navbar({ lang }: NavbarProps) {
           className={cn(
             "absolute inset-0 overflow-hidden transition-all duration-500 backdrop-blur-xl",
             isScrolled
-              ? "rounded-xl md:rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-lg shadow-black/5 border border-zinc-200/50 dark:border-white/10"
+              ? "rounded-xl md:rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-2xl shadow-primary/10 border border-primary/20 dark:border-primary/20"
               : "rounded-none bg-transparent border-b border-transparent",
           )}
         >
-          {/* Subtle top highlight for 3D feel in dark mode */}
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 dark:opacity-100" />
+          {/* Top highlight for premium feel */}
+          <div className={cn(
+            "absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
+            isScrolled ? "opacity-100" : "opacity-0"
+          )} />
         </div>
 
         <div className="relative z-10 flex justify-between items-center gap-2 md:gap-4">
@@ -83,20 +86,25 @@ export default function Navbar({ lang }: NavbarProps) {
             <Link
               href={`/${lang}/create`}
               className={cn(
-                "group relative overflow-hidden rounded-xl md:rounded-2xl font-bold text-xs md:text-sm transition-all duration-300",
-                "bg-primary text-primary-foreground shadow-lg hover:shadow-primary/25",
+                "group relative overflow-hidden rounded-xl md:rounded-2xl font-black text-xs md:text-sm transition-all duration-300",
+                "bg-primary text-primary-foreground shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95",
                 "px-3 md:px-6 h-9 md:h-12 flex items-center gap-2",
               )}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-              <Plus
-                size={16}
-                strokeWidth={3}
-                className="transition-transform group-hover:rotate-90 md:w-[18px] md:h-[18px]"
-              />
-              <span className="hidden md:inline">
-                {t(validLang, "createQuiz")}
-              </span>
+              <div className="absolute inset-0 z-0 overflow-hidden">
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+              </div>
+
+              <div className="relative flex items-center gap-2">
+                <Plus
+                  size={16}
+                  strokeWidth={4}
+                  className="transition-transform group-hover:rotate-90 md:w-[18px] md:h-[18px]"
+                />
+                <span className="hidden md:inline">
+                  {t(validLang, "createQuiz")}
+                </span>
+              </div>
             </Link>
 
             {/* Divider */}

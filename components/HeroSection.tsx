@@ -25,6 +25,20 @@ interface HeroSectionProps {
 export default function HeroSection({ items, lang }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  // Handle mouse move for parallax
+  useEffect(() => {
+    if (isMobile) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [isMobile]);
 
   // Check for mobile device
   useEffect(() => {
@@ -85,15 +99,24 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
             <motion.div
               className="relative w-full h-full"
               initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 12, ease: "linear" }}
+              animate={{
+                scale: 1.1,
+                x: -mousePos.x,
+                y: -mousePos.y
+              }}
+              transition={{
+                duration: 12,
+                ease: "linear",
+                x: { type: "spring", stiffness: 30, damping: 20 },
+                y: { type: "spring", stiffness: 30, damping: 20 }
+              }}
             >
               <Image
                 src={currentItem.imageUrl}
                 alt={currentItem.title}
                 fill
                 priority={currentIndex === 0}
-                className="object-cover opacity-100 dark:opacity-80"
+                className="object-cover opacity-100 dark:opacity-85"
                 sizes="100vw"
               />
 
@@ -146,7 +169,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 </motion.div>
 
                 {/* 2. Title - Massive & dynamic with gradient text */}
-                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 dark:from-white dark:to-white/60 leading-[0.95] md:leading-[0.9] tracking-tighter drop-shadow-sm">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/80 dark:from-white dark:to-white/70 leading-[0.95] md:leading-[0.9] tracking-tighter drop-shadow-2xl">
                   {currentItem.title}
                 </h1>
 
@@ -176,15 +199,18 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 <div className="flex flex-wrap items-center gap-3 md:gap-4 pt-2">
                   <Link
                     href={`/${lang}/content/${currentItem.id}`}
-                    className="group relative px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-primary text-primary-foreground font-bold text-base md:text-lg transition-all hover:scale-105 active:scale-95 shadow-xl hover:shadow-primary/20 overflow-hidden"
+                    className="group relative px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl bg-primary text-primary-foreground font-black text-base md:text-xl transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-primary/30 overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
-                    <div className="relative flex items-center gap-2 md:gap-3">
-                      <div className="p-1 bg-white/20 rounded-full">
+                    {/* Premium Shimmer Overlay */}
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                    </div>
+
+                    <div className="relative flex items-center gap-3">
+                      <div className="p-1.5 bg-white/20 rounded-full">
                         <Play
                           fill="currentColor"
-                          size={14}
-                          className="w-3 h-3 md:w-4 md:h-4"
+                          size={16}
                         />
                       </div>
                       <span>{t(lang, "playNow")}</span>

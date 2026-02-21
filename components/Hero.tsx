@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Play, Info } from "lucide-react";
 
 interface HeroProps {
@@ -20,10 +21,16 @@ export default function Hero({
   return (
     <div className="relative w-full h-[70vh] mb-12 rounded-3xl overflow-hidden shadow-2xl border border-white/5">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
-        style={{ backgroundImage: `url(${imageUrl})` }}
-      />
+      <div className="absolute inset-0 transition-transform duration-[10s] hover:scale-105">
+        <Image
+          src={imageUrl}
+          alt={title}
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />

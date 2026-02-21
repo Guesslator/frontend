@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { fetchContentDetail } from '../../../../lib/api';
 import Leaderboard from '@/components/Leaderboard';
 import { Film, Image as ImageIcon, Play, Globe, Edit } from 'lucide-react';
@@ -56,14 +57,17 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     const isCreator = session?.user?.id === item.creator?.id;
 
     return (
-        <div className="min-h-screen bg-background text-foreground relative overflow-hidden transition-colors duration-300">
+        <div className="min-h-screen bg-background text-foreground relative overflow-hidden transition-colors duration-500">
 
-            {/* Background Ambience */}
+            {/* Background Ambience - Cinematic Poster Backdrop */}
             <div
-                className="absolute inset-0 bg-cover bg-center opacity-30 blur-3xl scale-110 pointer-events-none"
+                className="absolute inset-0 z-0 bg-cover bg-center opacity-25 blur-[100px] scale-125 pointer-events-none"
                 style={{ backgroundImage: `url(${item.posterUrl})` }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+            {/* Cinematic Spotlight */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/20 blur-[150px] rounded-full animate-spotlight pointer-events-none" />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none z-0" />
 
             <div className="relative z-30 container mx-auto px-4 pt-24 pb-8 min-h-screen flex flex-col">
 
@@ -71,10 +75,13 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                     {/* Poster */}
                     <div className="w-full md:w-1/3 max-w-sm mx-auto md:mx-0">
                         <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl border border-border group mb-8">
-                            <img
+                            <Image
                                 src={item.posterUrl}
                                 alt={translation?.title || 'Quiz poster'}
+                                fill
+                                priority
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                sizes="(max-width: 768px) 100vw, 33vw"
                             />
                         </div>
 
@@ -85,7 +92,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                     {/* Details */}
                     <div className="flex-1 md:pt-4">
                         <div className="flex justify-between items-start mb-6">
-                            <h1 className="text-5xl md:text-7xl font-black tracking-tight drop-shadow-lg text-foreground">
+                            <h1 className="text-5xl md:text-8xl font-black tracking-tighter drop-shadow-[0_0_30px_rgba(0,0,0,0.5)] text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/60 dark:from-white dark:to-white/50 leading-[0.9] mb-4">
                                 {translation?.title || 'Untitled'}
                             </h1>
 
@@ -130,36 +137,45 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                         <div className="flex flex-col sm:flex-row items-center gap-6 mb-16">
                             <Link
                                 href={`/${lang}/quiz/${item.id}`}
-                                className="relative z-50 w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 bg-gradient-to-r from-primary to-primary/80 text-black text-2xl font-black rounded-full hover:scale-105 hover:shadow-[0_0_30px_rgba(var(--primary),0.6)] transition-all duration-300"
+                                className="group relative z-50 w-full sm:w-auto inline-flex items-center justify-center gap-4 px-12 py-6 bg-primary text-primary-foreground text-2xl font-black rounded-2xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-primary/30"
                             >
-                                <Play size={36} fill="currentColor" className="text-black" />
-                                <div className="flex flex-col items-start leading-none">
-                                    <span>{t(validLang, 'startQuiz')}</span>
-                                    <span className="text-xs opacity-80 font-medium mt-1 uppercase tracking-wider">{getLangLabel()}</span>
+                                {/* Premium Shimmer Overlay */}
+                                <div className="absolute inset-0 z-0 overflow-hidden">
+                                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                                </div>
+
+                                <div className="relative flex items-center gap-4">
+                                    <div className="p-2 bg-white/20 rounded-full">
+                                        <Play size={28} fill="currentColor" />
+                                    </div>
+                                    <div className="flex flex-col items-start leading-none">
+                                        <span>{t(validLang, 'startQuiz')}</span>
+                                        <span className="text-[10px] opacity-70 font-black mt-1 uppercase tracking-[0.2em]">{getLangLabel()}</span>
+                                    </div>
                                 </div>
                             </Link>
 
                             {/* Statistics Placeholder */}
                             {/* Statistics */}
                             {item.stats && item.stats.totalAttempts > 0 && (
-                                <div className="flex items-center gap-4 px-6 py-4 bg-card/60 rounded-2xl border border-border backdrop-blur-sm animate-in fade-in zoom-in duration-500">
-                                    <div className="text-center">
-                                        <div className="text-sm text-muted-foreground font-bold uppercase tracking-wider">Pass Rate</div>
-                                        <div className={`text-2xl font-black ${item.stats.passRate > 70 ? 'text-green-500' : item.stats.passRate > 40 ? 'text-yellow-500' : 'text-red-500'}`}>
+                                <div className="flex flex-wrap items-center gap-4 p-6 bg-card/40 backdrop-blur-xl rounded-3xl border border-white/5 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+                                    <div className="text-center px-4">
+                                        <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Pass Rate</div>
+                                        <div className={`text-3xl font-black ${item.stats.passRate > 70 ? 'text-green-500' : item.stats.passRate > 40 ? 'text-yellow-500' : 'text-red-500'}`}>
                                             {item.stats.passRate}%
                                         </div>
                                     </div>
-                                    <div className="h-8 w-px bg-border"></div>
-                                    <div className="text-center">
-                                        <div className="text-sm text-muted-foreground font-bold uppercase tracking-wider">Avg Score</div>
-                                        <div className="text-2xl font-black text-blue-500">
+                                    <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
+                                    <div className="text-center px-4">
+                                        <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Avg Score</div>
+                                        <div className="text-3xl font-black text-primary">
                                             {item.stats.avgScore}/{item.questions?.length || 10}
                                         </div>
                                     </div>
-                                    <div className="h-8 w-px bg-border"></div>
-                                    <div className="text-center">
-                                        <div className="text-sm text-muted-foreground font-bold uppercase tracking-wider">Plays</div>
-                                        <div className="text-2xl font-black text-purple-500">
+                                    <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
+                                    <div className="text-center px-4">
+                                        <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Total Plays</div>
+                                        <div className="text-3xl font-black text-white/90">
                                             {item.stats.totalAttempts}
                                         </div>
                                     </div>
@@ -194,10 +210,12 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                 {/* Thumbnail */}
                                                 <div className="w-full sm:w-48 aspect-video rounded-lg overflow-hidden flex-shrink-0 bg-black relative">
                                                     {isGif ? (
-                                                        <img
+                                                        <Image
                                                             src={q.videoUrl}
                                                             alt={`Question ${idx + 1}`}
+                                                            fill
                                                             className="w-full h-full object-cover"
+                                                            unoptimized={true}
                                                         />
                                                     ) : q.videoUrl ? (
                                                         <YouTubeThumbnail
@@ -206,7 +224,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                             className="w-full h-full"
                                                         />
                                                     ) : q.imageUrl ? (
-                                                        <img src={q.imageUrl} alt={`Q${idx + 1}`} className="w-full h-full object-cover" />
+                                                        <Image src={q.imageUrl} alt={`Q${idx + 1}`} fill className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 192px" />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-muted-foreground">Q{idx + 1}</div>
                                                     )}

@@ -138,11 +138,12 @@ export default function ContentCard({
         delay: index * 0.04,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
+      whileHover={{ y: -8, transition: { duration: 0.3, ease: "easeOut" } }}
       className="group relative h-full flex flex-col"
     >
       <Link
         href={`/${lang}/content/${id}`}
-        className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5 dark:hover:border-primary/50 dark:hover:shadow-primary/20"
+        className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-500 ease-out hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(129,140,248,0.15)] hover:border-primary/50 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5"
       >
         {/* Image Container */}
         <div className="relative aspect-[3/4] overflow-hidden w-full bg-muted">
@@ -165,9 +166,9 @@ export default function ContentCard({
           <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-start z-10">
             {/* Quiz Type Badge */}
             {quizTypeInfo && (
-              <div className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center gap-1.5 shadow-lg">
+              <div className="px-3 py-1.5 rounded-full text-[10px] font-black bg-black/40 backdrop-blur-xl text-white border border-white/10 flex items-center gap-2 shadow-2xl transition-transform duration-300 group-hover:scale-105">
                 <quizTypeInfo.icon size={12} className={quizTypeInfo.color} />
-                <span className="uppercase tracking-wide">
+                <span className="uppercase tracking-[0.1em]">
                   {quizTypeInfo.label}
                 </span>
               </div>
@@ -193,30 +194,30 @@ export default function ContentCard({
 
           {/* Stats Overlay on Image (Bottom) - Only shows if Stats exist */}
           {stats && (
-            <div className="absolute bottom-3 left-3 right-3 grid grid-cols-3 gap-1 text-center z-10">
-              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
-                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+            <div className="absolute bottom-4 left-4 right-4 grid grid-cols-3 gap-2 text-center z-10">
+              <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
                   {t(lang as Language, "attempts").slice(0, 3)}
                 </span>
-                <span className="text-xs font-bold text-white drop-shadow-sm">
+                <span className="text-xs font-black text-white drop-shadow-sm">
                   {attemptsLabel}
                 </span>
               </div>
-              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
-                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+              <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
                   {t(lang as Language, "passRate").slice(0, 4)}
                 </span>
                 <span
-                  className={`text-xs font-bold drop-shadow-sm ${stats.passRate > 0.7 ? "text-green-400" : "text-white"}`}
+                  className={`text-xs font-black drop-shadow-sm ${stats.passRate > 0.7 ? "text-green-400" : "text-white"}`}
                 >
                   {passRatePct}%
                 </span>
               </div>
-              <div className="bg-black/80 backdrop-blur-md rounded-lg p-1.5 border border-white/10 flex flex-col items-center shadow-sm">
-                <span className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+              <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
                   {t(lang as Language, "avgScore").slice(0, 3)}
                 </span>
-                <span className="text-xs font-bold text-secondary drop-shadow-sm">
+                <span className="text-xs font-black text-primary drop-shadow-sm">
                   {avgScoreLabel}
                 </span>
               </div>
