@@ -1,14 +1,38 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { fetchContentDetail } from '../../../../lib/api';
+import dynamic from "next/dynamic";
+import { fetchContentDetail } from "@/lib/api";
 import Leaderboard from '@/components/Leaderboard';
-import { Film, Image as ImageIcon, Play, Globe, Edit } from 'lucide-react';
-import { t } from '@/lib/i18n';
-import YouTubeThumbnail from '@/components/YouTubeThumbnail';
+import { t, Language } from "@/lib/i18n";
+import YouTubeThumbnail from "@/components/YouTubeThumbnail";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import ClientSideDetailEffects, { PremiumPoster, AnimatedHeading, AnimatedQuestionCard, AnimatedProgressBar, AnimatedStatCard } from "@/components/ClientSideDetailEffects";
+import {
+    PremiumPoster,
+    AnimatedHeading,
+    AnimatedQuestionCard,
+    AnimatedProgressBar,
+    AnimatedStatCard
+} from "@/components/ClientSideDetailEffects";
+import {
+    Play,
+    Clock,
+    Award,
+    Edit,
+    Film,
+    Globe,
+    CheckCircle2,
+    BarChart3,
+    Share2,
+    Zap,
+    TrendingUp,
+    Shield,
+    Image as ImageIcon
+} from "lucide-react";
+
+const ClientSideDetailEffects = dynamic(() => import("@/components/ClientSideDetailEffects"));
+const QuizClient = dynamic(() => import("@/components/QuizClient"));
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ lang: string; id: string }> }) {
     const { lang, id } = await params;
@@ -128,7 +152,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_95%)] z-0" />
                 <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none z-0" />
 
-                <div className="relative z-30 container mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-32 md:pb-20 min-h-svh flex flex-col">
+                <div className="relative z-30 container mx-auto px-4 md:px-8 pt-16 md:pt-32 pb-32 md:pb-24 min-h-svh flex flex-col">
 
                     <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20 items-start">
                         {/* Left Column: Poster & Metadata */}
@@ -148,7 +172,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                             <quizTypeInfo.icon size={18} className={quizTypeInfo.color} />
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'categoryLabel')}</span>
+                                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'categoryLabel')}</span>
                                             <span className={`text-sm font-black uppercase tracking-widest ${quizTypeInfo.color}`}>
                                                 {quizTypeInfo.label}
                                             </span>
@@ -161,7 +185,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                         <Globe size={18} className="text-blue-400" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'language')}</span>
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'language')}</span>
                                         <span className="text-sm font-black uppercase tracking-widest text-blue-400">
                                             {getLangLabel()}
                                         </span>
@@ -189,19 +213,20 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                     {title}
                                 </h1>
 
-                                <div className="flex items-center gap-4 text-sm md:text-lg font-medium text-muted-foreground">
+                                <div className="flex items-center gap-4 text-sm md:text-lg font-bold text-gray-300">
                                     <div className="flex items-center gap-2">
-                                        <Play size={16} className="fill-current" />
+                                        <Play size={16} className="fill-current" aria-hidden="true" />
                                         <span className="uppercase tracking-widest font-black text-xs">{itemData.quizType}</span>
                                     </div>
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/30" aria-hidden="true" />
                                     <span>{itemData.questions?.length || 0} {t(validLang, 'questions' as any) || 'Questions'}</span>
                                     {isCreator && (
                                         <>
                                             <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
                                             <Link
                                                 href={`/${lang}/quiz/${id}/edit`}
-                                                className="text-primary hover:text-primary/80 flex items-center gap-1 font-bold transition-colors"
+                                                className="text-primary hover:text-primary/80 flex items-center gap-1 font-bold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
+                                                aria-label={t(validLang, 'editLabel')}
                                             >
                                                 <Edit size={16} /> {t(validLang, 'editLabel')}
                                             </Link>
@@ -212,9 +237,9 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
                             {/* Synopsis Box - Refined */}
                             <div className="relative mb-16 lg:mb-20">
-                                <div className="absolute -left-4 top-1 mb-1 w-1 bg-linear-to-b from-primary/60 via-primary/20 to-transparent rounded-full" />
+                                <div className="absolute -left-4 top-1 mb-1 w-1 bg-linear-to-b from-primary/80 via-primary/40 to-transparent rounded-full" />
                                 <div className="pl-6">
-                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/80 font-black mb-5">{t(validLang, 'summaryLabel')}</h2>
+                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary font-black mb-5">{t(validLang, 'summaryLabel')}</h2>
                                     <p className="text-lg md:text-xl text-foreground/80 font-light leading-relaxed max-w-2xl text-pretty">
                                         {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || t(validLang, 'noDescription')}
                                     </p>
@@ -224,22 +249,14 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             <div className="hidden sm:flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
                                 <Link
                                     href={`/${lang}/quiz/${itemData.id}`}
-                                    className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-6 px-14 py-7 bg-primary text-primary-foreground text-3xl font-black rounded-3xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500 shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)]"
+                                    className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-8 px-16 py-8 bg-primary text-black text-3xl font-black rounded-3xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500 shadow-[0_20px_50px_rgba(var(--primary-rgb),0.3)] focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-primary/50"
+                                    aria-label={t(validLang, 'startQuiz')}
                                 >
-                                    <div className="absolute inset-0 z-0 overflow-hidden">
-                                        <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
-                                    </div>
-
-                                    <div className="relative flex items-center gap-4 translate-z-10">
-                                        <div className="p-2.5 bg-white/20 rounded-2xl">
+                                    <div className="relative flex items-center gap-5 translate-z-10">
+                                        <div className="p-3 bg-black/10 rounded-2xl">
                                             <Play size={32} fill="currentColor" />
                                         </div>
-                                        <div className="flex flex-col items-start leading-none uppercase tracking-tighter">
-                                            <span>{t(validLang, 'startQuiz')}</span>
-                                            <span className="text-[10px] opacity-80 font-black mt-1 uppercase tracking-widest">
-                                                {getLangLabel()}
-                                            </span>
-                                        </div>
+                                        <span className="uppercase tracking-tighter">{t(validLang, 'startQuiz')}</span>
                                     </div>
                                 </Link>
 
@@ -276,13 +293,13 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             {/* Preview Section */}
                             {itemData.questions && itemData.questions.length > 0 && (
                                 <div className="space-y-12">
-                                    <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-foreground/40 border-b border-white/5 pb-6">
-                                        <Film className="text-primary" size={24} />
+                                    <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-white/50 border-b border-white/10 pb-6 mb-12">
+                                        <Film className="text-primary" size={24} aria-hidden="true" />
                                         {t(validLang, 'quizIntel')}
                                     </AnimatedHeading>
 
                                     <div className="grid gap-8">
-                                        {itemData.questions.slice(0, 5).map((q: any, idx: number) => {
+                                        {itemData.questions.map((q: any, idx: number) => {
                                             const attempts = q.attempts || 0;
                                             const rate = attempts > 0 ? Math.round((q.correctCount / attempts) * 100) : 0;
                                             const statsColor = rate > 75 ? 'bg-green-500' : rate > 40 ? 'bg-yellow-500' : 'bg-red-500';
@@ -293,30 +310,30 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                     idx={idx}
                                                     className="group/card premium-card hover:premium-card-hover flex flex-col md:flex-row gap-5 md:gap-10 p-4 md:p-8"
                                                 >
-                                                    <div className="w-full max-w-[280px] md:max-w-none md:w-72 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-zinc-950 relative shadow-2xl shrink-0">
+                                                    <div className="w-full max-w-[280px] md:max-w-none md:w-72 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-zinc-950 relative shadow-2xl shrink-0 border border-white/10">
                                                         {q.videoUrl ? (
-                                                            <YouTubeThumbnail videoUrl={q.videoUrl} alt={`Soru ${idx + 1}`} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" />
+                                                            <YouTubeThumbnail videoUrl={q.videoUrl} alt={`${t(validLang, 'scene')} #${idx + 1}`} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" />
                                                         ) : q.imageUrl ? (
-                                                            <Image src={q.imageUrl} alt={`Soru ${idx + 1}`} fill className="object-cover group-hover/card:scale-110 transition-transform duration-1000" />
+                                                            <Image src={q.imageUrl} alt={`${t(validLang, 'scene')} #${idx + 1}`} fill className="object-cover group-hover/card:scale-110 transition-transform duration-1000" />
                                                         ) : <div className="w-full h-full bg-linear-to-br from-zinc-800 to-zinc-950 flex items-center justify-center text-zinc-700 font-bold">{t(validLang, 'preview')}</div>}
                                                         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                                                        <div className="absolute bottom-4 left-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/50">{t(validLang, 'scene')} #{idx + 1}</div>
+                                                        <div className="absolute bottom-4 left-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/70">{t(validLang, 'scene')} #{idx + 1}</div>
                                                     </div>
 
                                                     <div className="flex-1 flex flex-col justify-center gap-6">
-                                                        <div className="flex flex-col gap-1.5">
+                                                        <div className="flex flex-col gap-2">
                                                             <div className="flex justify-between items-end">
-                                                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">{t(validLang, 'difficultyRating')}</h3>
+                                                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">{t(validLang, 'difficultyRating')}</h3>
                                                                 <span className="text-xs font-black text-white tabular-nums tracking-tighter">{rate}% {t(validLang, 'passRate')}</span>
                                                             </div>
-                                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                                            <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden border border-white/5">
                                                                 <AnimatedProgressBar progress={rate} idx={idx} statsColor={statsColor} />
                                                             </div>
                                                         </div>
 
                                                         <div className="flex items-center gap-3">
-                                                            <div className="w-1.5 h-1.5 rounded-full bg-primary/60 shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
-                                                            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wider">
+                                                            <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.6)]" aria-hidden="true" />
+                                                            <p className="text-[12px] text-gray-300 font-bold uppercase tracking-wider">
                                                                 {attempts > 0 ? `${q.correctCount} ${t(validLang, 'successSuffix')}` : t(validLang, 'testingPhase')}
                                                             </p>
                                                         </div>
@@ -338,22 +355,14 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
                     <Link
                         href={`/${lang}/quiz/${itemData.id}`}
-                        className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_15px_35px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
+                        className="relative w-full h-18 bg-primary text-black rounded-2xl flex items-center justify-center gap-4 shadow-[0_15px_35px_rgba(var(--primary-rgb),0.4)] overflow-hidden active:scale-95 transition-all pointer-events-auto border-2 border-primary/20"
+                        aria-label={t(validLang, 'startQuiz')}
                     >
-                        <div className="absolute inset-0 z-0">
-                            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-30 animate-shimmer" />
-                        </div>
-
-                        <div className="relative flex items-center gap-3 z-10">
-                            <div className="p-1.5 bg-white/15 rounded-lg shrink-0">
-                                <Play size={20} fill="currentColor" />
+                        <div className="relative flex items-center gap-3 z-10 font-black">
+                            <div className="p-2 bg-black/10 rounded-xl shrink-0">
+                                <Play size={24} fill="currentColor" />
                             </div>
-                            <div className="flex flex-col items-start leading-none uppercase tracking-tighter">
-                                <span className="text-base font-black tracking-tight">{t(validLang, 'startQuiz')}</span>
-                                <span className="text-[7px] opacity-70 font-bold mt-0.5 uppercase tracking-[0.2em] leading-none">
-                                    {getLangLabel()}
-                                </span>
-                            </div>
+                            <span className="text-xl uppercase tracking-tight">{t(validLang, 'startQuiz')}</span>
                         </div>
                     </Link>
                 </div>

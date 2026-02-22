@@ -92,7 +92,7 @@ export default function YouTubeThumbnail({ videoUrl, alt, className }: YouTubeTh
                 alt={alt}
                 fill
                 onError={handleError}
-                loading="lazy"
+                unoptimized={true}
                 className="w-full h-full object-cover transition-opacity duration-300"
                 sizes="(max-width: 768px) 100vw, 384px"
             />

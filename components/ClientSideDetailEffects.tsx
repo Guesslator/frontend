@@ -43,11 +43,11 @@ export default function ClientSideDetailEffects({ children }: ClientSideDetailEf
                 "--mouse-y": useTransform(springY, (v) => `${v}px`),
             } as any}
         >
-            {/* Refined Ambient Background Lighting */}
+            {/* Refined Ambient Background Lighting - Reduced intensity for performance/contrast */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none">
-                <div className="absolute top-0 right-[-10%] w-[60%] h-[70%] bg-primary/5 blur-[120px] rounded-full animate-pulse-slow mix-blend-screen" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[60%] bg-violet-500/5 blur-[120px] rounded-full animate-pulse-slow mix-blend-screen delay-700" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--primary-rgb),0.03)_0%,transparent_70%)]" />
+                <div className="absolute top-0 right-[-10%] w-[60%] h-[70%] bg-primary/3 blur-[80px] rounded-full animate-pulse-slow mix-blend-screen" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[60%] bg-violet-500/3 blur-[80px] rounded-full animate-pulse-slow mix-blend-screen delay-700" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--primary-rgb),0.02)_0%,transparent_60%)]" />
             </div>
 
             {children}
@@ -89,9 +89,12 @@ export function PremiumPoster({ src, alt, status, lang }: { src: string; alt: st
 
     return (
         <motion.div
-            className="group/poster relative aspect-3/4 rounded-4xl p-[3px] bg-linear-to-br from-white/20 via-white/5 to-transparent shadow-[0_30px_60px_rgba(0,0,0,0.6),0_0_40px_rgba(var(--primary-rgb),0.1)] preserve-3d cursor-pointer overflow-hidden border border-white/10 active:scale-[0.98] transition-all duration-500"
+            className="group/poster relative aspect-3/4 rounded-4xl p-[3px] bg-linear-to-br from-white/30 via-white/10 to-transparent shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/15 active:scale-[0.98] transition-all duration-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            tabIndex={0}
+            role="img"
+            aria-label={alt}
             style={{
                 rotateX,
                 rotateY,
@@ -145,13 +148,13 @@ export function PremiumPoster({ src, alt, status, lang }: { src: string; alt: st
                 }}
             />
 
-            {/* Refined Footer */}
-            <div className="absolute inset-x-0 bottom-0 z-50 p-6 bg-linear-to-t from-black via-black/90 to-transparent flex flex-col items-center gap-1.5 translate-z-20">
-                <div className="w-6 h-0.5 bg-primary/60 rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
-                <span className="text-[9px] font-black text-primary/90 uppercase tracking-[0.4em] drop-shadow-sm">
+            {/* Refined Footer - Improved Contrast */}
+            <div className="absolute inset-x-0 bottom-0 z-50 p-6 bg-linear-to-t from-black via-black/95 to-transparent flex flex-col items-center gap-2 translate-z-20">
+                <div className="w-8 h-1 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]" />
+                <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] drop-shadow-md">
                     {t(lang as any, 'featuredExperience')}
                 </span>
-                {status && <span className="text-[7px] font-medium text-white/50 uppercase tracking-[0.2em]">{status}</span>}
+                {status && <span className="text-[8px] font-bold text-white/70 uppercase tracking-[0.2em]">{status}</span>}
             </div>
 
             <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent z-20" />
@@ -210,10 +213,10 @@ export function AnimatedStatCard({ label, value, color, delay }: { label: string
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
-            className="flex flex-col items-center justify-center p-4 sm:p-5 md:p-6 rounded-3xl md:rounded-4xl bg-white/3 border border-white/5 backdrop-blur-3xl shadow-xl hover:bg-white/6 transition-all duration-300 w-full"
+            className="flex flex-col items-center justify-center p-5 sm:p-6 rounded-3xl md:rounded-4xl bg-white/5 border border-white/10 backdrop-blur-2xl shadow-xl hover:bg-white/8 transition-all duration-300 w-full"
         >
-            <span className="text-[7px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-2 text-center opacity-80">{label}</span>
-            <span className={`text-base sm:text-lg md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
+            <span className="text-[9px] md:text-[11px] text-gray-300 font-bold uppercase tracking-[0.2em] mb-2 text-center">{label}</span>
+            <span className={`text-xl sm:text-2xl md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
         </motion.div>
     );
 }

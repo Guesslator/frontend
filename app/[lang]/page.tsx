@@ -5,10 +5,14 @@ import { fetchContent, fetchContentPaginated } from "../../lib/api";
 import HeroSection from "@/components/HeroSection";
 import ContentCard from "@/components/ContentCard";
 import UserMenu from "@/components/UserMenu";
-import ClientSearchPanel from "@/components/ClientSearchPanel";
 import PerformanceDeferred from "@/components/PerformanceDeferred";
 import { t, Language } from "@/lib/i18n";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const ClientSearchPanel = dynamic(() => import("@/components/ClientSearchPanel"), {
+  loading: () => <div className="h-20 w-full animate-pulse bg-white/5 rounded-2xl" />,
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -90,8 +94,11 @@ export default async function ContentGridPage({
       )}
 
       <div
-        className={`px-4 md:px-12 max-w-[1600px] mx-auto ${showHero ? "pt-12" : "pt-24"}`}
+        className={`px-4 md:px-12 max-w-[1600px] mx-auto ${showHero ? "pt-4 md:pt-8" : "pt-24"}`}
       >
+        {showHero && (
+          <div className="mb-4 md:mb-6" />
+        )}
         {/* Search & Filter Panel (Client-side SearchParams handling) */}
         <ClientSearchPanel
           lang={validLang}
