@@ -81,6 +81,18 @@ export default async function ContentGridPage({
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 transition-colors duration-300">
+      {/* LCP Image Preload - Critical for Performance */}
+      {showHero && heroItems.length > 0 && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroItems[0].imageUrl}
+          fetchPriority="high"
+          imageSrcSet={undefined} // next/image uses srcset but simple preload helps TTFB to LCP
+          imageSizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+        />
+      )}
+
       {/* Hero Section - Full Width & Immersive */}
       {showHero && heroItems.length > 0 ? (
         <HeroSection items={heroItems} lang={lang} />

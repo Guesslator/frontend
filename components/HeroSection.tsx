@@ -82,7 +82,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
 
   return (
     <div className="relative w-full h-[80vh] min-h-[550px] overflow-hidden bg-background group touch-pan-y">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={currentItem.id}
           className="absolute inset-0 w-full h-full will-change-transform"
@@ -191,6 +191,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 <div className="flex flex-wrap items-center gap-3 md:gap-4 pt-2">
                   <Link
                     href={`/${lang}/content/${currentItem.id}`}
+                    aria-label={`${t(lang, "playNow")}: ${currentItem.title}`}
                     className="group relative px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl bg-primary text-primary-foreground font-black text-base md:text-xl transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-primary/30 overflow-hidden"
                   >
                     {/* Premium Shimmer Overlay */}
@@ -211,9 +212,10 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
 
                   <Link
                     href={`/${lang}/content/${currentItem.id}`}
+                    aria-label={`${t(lang, "moreInfo")}: ${currentItem.title}`}
                     className="group relative px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-background/40 dark:bg-white/5 border border-foreground/10 dark:border-white/10 backdrop-blur-md hover:bg-background/60 dark:hover:bg-white/10 text-foreground dark:text-white transition-all hover:scale-105 active:scale-95 font-semibold text-base md:text-lg overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-y-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
                     <span>{t(lang, "moreInfo")}</span>
                   </Link>
                 </div>
