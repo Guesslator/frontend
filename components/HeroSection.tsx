@@ -116,8 +116,9 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 alt={currentItem.title}
                 fill
                 priority={currentIndex === 0}
+                fetchPriority={currentIndex === 0 ? "high" : "auto"}
                 className="object-cover opacity-100 dark:opacity-85"
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
               />
 
               {/* 1. Grain Texture: Subtle high-end texture (not dirty) */}
@@ -144,12 +145,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
           {/* Content Container */}
           <div className="absolute inset-0 z-20 flex flex-col justify-end pb-16 md:pb-24 lg:pb-32 pt-20 md:pt-32 pointer-events-none">
             <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 pointer-events-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                className="max-w-4xl space-y-4 md:space-y-6 lg:space-y-8"
-              >
+              <div className="max-w-4xl space-y-4 md:space-y-6 lg:space-y-8">
                 {/* 1. Category/Tag Pill - Translucent Glass */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -225,7 +221,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                     <span>{t(lang, "moreInfo")}</span>
                   </Link>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </motion.div>

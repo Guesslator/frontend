@@ -6,9 +6,22 @@ import HeroSection from "@/components/HeroSection";
 import ContentCard from "@/components/ContentCard";
 import UserMenu from "@/components/UserMenu";
 import ClientSearchPanel from "@/components/ClientSearchPanel";
-import Pagination from "@/components/Pagination";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { t } from "@/lib/i18n";
+import PerformanceDeferred from "@/components/PerformanceDeferred";
+import { t, Language } from "@/lib/i18n";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const validLang = (["tr", "en", "ar", "de"].includes(lang) ? lang : "en") as Language;
+
+  return {
+    title: t(validLang, "heroValueProp") || "The Ultimate Cinematic Quiz",
+    description: t(validLang, "footerDesc"),
+    alternates: {
+      canonical: `/${validLang}`,
+    },
+  };
+}
 // This is a Server Component
 export default async function ContentGridPage({
   params,
@@ -69,8 +82,10 @@ export default async function ContentGridPage({
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 transition-colors duration-300">
       {/* Hero Section - Full Width & Immersive */}
-      {showHero && heroItems.length > 0 && (
+      {showHero && heroItems.length > 0 ? (
         <HeroSection items={heroItems} lang={lang} />
+      ) : (
+        <h1 className="sr-only">Guessalator - {t(validLang, "heroValueProp")}</h1>
       )}
 
       <div
@@ -178,8 +193,8 @@ async function PaginatedContentList({
         </div>
       )}
 
-      {/* Pagination */}
-      <Pagination
+      {/* Pagination & Deferred Elements */}
+      <PerformanceDeferred
         lang={lang}
         currentPage={pagination.page}
         totalPages={pagination.totalPages}
