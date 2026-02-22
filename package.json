@@ -59,5 +59,10 @@
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "last 2 years",
+    "not dead",
+    "supports es6-module"
+  ]
 }
