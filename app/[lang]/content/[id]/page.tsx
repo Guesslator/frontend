@@ -346,7 +346,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 </div>
 
                 {/* Mobile Sticky CTA with Shimmer - Refined for Visual Polish */}
-                <div className="fixed bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background via-background/80 to-transparent z-100 lg:hidden safe-bottom pointer-events-none flex items-end p-4">
+                <div className="fixed bottom-0 left-0 right-0 z-100 lg:hidden safe-bottom pointer-events-none p-4 flex flex-col justify-end min-h-[160px] bg-linear-to-t from-background via-background/80 to-transparent">
                     <Link
                         href={`/${lang}/quiz/${item.id}`}
                         className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
