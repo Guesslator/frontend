@@ -241,7 +241,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
             isAnswered={isAnswered}
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-muted/20 p-8 text-center bg-gradient-to-br from-indigo-500/10 to-purple-500/10">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-muted/20 p-8 text-center bg-linear-to-br from-indigo-500/10 to-purple-500/10">
             <div className="mb-4">
               <span className="text-6xl">📝</span>
             </div>
@@ -289,10 +289,10 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                       strokeDasharray={`${2 * Math.PI * 36}`}
                       strokeDashoffset={`${2 * Math.PI * 36 * (1 - timeRemaining / ANSWER_TIME_LIMIT)}`}
                       className={`transition-all duration-1000 ${timeRemaining > 10
-                          ? "text-green-500"
-                          : timeRemaining > 5
-                            ? "text-yellow-500"
-                            : "text-red-500"
+                        ? "text-green-500"
+                        : timeRemaining > 5
+                          ? "text-yellow-500"
+                          : "text-red-500"
                         }`}
                       strokeLinecap="round"
                     />
@@ -300,10 +300,10 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span
                       className={`text-xl md:text-2xl font-bold ${timeRemaining > 10
-                          ? "text-green-500"
-                          : timeRemaining > 5
-                            ? "text-yellow-500"
-                            : "text-red-500"
+                        ? "text-green-500"
+                        : timeRemaining > 5
+                          ? "text-yellow-500"
+                          : "text-red-500"
                         }`}
                     >
                       {timeRemaining}
@@ -336,7 +336,7 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
                       onClick={() => handleAnswer(opt.id, opt.isCorrect)}
                       className="group relative p-4 md:p-6 bg-card hover:bg-accent border border-border hover:border-primary/50 rounded-xl text-left transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-center min-h-[80px] md:min-h-[100px]"
                     >
-                      <span className="text-base md:text-xl font-medium text-foreground group-hover:text-primary transition-colors break-words whitespace-normal leading-tight">
+                      <span className="text-base md:text-xl font-medium text-foreground group-hover:text-primary transition-colors wrap-break-word whitespace-normal leading-tight">
                         {optText}
                       </span>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -358,8 +358,8 @@ export default function QuizClient({ quiz, lang }: QuizClientProps) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
               className={`absolute bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full font-bold z-30 flex items-center gap-3 shadow-2xl backdrop-blur-md border border-border ${isCorrect
-                  ? "bg-green-500/20 text-green-500"
-                  : "bg-red-500/20 text-red-500"
+                ? "bg-green-500/20 text-green-500"
+                : "bg-red-500/20 text-red-500"
                 }`}
             >
               {isCorrect ? <CheckCircle size={24} /> : <XCircle size={24} />}

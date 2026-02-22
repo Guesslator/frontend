@@ -80,6 +80,12 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
   --radius-lg: var(--radius);
+  --z-60: 60;
+  --z-100: 100;
+}
+
+@utility safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body {

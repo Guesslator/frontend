@@ -111,7 +111,7 @@ export default function VideoQuestionPlayer({
          YouTube shows title on hover. We put a div on top to block mouse events 
          and visually obscure it.
       */}
-      <div className="absolute top-0 left-0 w-full h-[60px] bg-black z-[15] pointer-events-auto" />
+      <div className="absolute top-0 left-0 w-full h-[60px] bg-black z-15 pointer-events-auto" />
 
       <ReactPlayer
         ref={playerRef}
@@ -153,7 +153,7 @@ export default function VideoQuestionPlayer({
       )}
 
       {/* Volume Control - Centered at the top */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[20] flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 hover:opacity-100">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100 hover:opacity-100">
         <button
           onClick={() => setMuted(!muted)}
           aria-label={muted ? 'Unmute' : 'Mute'}

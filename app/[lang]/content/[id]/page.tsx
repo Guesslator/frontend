@@ -8,7 +8,7 @@ import { t } from '@/lib/i18n';
 import YouTubeThumbnail from '@/components/YouTubeThumbnail';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import ClientSideDetailEffects, { PremiumPoster, AnimatedHeading, AnimatedQuestionCard, AnimatedProgressBar } from "@/components/ClientSideDetailEffects";
+import ClientSideDetailEffects, { PremiumPoster, AnimatedHeading, AnimatedQuestionCard, AnimatedProgressBar, AnimatedStatCard } from "@/components/ClientSideDetailEffects";
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ lang: string; id: string }> }) {
     const { lang, id } = await params;
@@ -139,216 +139,193 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 {/* Cinematic Spotlight - De-intensified */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/10 blur-[200px] rounded-full animate-spotlight pointer-events-none z-0" />
 
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_90%)] z-0" />
-                <div className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent pointer-events-none z-0" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_95%)] z-0" />
+                <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none z-0" />
 
-                <div className="relative z-30 container mx-auto px-4 pt-24 pb-8 min-h-screen flex flex-col">
+                <div className="relative z-30 container mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-32 md:pb-20 min-h-screen flex flex-col">
 
-                    <div className="flex flex-col md:flex-row gap-12 items-start mt-8">
-                        {/* Poster - 3D interactions */}
-                        <div className="w-full md:w-1/3 max-w-[400px] mx-auto md:mx-0 z-10 sticky top-24">
+                    <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20 items-start">
+                        {/* Left Column: Poster & Metadata */}
+                        <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto lg:mx-0 lg:w-[400px] shrink-0 lg:sticky lg:top-32 z-10">
                             <PremiumPoster
                                 src={item.posterUrl}
                                 alt={title}
-                                badge="Premium Quiz"
                                 status={item.quizType + " Content"}
                             />
 
-                            {/* Leaderboard Sidebar - Desktop only here, move below title on mobile */}
-                            <div className="mt-8 hidden md:block">
+                            {/* Info Chips - Desktop Only */}
+                            <div className="mt-10 hidden lg:flex flex-col gap-4">
+                                {quizTypeInfo && (
+                                    <div className="px-6 py-4 rounded-3xl bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center gap-4 shadow-xl hover:bg-white/10 transition-colors">
+                                        <div className={`p-2 rounded-xl bg-current opacity-10 ${quizTypeInfo.color}`} />
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none mb-1">Type</span>
+                                            <span className={`text-sm font-black uppercase tracking-widest ${quizTypeInfo.color}`}>
+                                                {quizTypeInfo.label}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="px-6 py-4 rounded-3xl bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center gap-4 shadow-xl hover:bg-white/10 transition-colors">
+                                    <div className="p-2 rounded-xl bg-blue-500/10">
+                                        <Globe size={18} className="text-blue-400" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none mb-1">Language</span>
+                                        <span className="text-sm font-black uppercase tracking-widest text-blue-400">
+                                            {getLangLabel()}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mt-8 hidden lg:block">
                                 <Leaderboard contentId={id} />
                             </div>
                         </div>
 
-                        {/* Details */}
-                        <div className="flex-1 md:pt-4">
-                            <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-6">
-                                <h1 className="text-5xl md:text-8xl font-black tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)] text-white leading-[0.9]">
+                        {/* Right Column: Main Info */}
+                        <div className="flex-1 w-full max-w-4xl">
+                            {/* Mobile Category Pill */}
+                            <div className="lg:hidden mb-6">
+                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                    {quizTypeInfo?.label}
+                                </span>
+                            </div>
+
+                            <div className="flex flex-col mb-10">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter drop-shadow-2xl text-white leading-tight mb-4">
                                     {title}
                                 </h1>
 
-                                {/* Edit Button */}
-                                {isCreator && (
-                                    <Link
-                                        href={`/${lang}/quiz/${id}/edit`}
-                                        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors font-bold shadow-lg"
-                                    >
-                                        <Edit size={16} />
-                                        {t(validLang, 'editQuiz') || 'Edit Quiz'}
-                                    </Link>
-                                )}
-                            </div>
-
-                            <div className="flex flex-wrap gap-4 mb-8">
-                                {quizTypeInfo && (
-                                    <div className="px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center gap-3 shadow-2xl z-40">
-                                        <quizTypeInfo.icon size={18} className={quizTypeInfo.color} />
-                                        <span className={`text-xs font-black uppercase tracking-[0.2em] ${quizTypeInfo.color}`}>
-                                            {quizTypeInfo.label}
-                                        </span>
+                                <div className="flex items-center gap-4 text-sm md:text-lg font-medium text-muted-foreground">
+                                    <div className="flex items-center gap-2">
+                                        <Play size={16} className="fill-current" />
+                                        <span className="uppercase tracking-widest font-black text-xs">{item.quizType}</span>
                                     </div>
-                                )}
-
-                                <div className="px-5 py-2.5 rounded-full bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 flex items-center gap-3 shadow-2xl z-40">
-                                    <Globe size={18} className="text-blue-400" />
-                                    <span className="text-xs font-black uppercase tracking-[0.2em] text-blue-400">
-                                        {getLangLabel()}
-                                    </span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                    <span>{item.questions?.length || 0} {t(validLang, 'questions' as any) || 'Questions'}</span>
+                                    {isCreator && (
+                                        <>
+                                            <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                            <Link
+                                                href={`/${lang}/quiz/${id}/edit`}
+                                                className="text-primary hover:text-primary/80 flex items-center gap-1 font-bold transition-colors"
+                                            >
+                                                <Edit size={16} />
+                                                Edit
+                                            </Link>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="bg-zinc-900/60 p-8 md:p-12 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl mb-12 max-w-2xl shadow-2xl relative overflow-hidden group min-h-[160px]">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -translate-y-16 translate-x-16" />
-                                <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/60 font-black mb-6">Synopsis</h2>
-                                <p className="text-xl md:text-2xl text-foreground/90 leading-relaxed font-light">
-                                    {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || 'No description available for this language.'}
-                                </p>
+                            {/* Synopsis Box - Refined */}
+                            <div className="relative mb-16">
+                                <div className="absolute -left-4 top-0 bottom-0 w-1 bg-linear-to-b from-primary/60 to-transparent rounded-full" />
+                                <div className="pl-6">
+                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/80 font-black mb-4">SYNOPSIS</h2>
+                                    <p className="text-lg md:text-xl text-foreground/90 font-light leading-relaxed max-w-2xl">
+                                        {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || 'No description available.'}
+                                    </p>
+                                </div>
                             </div>
 
-                            {/* Mobile Leaderboard - Shown here on mobile */}
-                            <div className="md:hidden mb-12">
-                                <Leaderboard contentId={id} />
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row items-center gap-6 mb-16 relative">
+                            <div className="flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
                                 <Link
                                     href={`/${lang}/quiz/${item.id}`}
-                                    className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-4 px-12 py-6 bg-primary text-primary-foreground text-2xl font-black rounded-2xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-primary/30"
+                                    className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-6 px-14 py-7 bg-primary text-primary-foreground text-3xl font-black rounded-3xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500 shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)]"
                                 >
-                                    {/* Premium Shimmer Overlay */}
                                     <div className="absolute inset-0 z-0 overflow-hidden">
                                         <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
                                     </div>
 
-                                    <div className="relative flex items-center gap-4">
-                                        <div className="p-2 bg-white/20 rounded-full">
-                                            <Play size={28} fill="currentColor" />
+                                    <div className="relative flex items-center gap-4 translate-z-10">
+                                        <div className="p-2.5 bg-white/20 rounded-2xl">
+                                            <Play size={32} fill="currentColor" />
                                         </div>
-                                        <div className="flex flex-col items-start leading-none uppercase tracking-tight">
+                                        <div className="flex flex-col items-start leading-none uppercase tracking-tighter">
                                             <span>{t(validLang, 'startQuiz')}</span>
-                                            <span className="text-[10px] opacity-70 font-black mt-1 uppercase tracking-[0.2em]">
-                                                {t(validLang, 'testLanguage' as any) || 'Test Language'}: {getLangLabel()}
+                                            <span className="text-[10px] opacity-80 font-black mt-1 uppercase tracking-widest">
+                                                {getLangLabel()}
                                             </span>
                                         </div>
                                     </div>
                                 </Link>
 
-                                {/* Sticky CTA for Mobile */}
-                                <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-xl border-t border-white/10 z-100 md:hidden">
-                                    <Link
-                                        href={`/${lang}/quiz/${item.id}`}
-                                        className="w-full h-14 bg-primary text-primary-foreground font-black rounded-xl flex items-center justify-center gap-3 shadow-2xl shadow-primary/40 active:scale-95 transition-all"
-                                    >
-                                        <Play size={20} fill="currentColor" />
-                                        {t(validLang, 'startQuiz')}
-                                    </Link>
-                                </div>
-
-                                {/* Statistics Placeholder */}
-                                {/* Statistics */}
+                                {/* Quick Stats Cards */}
                                 {item.stats && item.stats.totalAttempts > 0 && (
-                                    <div className="flex flex-wrap items-center gap-4 p-6 bg-card/40 backdrop-blur-xl rounded-3xl border border-white/5 shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-                                        <div className="text-center px-4">
-                                            <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Pass Rate</div>
-                                            <div className={`text-3xl font-black ${item.stats.passRate > 70 ? 'text-green-500' : item.stats.passRate > 40 ? 'text-yellow-500' : 'text-red-500'}`}>
-                                                {item.stats.passRate}%
-                                            </div>
-                                        </div>
-                                        <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
-                                        <div className="text-center px-4">
-                                            <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Avg Score</div>
-                                            <div className="text-3xl font-black text-primary">
-                                                {item.stats.avgScore}/{item.questions?.length || 10}
-                                            </div>
-                                        </div>
-                                        <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
-                                        <div className="text-center px-4">
-                                            <div className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.15em] mb-1">Total Plays</div>
-                                            <div className="text-3xl font-black text-white/90">
-                                                {item.stats.totalAttempts}
-                                            </div>
-                                        </div>
+                                    <div className="grid grid-cols-3 gap-3 md:gap-6 w-full lg:w-auto">
+                                        <AnimatedStatCard
+                                            label="Pass Rate"
+                                            value={`${item.stats.passRate}%`}
+                                            color={item.stats.passRate > 60 ? 'text-green-400' : 'text-orange-400'}
+                                            delay={0.6}
+                                        />
+                                        <AnimatedStatCard
+                                            label="Avg Score"
+                                            value={`${item.stats.avgScore}`}
+                                            color="text-primary"
+                                            delay={0.7}
+                                        />
+                                        <AnimatedStatCard
+                                            label="Plays"
+                                            value={`${item.stats.totalAttempts}`}
+                                            color="text-white"
+                                            delay={0.8}
+                                        />
                                     </div>
                                 )}
                             </div>
 
-                            {/* Question Breakdown with Stats */}
+                            {/* Mobile Leaderboard Fallback */}
+                            <div className="lg:hidden mb-20">
+                                <Leaderboard contentId={id} />
+                            </div>
+
+                            {/* Preview Section */}
                             {item.questions && item.questions.length > 0 && (
-                                <div className="mb-12">
-                                    <AnimatedHeading
-                                        className="text-2xl font-black mb-8 flex items-center gap-3 border-b border-white/5 pb-4 uppercase tracking-widest text-foreground/80"
-                                    >
-                                        {(item.quizType === 'VIDEO' || item.questions[0]?.type === 'VIDEO') ? <Film className="text-primary" /> : <ImageIcon className="text-secondary" />}
-                                        {t(validLang, 'preview' as any) || 'Quiz Intel'}
+                                <div className="space-y-12">
+                                    <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-foreground/40 border-b border-white/5 pb-6">
+                                        <Film className="text-primary" size={24} />
+                                        Quiz Intel
                                     </AnimatedHeading>
 
-                                    <div className="grid gap-6">
-                                        {item.questions.map((q: any, idx: number) => {
-                                            // Real Stats Calculation
+                                    <div className="grid gap-8">
+                                        {item.questions.slice(0, 5).map((q: any, idx: number) => {
                                             const attempts = q.attempts || 0;
-                                            const correctCount = q.correctCount || 0;
-                                            const rawRate = attempts > 0 ? (correctCount / attempts) * 100 : 0;
-                                            const rate = Math.round(rawRate);
-
-                                            // Color logic based on rate
-                                            const statsColor = attempts === 0 ? 'bg-muted' : rate > 80 ? 'bg-green-500' : rate > 60 ? 'bg-yellow-500' : 'bg-red-500';
-                                            const textColor = attempts === 0 ? 'text-muted-foreground' : rate > 80 ? 'text-green-500' : rate > 60 ? 'text-yellow-500' : 'text-red-500';
-
-                                            const isGif = q.videoUrl?.toLowerCase().endsWith('.gif') || q.videoUrl?.includes('giphy.com');
+                                            const rate = attempts > 0 ? Math.round((q.correctCount / attempts) * 100) : 0;
+                                            const statsColor = rate > 75 ? 'bg-green-500' : rate > 40 ? 'bg-yellow-500' : 'bg-red-500';
 
                                             return (
                                                 <AnimatedQuestionCard
                                                     key={q.id || idx}
                                                     idx={idx}
-                                                    className="flex flex-col sm:flex-row gap-6 bg-white/5 p-5 rounded-2xl border border-white/5 hover:border-primary/30 transition-all duration-500 backdrop-blur-md shadow-xl group/card"
+                                                    className="group/card flex flex-col md:flex-row gap-6 md:gap-8 bg-white/3 p-4 md:p-6 rounded-4xl border border-white/5 hover:bg-white/5 transition-all duration-700 backdrop-blur-3xl"
                                                 >
-
-                                                    {/* Thumbnail - with hover scale */}
-                                                    <div className="w-full sm:w-56 aspect-video rounded-xl overflow-hidden shrink-0 bg-black relative shadow-2xl">
-                                                        {isGif ? (
-                                                            <Image
-                                                                src={q.videoUrl}
-                                                                alt={`Question ${idx + 1}`}
-                                                                fill
-                                                                className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
-                                                                unoptimized={true}
-                                                            />
-                                                        ) : q.videoUrl ? (
-                                                            <div className="w-full h-full transition-transform duration-700 group-hover/card:scale-110">
-                                                                <YouTubeThumbnail
-                                                                    videoUrl={q.videoUrl}
-                                                                    alt={`Question ${idx + 1}`}
-                                                                    className="w-full h-full"
-                                                                />
-                                                            </div>
+                                                    <div className="w-full max-w-[280px] md:max-w-none md:w-64 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-black relative shadow-2xl shrink-0">
+                                                        {q.videoUrl ? (
+                                                            <YouTubeThumbnail videoUrl={q.videoUrl} alt={`Q${idx + 1}`} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" />
                                                         ) : q.imageUrl ? (
-                                                            <Image src={q.imageUrl} alt={`Q${idx + 1}`} fill className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" sizes="(max-width: 768px) 100vw, 224px" />
-                                                        ) : (
-                                                            <div className="w-full h-full flex items-center justify-center text-muted-foreground font-black">Q{idx + 1}</div>
-                                                        )}
-
-                                                        {/* Glow Overlay */}
-                                                        <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+                                                            <Image src={q.imageUrl} alt={`Q${idx + 1}`} fill className="object-cover group-hover/card:scale-110 transition-transform duration-1000" />
+                                                        ) : <div className="w-full h-full bg-linear-to-br from-zinc-800 to-zinc-950 flex items-center justify-center text-zinc-600 font-black">PREVIEW</div>}
+                                                        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
+                                                        <div className="absolute bottom-4 left-4 text-[10px] font-black tracking-widest text-white/40">SCENE #{idx + 1}</div>
                                                     </div>
 
-                                                    {/* Stats Bar - Refined */}
                                                     <div className="flex-1 flex flex-col justify-center">
-                                                        <div className="flex justify-between items-center mb-3">
-                                                            <span className={`text-xs font-black uppercase tracking-[0.2em] ${textColor}`}>
-                                                                {attempts > 0 ? `${rate}% Pass Rate` : 'Untested'}
-                                                            </span>
+                                                        <div className="flex justify-between items-end mb-4">
+                                                            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">Difficulty Rating</h3>
+                                                            <span className="text-sm font-black text-white">{rate}%</span>
                                                         </div>
-                                                        <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden shadow-inner border border-white/5">
-                                                            <AnimatedProgressBar
-                                                                progress={attempts > 0 ? rate : 0}
-                                                                idx={idx}
-                                                                statsColor={statsColor}
-                                                            />
+                                                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                                            <AnimatedProgressBar progress={rate} idx={idx} statsColor={statsColor} />
                                                         </div>
-                                                        <p className="text-[10px] text-muted-foreground mt-3 font-black uppercase tracking-wider opacity-60">
-                                                            {attempts > 0
-                                                                ? `${correctCount} Correct / ${attempts} Total`
-                                                                : 'Be the first contender'}
+                                                        <p className="mt-4 text-[11px] text-muted-foreground font-medium flex items-center gap-2">
+                                                            <span className="w-1 h-1 rounded-full bg-primary" />
+                                                            {attempts > 0 ? `${q.correctCount} successful verb wandcasts` : 'Initial testing phase'}
                                                         </p>
                                                     </div>
                                                 </AnimatedQuestionCard>
@@ -359,6 +336,20 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             )}
                         </div>
                     </div>
+                </div>
+
+                {/* Mobile Sticky CTA with Shimmer */}
+                <div className="fixed bottom-0 left-0 right-0 p-6 bg-linear-to-t from-background via-background/95 to-transparent z-100 lg:hidden safe-bottom">
+                    <Link
+                        href={`/${lang}/quiz/${item.id}`}
+                        className="relative w-full h-16 bg-primary text-primary-foreground font-black text-xl rounded-2xl flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform"
+                    >
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-40 animate-shimmer" />
+                        </div>
+                        <Play size={24} fill="currentColor" className="relative z-10" />
+                        <span className="relative z-10">{t(validLang, 'startQuiz')}</span>
+                    </Link>
                 </div>
             </div>
         </ClientSideDetailEffects >

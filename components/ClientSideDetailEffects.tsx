@@ -48,7 +48,7 @@ export default function ClientSideDetailEffects({ children }: ClientSideDetailEf
     );
 }
 
-export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: string; badge?: string; status?: string }) {
+export function PremiumPoster({ src, alt, status }: { src: string; alt: string; status?: string }) {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
     const glazeX = useMotionValue(50);
@@ -80,7 +80,7 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
 
     return (
         <motion.div
-            className="group/poster relative aspect-3/4 rounded-4xl p-[10px] bg-linear-to-br from-zinc-800 via-zinc-900 to-black shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/5 active:scale-[0.98] transition-all duration-500"
+            className="group/poster relative aspect-3/4 rounded-4xl p-[3px] bg-linear-to-br from-white/20 via-white/5 to-transparent shadow-[0_30px_60px_rgba(0,0,0,0.6),0_0_40px_rgba(var(--primary-rgb),0.1)] preserve-3d cursor-pointer overflow-hidden border border-white/10 active:scale-[0.98] transition-all duration-500"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{
@@ -91,28 +91,23 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
                 transformStyle: "preserve-3d"
             }}
         >
-            {/* The Outer metallic frame detail */}
-            <div className="absolute inset-0 border-2 border-white/5 rounded-4xl pointer-events-none z-50 mix-blend-overlay" />
+            {/* Elegant Reflective Frame with Depth */}
+            <div className="absolute inset-0 border border-white/20 rounded-4xl pointer-events-none z-50 bg-linear-to-br from-white/10 via-transparent to-transparent opacity-40" />
+            <div className="absolute inset-[1px] border border-black/40 rounded-4xl pointer-events-none z-50" />
 
-            {/* Marquee Bulbs - Top */}
-            <div className="absolute top-[4px] left-[15%] right-[15%] h-[2px] flex justify-between px-2 z-50">
-                {[...Array(6)].map((_, i) => (
-                    <div key={`t-${i}`} className="w-[2px] h-[2px] rounded-full bg-white/40 animate-marquee-pulse" style={{ animationDelay: `${i * 0.4}s` }} />
-                ))}
-            </div>
-            {/* Marquee Bulbs - Bottom */}
-            <div className="absolute bottom-[4px] left-[15%] right-[15%] h-[2px] flex justify-between px-2 z-50">
-                {[...Array(6)].map((_, i) => (
-                    <div key={`b-${i}`} className="w-[2px] h-[2px] rounded-full bg-white/40 animate-marquee-pulse" style={{ animationDelay: `${i * 0.4}s` }} />
+            {/* Subtle Marquee Accent - Top (Integrated into frame) */}
+            <div className="absolute top-[10px] left-[25%] right-[25%] h-px flex justify-between px-6 z-50 opacity-30">
+                {[...Array(4)].map((_, i) => (
+                    <div key={`t-${i}`} className="w-[1.5px] h-[1.5px] rounded-full bg-white shadow-[0_0_5px_white] animate-marquee-pulse" style={{ animationDelay: `${i * 0.5}s` }} />
                 ))}
             </div>
 
             {/* Main Poster Container */}
-            <div className="relative w-full h-full rounded-3xl overflow-hidden bg-zinc-950">
+            <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-zinc-950">
                 {/* Film Texture Overlay */}
-                <div className="absolute inset-0 z-30 film-grain pointer-events-none opacity-[0.05]" />
+                <div className="absolute inset-0 z-30 film-grain pointer-events-none opacity-[0.03]" />
 
-                {/* Cinema Sweep / Lens Flare */}
+                {/* Refined Lens Flare */}
                 <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden opacity-10">
                     <div className="absolute top-0 -inset-full h-full w-[200%] bg-linear-to-r from-transparent via-white/10 to-transparent animate-cinema-sweep" />
                 </div>
@@ -124,49 +119,36 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
                         fill
                         priority
                         fetchPriority="high"
-                        className="object-cover grayscale-[0.2] contrast-[1.1] transition-all duration-1000 group-hover/poster:grayscale-0 group-hover/poster:contrast-100"
+                        className="object-cover contrast-[1.08] transition-all duration-1000 group-hover/poster:scale-110 group-hover/poster:rotate-1"
                         style={{ transform: "translateZ(0)" }}
                         sizes="(max-width: 768px) 100vw, 400px"
                     />
 
-                    {/* Cinematic Cinematic Overlay ("Perde") */}
-                    <div className="absolute inset-0 z-10 bg-linear-to-tr from-black/60 via-transparent to-white/5 opacity-40 group-hover/poster:opacity-20 transition-all duration-1000 pointer-events-none" />
-                    <div className="absolute inset-0 z-10 bg-black/20 group-hover/poster:bg-transparent transition-all duration-1000 pointer-events-none" />
-
-                    {/* Subtle Internal Vignette */}
-                    <div className="absolute inset-0 z-20 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] pointer-events-none" />
+                    {/* Sophisticated Vignette */}
+                    <div className="absolute inset-0 z-10 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover/poster:opacity-60 transition-all duration-1000 pointer-events-none" />
                 </div>
 
-                {/* Glaze / Reflection Layer */}
+                {/* Glaze Reflection */}
                 <motion.div
-                    className="absolute inset-0 z-40 opacity-0 group-hover/poster:opacity-20 transition-opacity duration-1000 pointer-events-none"
+                    className="absolute inset-0 z-40 opacity-0 group-hover/poster:opacity-15 transition-opacity duration-1000 pointer-events-none"
                     style={{
                         background: glazeBackground,
-                        transform: "translateZ(20px) scale(1.2)"
+                        transform: "translateZ(40px) scale(1.15)"
                     }}
                 />
 
-                {/* Badges */}
-                <div className="absolute top-4 left-4 z-50 flex flex-col gap-2">
-                    {badge && (
-                        <div className="px-3 py-1 bg-primary/80 text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-md shadow-lg backdrop-blur-md border border-white/10">
-                            {badge}
-                        </div>
-                    )}
+                {/* Refined Footer */}
+                <div className="absolute inset-x-0 bottom-0 z-50 p-6 bg-linear-to-t from-black via-black/90 to-transparent flex flex-col items-center gap-1.5 translate-z-20">
+                    <div className="w-6 h-0.5 bg-primary/60 rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
+                    <span className="text-[9px] font-black text-primary/90 uppercase tracking-[0.4em] drop-shadow-sm">Featured Experience</span>
+                    {status && <span className="text-[7px] font-medium text-white/50 uppercase tracking-[0.2em]">{status}</span>}
                 </div>
 
-                {/* "Now Showing" style footer */}
-                <div className="absolute inset-x-0 bottom-0 z-50 p-4 bg-linear-to-t from-black via-black/70 to-transparent flex flex-col items-center gap-1">
-                    <div className="w-8 h-px bg-primary/40 rounded-full mb-1" />
-                    <span className="text-[9px] font-black text-primary/80 uppercase tracking-widest">Now Showing</span>
-                    {status && <span className="text-[7px] font-bold text-white/30 uppercase tracking-[0.2em]">{status}</span>}
-                </div>
-
-                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-20 opacity-60" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent z-20" />
             </div>
 
-            {/* Inner frame depth glow */}
-            <div className="absolute inset-[14px] border border-white/5 rounded-[1.3rem] z-50 pointer-events-none opacity-20 group-hover/poster:opacity-50 transition-opacity duration-1000" />
+            {/* Inner Depth Glow Detail */}
+            <div className="absolute inset-[10px] border border-white/5 rounded-[2rem] z-50 pointer-events-none opacity-10 group-hover/poster:opacity-40 transition-opacity duration-1000" />
         </motion.div>
     );
 }
@@ -208,7 +190,21 @@ export function AnimatedProgressBar({ progress, className, idx, statsColor }: { 
             whileInView={{ width: `${progress}%` }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 + (idx * 0.1) }}
-            className={`h-full ${statsColor} shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]`}
+            className={`h-full ${statsColor} shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]`}
         />
+    );
+}
+
+export function AnimatedStatCard({ label, value, color, delay }: { label: string, value: string, color: string, delay: number }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay }}
+            className="flex flex-col items-center justify-center p-4 md:p-6 rounded-4xl bg-white/3 border border-white/5 backdrop-blur-3xl shadow-xl hover:bg-white/6 transition-all duration-300"
+        >
+            <span className="text-[9px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-1.5">{label}</span>
+            <span className={`text-xl md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
+        </motion.div>
     );
 }

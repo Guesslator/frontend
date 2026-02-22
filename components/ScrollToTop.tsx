@@ -42,7 +42,7 @@ export default function ScrollToTop() {
                     }}
                     whileTap={{ scale: 0.9 }}
                     onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[60] flex items-center justify-center pointer-events-auto"
+                    className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-60 flex items-center justify-center pointer-events-auto"
                     aria-label="Scroll to top"
                 >
                     {/* Main Button Container - Glassmorph Glow */}
@@ -52,7 +52,7 @@ export default function ScrollToTop() {
 
                         <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center overflow-hidden border border-white/20 dark:border-white/10 bg-white/10 dark:bg-black/20 backdrop-blur-2xl shadow-2xl transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                             {/* Subtle Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-purple-500/10 opacity-50 group-hover:opacity-100" />
+                            <div className="absolute inset-0 bg-linear-to-tr from-primary/10 to-purple-500/10 opacity-50 group-hover:opacity-100" />
 
                             <ChevronUp
                                 className="relative z-10 transition-transform duration-500 group-hover:translate-y-[-2px]"
