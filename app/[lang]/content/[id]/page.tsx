@@ -120,7 +120,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
     return (
         <ClientSideDetailEffects>
-            <div className="min-h-screen bg-background text-foreground relative overflow-hidden transition-colors duration-500">
+            <div className="min-h-svh bg-background text-foreground relative overflow-hidden transition-colors duration-500">
                 {/* Film Texture Overlay - Unified Cinematic Look */}
                 <div className="absolute inset-0 z-1 film-grain pointer-events-none opacity-[0.12]" />
 
@@ -142,7 +142,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_95%)] z-0" />
                 <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none z-0" />
 
-                <div className="relative z-30 container mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-32 md:pb-20 min-h-screen flex flex-col">
+                <div className="relative z-30 container mx-auto px-4 md:px-8 pt-20 md:pt-32 pb-32 md:pb-20 min-h-svh flex flex-col">
 
                     <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20 items-start">
                         {/* Left Column: Poster & Metadata */}
@@ -346,7 +346,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                 </div>
 
                 {/* Mobile Sticky CTA Container */}
-                <div className="fixed bottom-0 left-0 right-0 z-100 lg:hidden pointer-events-none p-4 safe-bottom">
+                <div className="fixed bottom-0 left-0 right-0 z-100 lg:hidden pointer-events-none p-4 pb-[calc(env(safe-area-inset-bottom)+16px)]">
                     {/* Background Fade Gradient */}
                     <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent -z-10 h-32 pointer-events-none" />
 
