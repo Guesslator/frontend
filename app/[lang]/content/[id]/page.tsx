@@ -345,11 +345,14 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                     </div>
                 </div>
 
-                {/* Mobile Sticky CTA with Shimmer - Refined for Visual Polish */}
-                <div className="fixed bottom-0 left-0 right-0 z-100 lg:hidden safe-bottom pointer-events-none p-4 flex flex-col justify-end min-h-[160px] bg-linear-to-t from-background via-background/80 to-transparent">
+                {/* Mobile Sticky CTA Container */}
+                <div className="fixed bottom-0 left-0 right-0 z-100 lg:hidden pointer-events-none p-4 safe-bottom">
+                    {/* Background Fade Gradient */}
+                    <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent -z-10 h-32 pointer-events-none" />
+
                     <Link
                         href={`/${lang}/quiz/${item.id}`}
-                        className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
+                        className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_15px_35px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
                     >
                         <div className="absolute inset-0 z-0">
                             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-30 animate-shimmer" />
