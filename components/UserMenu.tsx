@@ -35,6 +35,7 @@ export default function UserMenu({ lang }: { lang: string }) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Open user menu"
         className="flex items-center gap-2 md:gap-3 pl-1 pr-1 h-9 md:h-10 rounded-full hover:bg-foreground/5 transition-all duration-300 group"
       >
         <div className="flex flex-col items-end hidden md:flex">

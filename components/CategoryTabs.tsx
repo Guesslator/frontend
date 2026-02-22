@@ -179,9 +179,10 @@ export default function CategoryTabs({
                       buildUrl({ type: key, subcategory: undefined }),
                     )
                   }
+                  aria-label={`${t(lang, "filterBy")}: ${t(lang, label)}`}
                   className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all whitespace-nowrap overflow-hidden group flex-shrink-0 ${isActive
-                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                      : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-md"
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                    : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-md"
                     } cursor-pointer`
                   }
                 >
@@ -198,9 +199,10 @@ export default function CategoryTabs({
         {/* Filter Toggle Button */}
         <button
           onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+          aria-label={isFiltersOpen ? t(lang, "closeFilters") : t(lang, "openFilters")}
           className={`group flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${isFiltersOpen || activeFilterCount > 0
-              ? "bg-secondary text-secondary-foreground border-secondary shadow-lg shadow-secondary/20"
-              : "bg-background border-border hover:border-foreground/20 hover:bg-muted/50"
+            ? "bg-secondary text-secondary-foreground border-secondary shadow-lg shadow-secondary/20"
+            : "bg-background border-border hover:border-foreground/20 hover:bg-muted/50"
             } cursor-pointer`}
         >
           <Filter size={16} className={isFiltersOpen ? "animate-pulse" : ""} />
@@ -289,9 +291,9 @@ export default function CategoryTabs({
                           handleNavigation(buildUrl({ sortBy: s.key }))
                         }
                         className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSortBy === s.key ||
-                            (!activeSortBy && s.key === "recent")
-                            ? "bg-background border-primary text-primary shadow-sm"
-                            : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                          (!activeSortBy && s.key === "recent")
+                          ? "bg-background border-primary text-primary shadow-sm"
+                          : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
                           }`}
                       >
                         {t(lang, s.label)}
@@ -319,8 +321,8 @@ export default function CategoryTabs({
                           handleNavigation(buildUrl({ quizType: key }))
                         }
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeQuizType === key || (!activeQuizType && !key)
-                            ? "bg-background border-primary text-primary shadow-sm"
-                            : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                          ? "bg-background border-primary text-primary shadow-sm"
+                          : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
                           }`}
                       >
                         <Icon size={14} strokeWidth={2.5} />
@@ -379,9 +381,9 @@ export default function CategoryTabs({
                               handleNavigation(buildUrl({ subcategory: key }))
                             }
                             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSubcategory === key ||
-                                (!activeSubcategory && !key)
-                                ? "bg-background border-primary text-primary shadow-sm"
-                                : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                              (!activeSubcategory && !key)
+                              ? "bg-background border-primary text-primary shadow-sm"
+                              : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
                               } cursor-pointer`}
                           >
                             {t(lang, label)}

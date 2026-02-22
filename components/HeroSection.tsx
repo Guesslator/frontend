@@ -113,6 +113,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 fetchPriority={currentIndex === 0 ? "high" : "auto"}
                 className="object-cover opacity-100 dark:opacity-85"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                quality={70}
               />
 
               {/* 1. Grain Texture: Subtle high-end texture - DEFERRED/CLEANER ON MOBILE */}

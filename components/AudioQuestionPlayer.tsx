@@ -124,7 +124,11 @@ export default function AudioQuestionPlayer({
                         </button>
 
                         <div className="flex items-center gap-2 group">
-                            <button onClick={() => setMuted(!muted)} className="text-white hover:text-primary transition-colors">
+                            <button
+                                onClick={() => setMuted(!muted)}
+                                className="text-white hover:text-primary transition-colors"
+                                aria-label={muted ? "Unmute" : "Mute"}
+                            >
                                 {muted || volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
                             </button>
                             <input

@@ -71,6 +71,7 @@ export default function LanguageSwitcher({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
+        aria-label="Switch language"
         className="flex items-center justify-center gap-1.5 px-2 h-9 md:h-10 md:gap-2 md:px-3 rounded-full text-foreground/80 hover:bg-foreground/5 hover:text-foreground transition-all duration-200"
       >
         <Globe
@@ -104,8 +105,8 @@ export default function LanguageSwitcher({
                   key={lang.code}
                   onClick={() => handleLanguageChange(lang.code)}
                   className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${currentLang === lang.code
-                      ? "bg-accent text-accent-foreground font-medium"
-                      : "hover:bg-muted text-foreground"
+                    ? "bg-accent text-accent-foreground font-medium"
+                    : "hover:bg-muted text-foreground"
                     }`}
                 >
                   <span className="flex items-center gap-3">
