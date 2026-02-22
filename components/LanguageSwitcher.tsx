@@ -97,7 +97,7 @@ export default function LanguageSwitcher({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-48 bg-popover text-popover-foreground rounded-xl shadow-xl border border-border z-50 overflow-hidden"
+            className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-900 text-popover-foreground rounded-xl shadow-2xl border border-border z-50 overflow-hidden"
           >
             <div className="p-1">
               {LANGUAGES.map((lang) => (
