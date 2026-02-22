@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Play, Info } from "lucide-react";
@@ -25,20 +25,21 @@ interface HeroSectionProps {
 export default function HeroSection({ items, lang }: HeroSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 30, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 30, damping: 20 });
 
   // Handle mouse move for parallax
   useEffect(() => {
     if (isMobile) return;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
+      mouseX.set((e.clientX / window.innerWidth - 0.5) * 20);
+      mouseY.set((e.clientY / window.innerHeight - 0.5) * 20);
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isMobile]);
+  }, [isMobile, mouseX, mouseY]);
 
   // Check for mobile device
   useEffect(() => {
@@ -97,18 +98,11 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
           {/* Background Image - Modern Cinematic Spotlight Design - Theme Adapted */}
           <div className="absolute inset-0 bg-background transition-colors duration-500">
             <motion.div
-              className="relative w-full h-full"
-              initial={{ scale: 1.1 }}
-              animate={{
+              className="relative w-full h-full will-change-transform"
+              style={{
                 scale: 1.1,
-                x: -mousePos.x,
-                y: -mousePos.y
-              }}
-              transition={{
-                duration: 12,
-                ease: "linear",
-                x: { type: "spring", stiffness: 30, damping: 20 },
-                y: { type: "spring", stiffness: 30, damping: 20 }
+                x: springX,
+                y: springY,
               }}
             >
               <Image
@@ -121,13 +115,15 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
               />
 
-              {/* 1. Grain Texture: Subtle high-end texture (not dirty) */}
-              <div
-                className="absolute inset-0 opacity-[0.07] dark:opacity-[0.15] mix-blend-overlay pointer-events-none"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-                }}
-              />
+              {/* 1. Grain Texture: Subtle high-end texture - DEFERRED/CLEANER ON MOBILE */}
+              {!isMobile && (
+                <div
+                  className="absolute inset-0 opacity-[0.07] dark:opacity-[0.15] mix-blend-overlay pointer-events-none"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                  }}
+                />
+              )}
             </motion.div>
 
             {/* 2. Spotlight Vignette: Focuses attention to center, hides edges */}

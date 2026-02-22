@@ -11,7 +11,7 @@ import {
   Music,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { deleteUserContent } from "@/lib/api";
 import { t, Language } from "@/lib/i18n";
 import { toast } from "sonner";
@@ -50,6 +50,14 @@ export default function ContentCard({
   const { data: session } = useSession();
   const [deleting, setDeleting] = useState(false);
   const [imgSrc, setImgSrc] = useState(posterUrl || "/placeholder-banner.jpg");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const canDelete = creatorType === "USER" && session?.user?.id === creator?.id;
 
@@ -131,15 +139,15 @@ export default function ContentCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.5,
-        delay: index * 0.04,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        duration: 0.4,
+        delay: Math.min(index * 0.03, 0.3),
+        ease: "easeOut",
       }}
-      whileHover={{ y: -8, transition: { duration: 0.3, ease: "easeOut" } }}
-      className="group relative h-full flex flex-col"
+      whileHover={isMobile ? {} : { y: -8, transition: { duration: 0.2 } }}
+      className="group relative h-full flex flex-col will-change-transform"
     >
       <Link
         href={`/${lang}/content/${id}`}
