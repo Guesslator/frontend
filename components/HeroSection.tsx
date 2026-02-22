@@ -108,13 +108,17 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
               <Image
                 src={currentItem.imageUrl}
                 alt={currentItem.title}
-                fill
+                width={1920}
+                height={1080}
                 priority={currentIndex === 0}
                 fetchPriority={currentIndex === 0 ? "high" : "auto"}
-                className="object-cover opacity-100 dark:opacity-85"
+                className="w-full h-full object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                 quality={70}
               />
+
+              {/* Theme-aware Image Dimmer Overlay (Separated from image for better LCP) */}
+              <div className="absolute inset-0 bg-black/15 hidden dark:block pointer-events-none" />
 
               {/* 1. Grain Texture: Subtle high-end texture - DEFERRED/CLEANER ON MOBILE */}
               {!isMobile && (
