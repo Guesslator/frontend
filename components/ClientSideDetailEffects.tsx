@@ -210,10 +210,10 @@ export function AnimatedStatCard({ label, value, color, delay }: { label: string
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
-            className="flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 rounded-3xl md:rounded-4xl bg-white/3 border border-white/5 backdrop-blur-3xl shadow-xl hover:bg-white/6 transition-all duration-300 w-full"
+            className="flex flex-col items-center justify-center p-4 sm:p-5 md:p-6 rounded-3xl md:rounded-4xl bg-white/3 border border-white/5 backdrop-blur-3xl shadow-xl hover:bg-white/6 transition-all duration-300 w-full"
         >
-            <span className="text-[8px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-1.5 text-center">{label}</span>
-            <span className={`text-lg md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
+            <span className="text-[7px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mb-2 text-center opacity-80">{label}</span>
+            <span className={`text-base sm:text-lg md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
         </motion.div>
     );
 }

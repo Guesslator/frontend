@@ -235,7 +235,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
+                            <div className="hidden sm:flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
                                 <Link
                                     href={`/${lang}/quiz/${item.id}`}
                                     className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-6 px-14 py-7 bg-primary text-primary-foreground text-3xl font-black rounded-3xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500 shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)]"
@@ -345,17 +345,27 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                     </div>
                 </div>
 
-                {/* Mobile Sticky CTA with Shimmer */}
-                <div className="fixed bottom-0 left-0 right-0 p-6 bg-linear-to-t from-background via-background/95 to-transparent z-100 lg:hidden safe-bottom">
+                {/* Mobile Sticky CTA with Shimmer - Refined for Visual Polish */}
+                <div className="fixed bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background via-background/80 to-transparent z-100 lg:hidden safe-bottom pointer-events-none flex items-end p-4">
                     <Link
                         href={`/${lang}/quiz/${item.id}`}
-                        className="relative w-full h-16 bg-primary text-primary-foreground font-black text-xl rounded-2xl flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform"
+                        className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
                     >
                         <div className="absolute inset-0 z-0">
-                            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-40 animate-shimmer" />
+                            <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-30 animate-shimmer" />
                         </div>
-                        <Play size={24} fill="currentColor" className="relative z-10" />
-                        <span className="relative z-10">{t(validLang, 'startQuiz')}</span>
+
+                        <div className="relative flex items-center gap-3 z-10">
+                            <div className="p-1.5 bg-white/15 rounded-lg shrink-0">
+                                <Play size={20} fill="currentColor" />
+                            </div>
+                            <div className="flex flex-col items-start leading-none uppercase tracking-tighter">
+                                <span className="text-base font-black tracking-tight">{t(validLang, 'startQuiz')}</span>
+                                <span className="text-[7px] opacity-70 font-bold mt-0.5 uppercase tracking-[0.2em] leading-none">
+                                    {getLangLabel()}
+                                </span>
+                            </div>
+                        </div>
                     </Link>
                 </div>
             </div>
