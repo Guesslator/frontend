@@ -150,16 +150,19 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             <PremiumPoster
                                 src={item.posterUrl}
                                 alt={title}
-                                status={item.quizType + " Content"}
+                                status={`${item.quizType} ${t(validLang, 'contentLabel')}`}
+                                lang={validLang}
                             />
 
                             {/* Info Chips - Desktop Only */}
-                            <div className="mt-10 hidden lg:flex flex-col gap-4">
+                            <div className="mt-12 hidden lg:flex flex-col gap-5">
                                 {quizTypeInfo && (
-                                    <div className="px-6 py-4 rounded-3xl bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center gap-4 shadow-xl hover:bg-white/10 transition-colors">
-                                        <div className={`p-2 rounded-xl bg-current opacity-10 ${quizTypeInfo.color}`} />
+                                    <div className="premium-card px-7 py-5 flex items-center gap-5 hover:premium-card-hover">
+                                        <div className={`p-2.5 rounded-2xl bg-current/10 ${quizTypeInfo.color} flex items-center justify-center shrink-0`}>
+                                            <quizTypeInfo.icon size={18} className={quizTypeInfo.color} />
+                                        </div>
                                         <div className="flex flex-col">
-                                            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none mb-1">Type</span>
+                                            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'categoryLabel')}</span>
                                             <span className={`text-sm font-black uppercase tracking-widest ${quizTypeInfo.color}`}>
                                                 {quizTypeInfo.label}
                                             </span>
@@ -167,12 +170,12 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                     </div>
                                 )}
 
-                                <div className="px-6 py-4 rounded-3xl bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center gap-4 shadow-xl hover:bg-white/10 transition-colors">
-                                    <div className="p-2 rounded-xl bg-blue-500/10">
+                                <div className="premium-card px-7 py-5 flex items-center gap-5 hover:premium-card-hover">
+                                    <div className="p-2.5 rounded-2xl bg-blue-500/10 flex items-center justify-center shrink-0">
                                         <Globe size={18} className="text-blue-400" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none mb-1">Language</span>
+                                        <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] leading-none mb-1.5">{t(validLang, 'language')}</span>
                                         <span className="text-sm font-black uppercase tracking-widest text-blue-400">
                                             {getLangLabel()}
                                         </span>
@@ -196,7 +199,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             </div>
 
                             <div className="flex flex-col mb-10">
-                                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter drop-shadow-2xl text-white leading-tight mb-4">
+                                <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter drop-shadow-2xl text-white leading-[1.1] mb-6 text-pretty">
                                     {title}
                                 </h1>
 
@@ -214,8 +217,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                 href={`/${lang}/quiz/${id}/edit`}
                                                 className="text-primary hover:text-primary/80 flex items-center gap-1 font-bold transition-colors"
                                             >
-                                                <Edit size={16} />
-                                                Edit
+                                                <Edit size={16} /> {t(validLang, 'editLabel')}
                                             </Link>
                                         </>
                                     )}
@@ -223,12 +225,12 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             </div>
 
                             {/* Synopsis Box - Refined */}
-                            <div className="relative mb-16">
-                                <div className="absolute -left-4 top-0 bottom-0 w-1 bg-linear-to-b from-primary/60 to-transparent rounded-full" />
+                            <div className="relative mb-16 lg:mb-20">
+                                <div className="absolute -left-4 top-1 mb-1 w-1 bg-linear-to-b from-primary/60 via-primary/20 to-transparent rounded-full" />
                                 <div className="pl-6">
-                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/80 font-black mb-4">SYNOPSIS</h2>
-                                    <p className="text-lg md:text-xl text-foreground/90 font-light leading-relaxed max-w-2xl">
-                                        {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || 'No description available.'}
+                                    <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/80 font-black mb-5">{t(validLang, 'summaryLabel')}</h2>
+                                    <p className="text-lg md:text-xl text-foreground/80 font-light leading-relaxed max-w-2xl text-pretty">
+                                        {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || t(validLang, 'noDescription')}
                                     </p>
                                 </div>
                             </div>
@@ -259,19 +261,19 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 {item.stats && item.stats.totalAttempts > 0 && (
                                     <div className="grid grid-cols-3 gap-3 md:gap-6 w-full lg:w-auto">
                                         <AnimatedStatCard
-                                            label="Pass Rate"
+                                            label={t(validLang, 'passRate')}
                                             value={`${item.stats.passRate}%`}
                                             color={item.stats.passRate > 60 ? 'text-green-400' : 'text-orange-400'}
                                             delay={0.6}
                                         />
                                         <AnimatedStatCard
-                                            label="Avg Score"
+                                            label={t(validLang, 'avgScore')}
                                             value={`${item.stats.avgScore}`}
                                             color="text-primary"
                                             delay={0.7}
                                         />
                                         <AnimatedStatCard
-                                            label="Plays"
+                                            label={t(validLang, 'attempts')}
                                             value={`${item.stats.totalAttempts}`}
                                             color="text-white"
                                             delay={0.8}
@@ -290,7 +292,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 <div className="space-y-12">
                                     <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-foreground/40 border-b border-white/5 pb-6">
                                         <Film className="text-primary" size={24} />
-                                        Quiz Intel
+                                        {t(validLang, 'quizIntel')}
                                     </AnimatedHeading>
 
                                     <div className="grid gap-8">
@@ -303,30 +305,35 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                 <AnimatedQuestionCard
                                                     key={q.id || idx}
                                                     idx={idx}
-                                                    className="group/card flex flex-col md:flex-row gap-6 md:gap-8 bg-white/3 p-4 md:p-6 rounded-4xl border border-white/5 hover:bg-white/5 transition-all duration-700 backdrop-blur-3xl"
+                                                    className="group/card premium-card hover:premium-card-hover flex flex-col md:flex-row gap-5 md:gap-10 p-4 md:p-8"
                                                 >
-                                                    <div className="w-full max-w-[280px] md:max-w-none md:w-64 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-black relative shadow-2xl shrink-0">
+                                                    <div className="w-full max-w-[280px] md:max-w-none md:w-72 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-zinc-950 relative shadow-2xl shrink-0">
                                                         {q.videoUrl ? (
-                                                            <YouTubeThumbnail videoUrl={q.videoUrl} alt={`Q${idx + 1}`} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" />
+                                                            <YouTubeThumbnail videoUrl={q.videoUrl} alt={`Soru ${idx + 1}`} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" />
                                                         ) : q.imageUrl ? (
-                                                            <Image src={q.imageUrl} alt={`Q${idx + 1}`} fill className="object-cover group-hover/card:scale-110 transition-transform duration-1000" />
-                                                        ) : <div className="w-full h-full bg-linear-to-br from-zinc-800 to-zinc-950 flex items-center justify-center text-zinc-600 font-black">PREVIEW</div>}
-                                                        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
-                                                        <div className="absolute bottom-4 left-4 text-[10px] font-black tracking-widest text-white/40">SCENE #{idx + 1}</div>
+                                                            <Image src={q.imageUrl} alt={`Soru ${idx + 1}`} fill className="object-cover group-hover/card:scale-110 transition-transform duration-1000" />
+                                                        ) : <div className="w-full h-full bg-linear-to-br from-zinc-800 to-zinc-950 flex items-center justify-center text-zinc-700 font-bold">{t(validLang, 'preview')}</div>}
+                                                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                                                        <div className="absolute bottom-4 left-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/50">{t(validLang, 'scene')} #{idx + 1}</div>
                                                     </div>
 
-                                                    <div className="flex-1 flex flex-col justify-center">
-                                                        <div className="flex justify-between items-end mb-4">
-                                                            <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground">Difficulty Rating</h3>
-                                                            <span className="text-sm font-black text-white">{rate}%</span>
+                                                    <div className="flex-1 flex flex-col justify-center gap-6">
+                                                        <div className="flex flex-col gap-1.5">
+                                                            <div className="flex justify-between items-end">
+                                                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">{t(validLang, 'difficultyRating')}</h3>
+                                                                <span className="text-xs font-black text-white tabular-nums tracking-tighter">{rate}% {t(validLang, 'passRate')}</span>
+                                                            </div>
+                                                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                                                <AnimatedProgressBar progress={rate} idx={idx} statsColor={statsColor} />
+                                                            </div>
                                                         </div>
-                                                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
-                                                            <AnimatedProgressBar progress={rate} idx={idx} statsColor={statsColor} />
+
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-primary/60 shadow-[0_0_8px_rgba(var(--primary-rgb),0.5)]" />
+                                                            <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wider">
+                                                                {attempts > 0 ? `${q.correctCount} ${t(validLang, 'successSuffix')}` : t(validLang, 'testingPhase')}
+                                                            </p>
                                                         </div>
-                                                        <p className="mt-4 text-[11px] text-muted-foreground font-medium flex items-center gap-2">
-                                                            <span className="w-1 h-1 rounded-full bg-primary" />
-                                                            {attempts > 0 ? `${q.correctCount} successful verb wandcasts` : 'Initial testing phase'}
-                                                        </p>
                                                     </div>
                                                 </AnimatedQuestionCard>
                                             );

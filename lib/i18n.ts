@@ -184,7 +184,19 @@ export const translations = {
     german: 'Almanca',
     multipleLanguages: 'Çoklu Dil',
     noDescription: 'Bu dil için açıklama bulunmamaktadır.',
-    testLanguage: 'Test Dili'
+    testLanguage: 'Test Dili',
+    summaryLabel: 'ÖZET',
+    categoryLabel: 'Kategori',
+    quizIntel: 'Test Bilgileri',
+    difficultyRating: 'Zorluk Derecesi',
+    scene: 'Sahne',
+    preview: 'ÖNİZLEME',
+    featuredExperience: 'Özel Deneyim',
+    successSuffix: 'başarılı tahmin',
+    testingPhase: 'Test aşamasında',
+    contentLabel: 'İçeriği',
+    editLabel: 'Düzenle',
+    language: 'Dil'
   },
   en: {
     search: 'Search',
@@ -326,7 +338,19 @@ export const translations = {
     german: 'German',
     multipleLanguages: 'Multiple Languages',
     noDescription: 'No description available for this language.',
-    testLanguage: 'Test Language'
+    testLanguage: 'Test Language',
+    summaryLabel: 'SYNOPSIS',
+    categoryLabel: 'Category',
+    quizIntel: 'Quiz Intel',
+    difficultyRating: 'Difficulty Rating',
+    scene: 'Scene',
+    preview: 'PREVIEW',
+    featuredExperience: 'Featured Experience',
+    successSuffix: 'successful predictions',
+    testingPhase: 'In testing phase',
+    contentLabel: 'Content',
+    editLabel: 'Edit',
+    language: 'Language'
   },
   ar: {
     // ... existing ...
@@ -458,7 +482,19 @@ export const translations = {
     arabic: 'العربية',
     german: 'الألمانية',
     multipleLanguages: 'لغات متعددة',
-    noDescription: 'لا يوجد وصف متاح لهذه اللغة.'
+    noDescription: 'لا يوجد وصف متاح لهذه اللغة.',
+    summaryLabel: 'ملخص',
+    categoryLabel: 'فئة',
+    quizIntel: 'معلومات الاختبار',
+    difficultyRating: 'تقييم الصعوبة',
+    scene: 'مشهد',
+    preview: 'معاينة',
+    featuredExperience: 'تجربة مميزة',
+    successSuffix: 'توقعات ناجحة',
+    testingPhase: 'في مرحلة الاختبار',
+    contentLabel: 'محتوى',
+    editLabel: 'تعديل',
+    language: 'اللغة'
   },
   de: {
     search: 'Suchen',
@@ -588,7 +624,19 @@ export const translations = {
     arabic: 'Arabisch',
     german: 'Deutsch',
     multipleLanguages: 'Mehrere Sprachen',
-    noDescription: 'Keine Beschreibung für diese Sprache verfügbar.'
+    noDescription: 'Keine Beschreibung für diese Sprache verfügbar.',
+    summaryLabel: 'ZUSAMMENFASSUNG',
+    categoryLabel: 'Kategorie',
+    quizIntel: 'Quiz-Info',
+    difficultyRating: 'Schwierigkeitsgrad',
+    scene: 'Szene',
+    preview: 'VORSCHAU',
+    featuredExperience: 'Besonderes Erlebnis',
+    successSuffix: 'erfolgreiche Tipps',
+    testingPhase: 'In Testphase',
+    contentLabel: 'Inhalt',
+    editLabel: 'Bearbeiten',
+    language: 'Sprache'
   },
 };
 
