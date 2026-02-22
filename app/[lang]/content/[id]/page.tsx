@@ -101,7 +101,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         <ClientSideDetailEffects>
             <div className="min-h-screen bg-background text-foreground relative overflow-hidden transition-colors duration-500">
                 {/* Film Texture Overlay - Unified Cinematic Look */}
-                <div className="absolute inset-0 z-[1] film-grain pointer-events-none opacity-[0.12]" />
+                <div className="absolute inset-0 z-1 film-grain pointer-events-none opacity-[0.12]" />
 
                 {/* Background Ambience - Cinematic Poster Backdrop softened */}
                 <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -111,15 +111,15 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                         fill
                         priority
                         fetchPriority="high"
-                        className="object-cover opacity-15 blur-[64px] scale-125"
+                        className="object-cover opacity-15 blur-3xl scale-125"
                         sizes="20vw"
                     />
                 </div>
                 {/* Cinematic Spotlight - De-intensified */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-primary/10 blur-[200px] rounded-full animate-spotlight pointer-events-none z-0" />
 
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_var(--background)_90%)] z-0" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none z-0" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_90%)] z-0" />
+                <div className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent pointer-events-none z-0" />
 
                 <div className="relative z-30 container mx-auto px-4 pt-24 pb-8 min-h-screen flex flex-col">
 
@@ -196,7 +196,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 >
                                     {/* Premium Shimmer Overlay */}
                                     <div className="absolute inset-0 z-0 overflow-hidden">
-                                        <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                                        <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
                                     </div>
 
                                     <div className="relative flex items-center gap-4">
@@ -213,7 +213,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 </Link>
 
                                 {/* Sticky CTA for Mobile */}
-                                <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-xl border-t border-white/10 z-[100] md:hidden">
+                                <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-xl border-t border-white/10 z-100 md:hidden">
                                     <Link
                                         href={`/${lang}/quiz/${item.id}`}
                                         className="w-full h-14 bg-primary text-primary-foreground font-black rounded-xl flex items-center justify-center gap-3 shadow-2xl shadow-primary/40 active:scale-95 transition-all"
@@ -283,7 +283,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                 >
 
                                                     {/* Thumbnail - with hover scale */}
-                                                    <div className="w-full sm:w-56 aspect-video rounded-xl overflow-hidden flex-shrink-0 bg-black relative shadow-2xl">
+                                                    <div className="w-full sm:w-56 aspect-video rounded-xl overflow-hidden shrink-0 bg-black relative shadow-2xl">
                                                         {isGif ? (
                                                             <Image
                                                                 src={q.videoUrl}
@@ -307,7 +307,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                         )}
 
                                                         {/* Glow Overlay */}
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+                                                        <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
                                                     </div>
 
                                                     {/* Stats Bar - Refined */}

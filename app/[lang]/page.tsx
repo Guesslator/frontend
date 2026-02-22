@@ -231,7 +231,7 @@ function GridSkeleton() {
       {[...Array(10)].map((_, i) => (
         <div
           key={i}
-          className="aspect-[2/3] bg-card/50 rounded-2xl animate-pulse"
+          className="aspect-2/3 bg-card/50 rounded-2xl animate-pulse"
         />
       ))}
     </div>

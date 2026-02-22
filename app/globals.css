@@ -7,116 +7,59 @@
 :root {
   /* --- Primitives: Light --- */
   --color-brand-navy: #0A1F44;
-  --color-brand-navy-light: #1E3A8A;
   --color-brand-vivid-blue: #3B82F6;
-  /* Blue 500 - Soft & Modern Blue */
   --color-brand-dark-text: #111827;
-  /* Gray 900 - Soft Black */
   --color-brand-orange: #FF6B00;
-  --color-brand-orange-soft: #FF9E66;
   --color-brand-white: #FFFFFF;
   --color-brand-off-white: #F8FAFC;
   --color-brand-light-gray: #E2E8F0;
   --color-brand-dark-gray: #64748B;
-  /* Slate 500 for softer text */
   --color-brand-platinum: #F1F5F9;
-  /* Slate 100 */
 
   --color-status-success: #10B981;
-  /* Emerald 500 - more vibrant */
   --color-status-warning: #F59E0B;
-  /* Amber 500 */
   --color-status-error: #EF4444;
-  /* Red 500 */
 
-  /* --- Primitives: Dark --- */
-
-  --color-dark-navy: #050A14;
-  --color-deep-navy: #0A1F44;
-  --color-dark-slate: #142840;
-  --color-slate-hover: #1E3A5F;
-  --color-text-light: #F8FAFC;
-  --color-text-secondary: #CBD5E1;
-  --color-orange-accent: #FF6B00;
-  --color-orange-bright: #FFA366;
-  --color-slate-border: #2D3748;
-  --color-aqua-accent: #37E2D5;
-
-  /* --- Semantic Tokens (Light - "Modern Crisp & Playful") --- */
+  /* --- Semantic Tokens (Light) --- */
   --background: #FFFFFF;
-  /* Pure White - Clean canvas for content */
   --foreground: #18181B;
-  /* Zinc 900 - Sharp, high contrast text */
-
   --card: #FAFAFA;
-  /* Zinc 50 - Subtle distinction */
   --card-foreground: #18181B;
   --card-border: #E4E4E7;
-  /* Zinc 200 */
-
   --popover: #FFFFFF;
   --popover-foreground: #18181B;
-
-  /* Primary: Violet-Indigo Branding (Intellectual but Fun) */
   --primary: #6366f1;
-  /* Indigo 500 - Focused, trustworthy, energetic */
   --primary-foreground: #FFFFFF;
-
   --secondary: #F4F4F5;
-  /* Zinc 100 */
   --secondary-foreground: #18181B;
-
   --muted: #F4F4F5;
   --muted-foreground: #71717A;
-  /* Zinc 500 */
-
   --accent: #F4F4F5;
   --accent-foreground: #18181B;
-
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-
   --border: #E4E4E7;
   --input: #E4E4E7;
   --ring: #6366f1;
-  /* Inspect focus matches brand */
-
   --radius: 1rem;
-  /* Curvier, friendlier UI */
 }
 
 [data-theme="dark"] {
-  /* --- Semantic Tokens (Dark - "Deep Immersion & Focus") --- */
   --background: #09090B;
-  /* Zinc 950 - Deepest black-gray, better than pure black */
   --foreground: #FAFAFA;
-  /* Zinc 50 */
-
   --card: #18181B;
-  /* Zinc 900 */
   --card-foreground: #FAFAFA;
   --card-border: #27272A;
-  /* Zinc 800 */
-
   --popover: #18181B;
   --popover-foreground: #FAFAFA;
-
-  /* Primary: Electric Indigo Glow */
   --primary: #818cf8;
-  /* Indigo 400 - Lighter, glowing against dark */
   --primary-foreground: #000000;
-
   --secondary: #27272A;
-  /* Zinc 800 */
   --secondary-foreground: #FAFAFA;
-
   --muted: #27272A;
   --muted-foreground: #A1A1AA;
-  /* Zinc 400 */
-
   --accent: #27272A;
   --accent-foreground: #FAFAFA;
-
   --border: #27272A;
   --input: #27272A;
   --ring: #818cf8;
@@ -125,40 +68,18 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-card-border: var(--card-border);
-
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-
   --color-border: var(--border);
-  --color-input: var(--input);
   --color-ring: var(--ring);
-
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  /* Custom mapped colors for explicit use */
-  --color-navy: var(--color-brand-navy);
-  --color-aqua: var(--color-brand-aqua);
 }
 
 body {
@@ -167,29 +88,6 @@ body {
   font-family: var(--font-geist-sans), sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-[data-theme="dark"] body {
-  background: var(--background);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--muted);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
 }
 
 /* Utilities */
@@ -197,28 +95,6 @@ body {
   background: rgba(var(--card), 0.7);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border);
-}
-
-.text-glow {
-  text-shadow: 0 0 20px rgba(55, 226, 213, 0.5);
-  /* Aqua glow */
-}
-
-.film-grain {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 3px 3px;
-  mix-blend-mode: soft-light;
-  opacity: 0.08;
-}
-
-@keyframes progress {
-  0% {
-    transform: scaleX(0);
-  }
-
-  100% {
-    transform: scaleX(1);
-  }
 }
 
 @keyframes shimmer {
@@ -232,35 +108,6 @@ body {
 
   100% {
     transform: translateX(150%);
-  }
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes marquee-pulse {
-
-  0%,
-  100% {
-    opacity: 0.2;
-    filter: blur(2px);
-    transform: scale(0.9);
-  }
-
-  50% {
-    opacity: 0.6;
-    filter: blur(0px);
-    transform: scale(1.1);
-    box-shadow: 0 0 10px var(--primary);
   }
 }
 
@@ -284,73 +131,12 @@ body {
   }
 }
 
-.animate-marquee-pulse {
-  animation: marquee-pulse 4s infinite ease-in-out;
-}
-
-.animate-cinema-sweep {
-  animation: cinema-sweep 8s infinite linear;
-}
-
-@keyframes spotlight {
-
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.15;
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 0.25;
-  }
-}
-
-.animate-progress {
-  animation: progress 5s linear;
-}
-
 .animate-shimmer {
   animation: shimmer 2.5s infinite;
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-spotlight {
-  animation: spotlight 8s ease-in-out infinite;
-}
-
-.shimmer-mask {
-  mask-image: linear-gradient(to right, transparent, black, transparent);
-}
-
-.text-gradient-premium {
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 50%, var(--foreground) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: text-shine 5s linear infinite;
-}
-
-@keyframes text-shine {
-  from {
-    background-position: 0% center;
-  }
-
-  to {
-    background-position: 200% center;
-  }
-}
-
-.glow-primary {
-  box-shadow: 0 0 20px -5px var(--primary);
-}
-
-.glow-primary-lg {
-  box-shadow: 0 0 40px -10px var(--primary);
+.animate-cinema-sweep {
+  animation: cinema-sweep 8s infinite linear;
 }
 
 /* RTL Support */
@@ -358,10 +144,7 @@ body {
   direction: rtl;
 }
 
-[dir="rtl"] .lucide-chevron-left {
-  transform: scaleX(-1);
-}
-
+[dir="rtl"] .lucide-chevron-left,
 [dir="rtl"] .lucide-chevron-right {
   transform: scaleX(-1);
 }
@@ -373,23 +156,4 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
-}
-
-/* Custom Scrollbar */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
 }

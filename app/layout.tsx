@@ -94,9 +94,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://image.tmdb.org" />
-        <link rel="preconnect" href="https://upload.wikimedia.org" />
         <link rel="preconnect" href="https://img.youtube.com" />
+        <link rel="preconnect" href="https://grainy-gradients.vercel.app" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

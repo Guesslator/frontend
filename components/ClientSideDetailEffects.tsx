@@ -80,7 +80,7 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
 
     return (
         <motion.div
-            className="group/poster relative aspect-[3/4] rounded-[2rem] p-[10px] bg-gradient-to-br from-zinc-800 via-zinc-900 to-black shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/5 active:scale-[0.98] transition-all duration-500"
+            className="group/poster relative aspect-3/4 rounded-4xl p-[10px] bg-linear-to-br from-zinc-800 via-zinc-900 to-black shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/5 active:scale-[0.98] transition-all duration-500"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{
@@ -92,7 +92,7 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
             }}
         >
             {/* The Outer metallic frame detail */}
-            <div className="absolute inset-0 border-[2px] border-white/5 rounded-[2rem] pointer-events-none z-50 mix-blend-overlay" />
+            <div className="absolute inset-0 border-2 border-white/5 rounded-4xl pointer-events-none z-50 mix-blend-overlay" />
 
             {/* Marquee Bulbs - Top */}
             <div className="absolute top-[4px] left-[15%] right-[15%] h-[2px] flex justify-between px-2 z-50">
@@ -108,13 +108,13 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
             </div>
 
             {/* Main Poster Container */}
-            <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden bg-zinc-950">
+            <div className="relative w-full h-full rounded-3xl overflow-hidden bg-zinc-950">
                 {/* Film Texture Overlay */}
                 <div className="absolute inset-0 z-30 film-grain pointer-events-none opacity-[0.05]" />
 
                 {/* Cinema Sweep / Lens Flare */}
                 <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden opacity-10">
-                    <div className="absolute top-0 -inset-full h-full w-[200%] bg-gradient-to-r from-transparent via-white/10 to-transparent animate-cinema-sweep" />
+                    <div className="absolute top-0 -inset-full h-full w-[200%] bg-linear-to-r from-transparent via-white/10 to-transparent animate-cinema-sweep" />
                 </div>
 
                 <div className="w-full h-full relative overflow-hidden">
@@ -130,7 +130,7 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
                     />
 
                     {/* Cinematic Cinematic Overlay ("Perde") */}
-                    <div className="absolute inset-0 z-10 bg-gradient-to-tr from-black/60 via-transparent to-white/5 opacity-40 group-hover/poster:opacity-20 transition-all duration-1000 pointer-events-none" />
+                    <div className="absolute inset-0 z-10 bg-linear-to-tr from-black/60 via-transparent to-white/5 opacity-40 group-hover/poster:opacity-20 transition-all duration-1000 pointer-events-none" />
                     <div className="absolute inset-0 z-10 bg-black/20 group-hover/poster:bg-transparent transition-all duration-1000 pointer-events-none" />
 
                     {/* Subtle Internal Vignette */}
@@ -156,13 +156,13 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
                 </div>
 
                 {/* "Now Showing" style footer */}
-                <div className="absolute inset-x-0 bottom-0 z-50 p-4 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col items-center gap-1">
+                <div className="absolute inset-x-0 bottom-0 z-50 p-4 bg-linear-to-t from-black via-black/70 to-transparent flex flex-col items-center gap-1">
                     <div className="w-8 h-px bg-primary/40 rounded-full mb-1" />
-                    <span className="text-[9px] font-black text-primary/80 uppercase tracking-[0.3em]">Now Showing</span>
+                    <span className="text-[9px] font-black text-primary/80 uppercase tracking-widest">Now Showing</span>
                     {status && <span className="text-[7px] font-bold text-white/30 uppercase tracking-[0.2em]">{status}</span>}
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-20 opacity-60" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-20 opacity-60" />
             </div>
 
             {/* Inner frame depth glow */}

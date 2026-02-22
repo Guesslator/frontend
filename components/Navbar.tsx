@@ -60,7 +60,7 @@ export default function Navbar({ lang }: NavbarProps) {
         >
           {/* Top highlight for premium feel */}
           <div className={cn(
-            "absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
+            "absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
             isScrolled ? "opacity-100" : "opacity-0"
           )} />
         </div>
@@ -76,7 +76,7 @@ export default function Navbar({ lang }: NavbarProps) {
                 !isScrolled && "drop-shadow-sm", // Ensure readability on hero
               )}
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-purple-400">
                 GUESSALATOR
               </span>
             </span>
@@ -92,7 +92,7 @@ export default function Navbar({ lang }: NavbarProps) {
               )}
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
-                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
               </div>
 
               <div className="relative flex items-center gap-2">

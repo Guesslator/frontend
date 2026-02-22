@@ -198,8 +198,8 @@ export default function FileUploader({
                 {isImage
                   ? 'JPG, PNG, WebP up to 2MB'
                   : accept.includes('video')
-                  ? 'MP4 up to 50MB'
-                  : 'Select a file'}
+                    ? 'MP4 up to 50MB'
+                    : 'Select a file'}
               </p>
             </div>
           </button>
@@ -217,7 +217,7 @@ export default function FileUploader({
       {/* Error Display */}
       {error && (
         <div className="flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/50 rounded-lg">
-          <AlertCircle size={16} className="text-destructive mt-0.5 flex-shrink-0" />
+          <AlertCircle size={16} className="text-destructive mt-0.5 shrink-0" />
           <p className="text-sm text-destructive font-medium">{error}</p>
         </div>
       )}
@@ -225,7 +225,7 @@ export default function FileUploader({
       {/* Moderation Info for Users */}
       {isImage && !previewUrl && !error && (
         <div className="flex items-start gap-2 p-3 bg-primary/10 border border-primary/30 rounded-lg">
-          <Shield size={16} className="text-primary mt-0.5 flex-shrink-0" />
+          <Shield size={16} className="text-primary mt-0.5 shrink-0" />
           <p className="text-xs text-muted-foreground">
             {t(lang, 'moderationInfo') || 'All uploaded images are automatically checked for safety and content policy compliance.'}
           </p>

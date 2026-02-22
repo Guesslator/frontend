@@ -102,7 +102,7 @@ export default function AnalyticsDashboard() {
             </header>
 
             {/* Live Pulse */}
-            <div className="mb-8 p-1 bg-gradient-to-r from-green-500/20 to-transparent rounded-xl border border-green-500/20">
+            <div className="mb-8 p-1 bg-linear-to-r from-green-500/20 to-transparent rounded-xl border border-green-500/20">
                 <div className="bg-card/50 p-4 rounded-lg flex items-center gap-4">
                     <div className="relative">
                         <div className="w-3 h-3 bg-green-500 rounded-full animate-ping absolute inset-0" />

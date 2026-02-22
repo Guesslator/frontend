@@ -132,8 +132,8 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(255,255,255,0.8)_120%)] dark:bg-[radial-gradient(circle_at_center,transparent_10%,rgba(0,0,0,0.8)_110%)] mix-blend-normal" />
 
             {/* 3. Smooth Gradient Overlays for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-100 dark:opacity-90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-transparent to-transparent opacity-80" />
+            <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent opacity-100 dark:opacity-90" />
+            <div className="absolute inset-0 bg-linear-to-r from-background/90 via-transparent to-transparent opacity-80" />
 
             {/* 4. Color Grading Overlay: Adds a premium tint without washing out details */}
             <div className="absolute inset-0 bg-blue-900/10 dark:bg-blue-900/20 mix-blend-overlay" />
@@ -162,7 +162,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                 </motion.div>
 
                 {/* 2. Title - Massive & dynamic with gradient text */}
-                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/80 dark:from-white dark:to-white/70 leading-[0.95] md:leading-[0.9] tracking-tighter drop-shadow-2xl">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-linear-to-r from-foreground to-foreground/80 dark:from-white dark:to-white/70 leading-[0.95] md:leading-[0.9] tracking-tighter drop-shadow-2xl">
                   {currentItem.title}
                 </h1>
 
@@ -197,7 +197,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                   >
                     {/* Premium Shimmer Overlay */}
                     <div className="absolute inset-0 z-0 overflow-hidden">
-                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                      <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
                     </div>
 
                     <div className="relative flex items-center gap-3">
@@ -216,7 +216,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
                     aria-label={`${t(lang, "moreInfo")}: ${currentItem.title}`}
                     className="group relative px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-background/40 dark:bg-white/5 border border-foreground/10 dark:border-white/10 backdrop-blur-md hover:bg-background/60 dark:hover:bg-white/10 text-foreground dark:text-white transition-all hover:scale-105 active:scale-95 font-semibold text-base md:text-lg overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-y-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-y-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
                     <span>{t(lang, "moreInfo")}</span>
                   </Link>
                 </div>

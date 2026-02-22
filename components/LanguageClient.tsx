@@ -21,7 +21,7 @@ export default function LanguageClient({ languages }: LanguageClientProps) {
             {/* Background Ambience - Cinematic Spotlight */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[120px] rounded-full animate-spotlight pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_var(--background)_80%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,var(--background)_80%)]" />
             </div>
 
             <div className="absolute top-4 right-4 z-50">
@@ -34,7 +34,7 @@ export default function LanguageClient({ languages }: LanguageClientProps) {
                 transition={{ duration: 1, ease: "easeOut" }}
                 className="text-center mb-12 mt-8 z-10"
             >
-                <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-primary to-primary/50 mb-4 drop-shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-primary to-primary/50 mb-4 drop-shadow-[0_0_30px_rgba(var(--primary-rgb),0.3)]">
                     GUESSALATOR
                 </h1>
                 <p className="text-muted-foreground text-xs md:text-sm tracking-[0.4em] uppercase font-black opacity-80">
@@ -60,10 +60,10 @@ export default function LanguageClient({ languages }: LanguageClientProps) {
                             >
                                 {/* Shimmer Effect */}
                                 <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                                    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
                                 </div>
 
-                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80 z-0" />
+                                <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/20 to-background/80 z-0" />
 
                                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-6">
                                     <span className="text-xl font-black mb-4 text-primary border border-primary/20 rounded-lg px-4 py-1.5 bg-primary/5 uppercase tracking-widest group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-500 shadow-xl">

@@ -103,7 +103,7 @@ export default function Step3Questions({
     <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-500">
       {/* Banner Preview */}
       <div className="bg-card p-6 rounded-xl border border-border flex items-center gap-6">
-        <div className="w-[120px] aspect-[2/3] bg-muted rounded-lg overflow-hidden border border-border shadow-sm flex-shrink-0 relative group">
+        <div className="w-[120px] aspect-2/3 bg-muted rounded-lg overflow-hidden border border-border shadow-sm shrink-0 relative group">
           <img
             src={derivedBannerUrl}
             alt="Quiz Banner Preview"

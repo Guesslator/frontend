@@ -180,14 +180,14 @@ export default function CategoryTabs({
                     )
                   }
                   aria-label={`${t(lang, "filterBy")}: ${t(lang, label)}`}
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all whitespace-nowrap overflow-hidden group flex-shrink-0 ${isActive
+                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all whitespace-nowrap overflow-hidden group shrink-0 ${isActive
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
                     : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-md"
                     } cursor-pointer`
                   }
                 >
                   {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                   )}
                   {t(lang, label)}
                 </button>
@@ -200,7 +200,7 @@ export default function CategoryTabs({
         <button
           onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           aria-label={isFiltersOpen ? t(lang, "closeFilters") : t(lang, "openFilters")}
-          className={`group flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${isFiltersOpen || activeFilterCount > 0
+          className={`group shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all border ${isFiltersOpen || activeFilterCount > 0
             ? "bg-secondary text-secondary-foreground border-secondary shadow-lg shadow-secondary/20"
             : "bg-background border-border hover:border-foreground/20 hover:bg-muted/50"
             } cursor-pointer`}

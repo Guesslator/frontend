@@ -155,7 +155,7 @@ export default function ContentCard({
         className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-500 ease-out hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(129,140,248,0.15)] hover:border-primary/50 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5"
       >
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden w-full bg-muted">
+        <div className="relative aspect-3/4 overflow-hidden w-full bg-muted">
           <Image
             src={imgSrc}
             alt={title}
@@ -169,7 +169,7 @@ export default function ContentCard({
           />
 
           {/* Overlay Gradient - Cinematic Fade (Intellectual Blue Tint) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
           <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Top Info Bar */}
@@ -178,7 +178,7 @@ export default function ContentCard({
             {quizTypeInfo && (
               <div className="px-3 py-1.5 rounded-full text-[10px] font-black bg-black/40 backdrop-blur-xl text-white border border-white/10 flex items-center gap-2 shadow-2xl transition-transform duration-300 group-hover:scale-105">
                 <quizTypeInfo.icon size={12} className={quizTypeInfo.color} />
-                <span className="uppercase tracking-[0.1em]">
+                <span className="uppercase tracking-widest">
                   {quizTypeInfo.label}
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default function ContentCard({
           {stats && (
             <div className="absolute bottom-4 left-4 right-4 grid grid-cols-3 gap-2 text-center z-10">
               <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
-                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-widest mb-0.5">
                   {t(lang as Language, "attempts").slice(0, 3)}
                 </span>
                 <span className="text-xs font-black text-white drop-shadow-sm">
@@ -214,7 +214,7 @@ export default function ContentCard({
                 </span>
               </div>
               <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
-                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-widest mb-0.5">
                   {t(lang as Language, "passRate").slice(0, 4)}
                 </span>
                 <span
@@ -224,7 +224,7 @@ export default function ContentCard({
                 </span>
               </div>
               <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2 border border-white/10 flex flex-col items-center shadow-2xl transition-all duration-500 group-hover:bg-black/80">
-                <span className="text-[9px] text-white/60 font-black uppercase tracking-[0.1em] mb-0.5">
+                <span className="text-[9px] text-white/60 font-black uppercase tracking-widest mb-0.5">
                   {t(lang as Language, "avgScore").slice(0, 3)}
                 </span>
                 <span className="text-xs font-black text-primary drop-shadow-sm">
@@ -236,12 +236,12 @@ export default function ContentCard({
         </div>
 
         {/* Content Details */}
-        <div className="p-5 flex flex-col gap-3 flex-grow">
+        <div className="p-5 flex flex-col gap-3 grow">
           <div className="space-y-1.5">
             <h3 className="text-lg font-bold text-foreground leading-tight line-clamp-1 group-hover:text-primary transition-colors tracking-tight">
               {title}
             </h3>
-            <p className="text-sm text-muted-foreground font-medium line-clamp-2 min-h-[2.5rem] leading-relaxed">
+            <p className="text-sm text-muted-foreground font-medium line-clamp-2 min-h-10 leading-relaxed">
               {description}
             </p>
           </div>
