@@ -12,64 +12,58 @@ import ClientSideDetailEffects, { PremiumPoster, AnimatedHeading, AnimatedQuesti
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ lang: string; id: string }> }) {
     const { lang, id } = await params;
-    const session = await getServerSession(authOptions);
     const validLang = (['tr', 'en', 'ar', 'de'].includes(lang) ? lang : 'en') as 'tr' | 'en' | 'ar' | 'de';
 
-    let item = await fetchContentDetail(id, validLang);
+    const [session, item] = await Promise.all([
+        getServerSession(authOptions),
+        fetchContentDetail(id, validLang)
+    ]);
 
     // [SEO FALLBACK] If not found and ID looks like an old slug with suffix, try stripping it
-    if (!item && id.includes('-')) {
+    let finalItem = item;
+    if (!finalItem && id.includes('-')) {
         const parts = id.split('-');
         if (parts.length > 1) {
             const lastPart = parts[parts.length - 1];
-            // Check if suffix looks like our random pattern (5-7 chars)
             if (/^[a-z0-9]{5,7}$/.test(lastPart)) {
                 const baseId = parts.slice(0, -1).join('-');
-                item = await fetchContentDetail(baseId, validLang);
+                finalItem = await fetchContentDetail(baseId, validLang);
             }
         }
     }
 
-    if (!item) {
+    if (!finalItem) {
         console.error(`ContentDetailPage: Item not found for ID: ${id}`);
         return <div>Content not found</div>;
     }
 
-    // [SEO] Canonical Redirect: If accessed via UUID ID but slug exists, redirect to slug-based URL
-    if (item.slug && id !== item.slug) {
-        // Only redirect if id is actually the UUID (not the slug itself)
-        // Back-compat ensures old links still work but redirect to the clean one
-        redirect(`/${lang}/content/${item.slug}`);
+    // Use finalItem throughout
+    const itemData = finalItem;
+
+    // [SEO] Canonical Redirect
+    if (itemData.slug && id !== itemData.slug) {
+        redirect(`/${lang}/content/${itemData.slug}`);
     }
 
-    if (item.questions && item.questions.length > 0) {
-        // Questions available
-    } else {
-        // No questions found
-    }
+    const translations = (itemData.translations || {}) as any;
 
-    const translations = (item.translations || {}) as any;
-
-    // Cascading Translation Resolution: Preferred -> English -> First Available
+    // ... (logic remains same but uses itemData instead of item)
     const translation = (translations[validLang] || translations['en'] || (Object.values(translations)[0] as any)) as any;
 
-    // Cascading Title Resolution: Preferred -> English -> Any Translation -> Top-Level -> Slug -> Default
     let title = [
         (translations[validLang] as any)?.title,
         (translations['en'] as any)?.title,
-        (item as any).title,
-        (item as any).name,
+        (itemData as any).title,
+        (itemData as any).name,
         (Object.values(translations).find((t: any) => t?.title) as any)?.title,
     ].find(c => c && String(c).trim() !== '');
 
-    if (!title && item.slug) {
-        // Humanize Slug: harry-potter-spells-3rj4n -> Harry Potter Spells
-        const segments = item.slug.split('-');
+    if (!title && itemData.slug) {
+        const segments = itemData.slug.split('-');
         title = segments
             .filter((word, idx) => {
-                // Keep if it's not the last segment OR doesn't look like a short random ID
                 if (idx !== segments.length - 1) return true;
-                return !(/^[a-z0-9]{5,8}$/.test(word) && /[0-9]/.test(word)); // Must contain at least one number to be an ID
+                return !(/^[a-z0-9]{5,8}$/.test(word) && /[0-9]/.test(word));
             })
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ');
@@ -78,8 +72,8 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     if (!title) title = 'Quiz Content';
 
     const getQuizTypeLabel = () => {
-        if (!item.quizType) return null;
-        switch (item.quizType) {
+        if (!itemData.quizType) return null;
+        switch (itemData.quizType) {
             case 'VIDEO':
                 return { icon: Film, label: t(validLang, 'videoQuiz'), color: 'text-purple-400' };
             case 'IMAGE':
@@ -97,13 +91,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     );
 
     const getLangLabel = () => {
-        // Senior Logic:
-        // 1. If the item explicitly defines its primary language, use it.
-        // 2. If 'en' translation exists, it's highly likely the base language.
-        // 3. Any available translation language is better than defaulting to UI language blindly.
-        // 4. Fallback to current UI language only if it's a truly empty content.
-
-        const contentLang = item.language ||
+        const contentLang = itemData.language ||
             (supportedLangs.includes('en') ? 'en' : (supportedLangs[0] || validLang));
 
         const langKeyMap: Record<string, string> = {
@@ -116,22 +104,20 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
         return t(validLang, i18nKey as any) || contentLang.toUpperCase();
     };
-    const isCreator = session?.user?.id === item.creator?.id;
+    const isCreator = session?.user?.id === itemData.creator?.id;
 
     return (
         <ClientSideDetailEffects>
             <div className="min-h-svh bg-background text-foreground relative overflow-hidden transition-colors duration-500">
-                {/* Film Texture Overlay - Unified Cinematic Look */}
+                {/* Film Texture Overlay */}
                 <div className="absolute inset-0 z-1 film-grain pointer-events-none opacity-[0.12]" />
 
-                {/* Background Ambience - Cinematic Poster Backdrop softened */}
+                {/* Background Ambience - Cinematic Poster Backdrop (Lazy loaded, no longer prioritized) */}
                 <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                     <Image
-                        src={item.posterUrl.includes('tmdb.org') ? item.posterUrl.replace('/w500/', '/w200/') : item.posterUrl}
+                        src={itemData.posterUrl.includes('tmdb.org') ? itemData.posterUrl.replace('/w500/', '/w200/') : itemData.posterUrl}
                         alt="Background"
                         fill
-                        priority
-                        fetchPriority="high"
                         className="object-cover opacity-15 blur-3xl scale-125"
                         sizes="20vw"
                     />
@@ -148,9 +134,9 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                         {/* Left Column: Poster & Metadata */}
                         <div className="w-full max-w-[320px] md:max-w-[400px] mx-auto lg:mx-0 lg:w-[400px] shrink-0 lg:sticky lg:top-32 z-10">
                             <PremiumPoster
-                                src={item.posterUrl}
+                                src={itemData.posterUrl}
                                 alt={title}
-                                status={`${item.quizType} ${t(validLang, 'contentLabel')}`}
+                                status={`${itemData.quizType} ${t(validLang, 'contentLabel')}`}
                                 lang={validLang}
                             />
 
@@ -206,10 +192,10 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 <div className="flex items-center gap-4 text-sm md:text-lg font-medium text-muted-foreground">
                                     <div className="flex items-center gap-2">
                                         <Play size={16} className="fill-current" />
-                                        <span className="uppercase tracking-widest font-black text-xs">{item.quizType}</span>
+                                        <span className="uppercase tracking-widest font-black text-xs">{itemData.quizType}</span>
                                     </div>
                                     <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                                    <span>{item.questions?.length || 0} {t(validLang, 'questions' as any) || 'Questions'}</span>
+                                    <span>{itemData.questions?.length || 0} {t(validLang, 'questions' as any) || 'Questions'}</span>
                                     {isCreator && (
                                         <>
                                             <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
@@ -237,7 +223,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
                             <div className="hidden sm:flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
                                 <Link
-                                    href={`/${lang}/quiz/${item.id}`}
+                                    href={`/${lang}/quiz/${itemData.id}`}
                                     className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-6 px-14 py-7 bg-primary text-primary-foreground text-3xl font-black rounded-3xl overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500 shadow-[0_20px_50px_rgba(var(--primary-rgb),0.4)]"
                                 >
                                     <div className="absolute inset-0 z-0 overflow-hidden">
@@ -258,23 +244,23 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                 </Link>
 
                                 {/* Quick Stats Cards */}
-                                {item.stats && item.stats.totalAttempts > 0 && (
+                                {itemData.stats && itemData.stats.totalAttempts > 0 && (
                                     <div className="grid grid-cols-3 gap-3 md:gap-6 w-full lg:w-auto">
                                         <AnimatedStatCard
                                             label={t(validLang, 'passRate')}
-                                            value={`${item.stats.passRate}%`}
-                                            color={item.stats.passRate > 60 ? 'text-green-400' : 'text-orange-400'}
+                                            value={`${itemData.stats.passRate}%`}
+                                            color={itemData.stats.passRate > 60 ? 'text-green-400' : 'text-orange-400'}
                                             delay={0.6}
                                         />
                                         <AnimatedStatCard
                                             label={t(validLang, 'avgScore')}
-                                            value={`${item.stats.avgScore}`}
+                                            value={`${itemData.stats.avgScore}`}
                                             color="text-primary"
                                             delay={0.7}
                                         />
                                         <AnimatedStatCard
                                             label={t(validLang, 'attempts')}
-                                            value={`${item.stats.totalAttempts}`}
+                                            value={`${itemData.stats.totalAttempts}`}
                                             color="text-white"
                                             delay={0.8}
                                         />
@@ -288,7 +274,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                             </div>
 
                             {/* Preview Section */}
-                            {item.questions && item.questions.length > 0 && (
+                            {itemData.questions && itemData.questions.length > 0 && (
                                 <div className="space-y-12">
                                     <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-foreground/40 border-b border-white/5 pb-6">
                                         <Film className="text-primary" size={24} />
@@ -296,7 +282,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                     </AnimatedHeading>
 
                                     <div className="grid gap-8">
-                                        {item.questions.slice(0, 5).map((q: any, idx: number) => {
+                                        {itemData.questions.slice(0, 5).map((q: any, idx: number) => {
                                             const attempts = q.attempts || 0;
                                             const rate = attempts > 0 ? Math.round((q.correctCount / attempts) * 100) : 0;
                                             const statsColor = rate > 75 ? 'bg-green-500' : rate > 40 ? 'bg-yellow-500' : 'bg-red-500';
@@ -351,7 +337,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                     <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent -z-10 h-32 pointer-events-none" />
 
                     <Link
-                        href={`/${lang}/quiz/${item.id}`}
+                        href={`/${lang}/quiz/${itemData.id}`}
                         className="relative w-full h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-4 shadow-[0_15px_35px_rgba(var(--primary-rgb),0.5)] overflow-hidden active:scale-95 transition-transform pointer-events-auto"
                     >
                         <div className="absolute inset-0 z-0">

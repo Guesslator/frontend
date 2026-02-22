@@ -213,7 +213,7 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
         // [SENIOR FIX] Do NOT pass ?lang= to ensure we get ALL translations. 
         // The remote backend filters out other translations if ?lang= is present.
         const res = await fetch(`${API_URL}/content/${id}`, {
-            cache: 'no-store' // Temporary no-store to ensure the user sees the fix
+            next: { revalidate: 60 }
         });
         if (!res.ok) return null;
 
