@@ -152,6 +152,7 @@ async function PaginatedContentList({
   return (
     <>
       {/* Content Grid */}
+      <h2 className="sr-only">{t(lang, "quizzes" as any) || "Explore Quizzes"}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 lg:gap-10 pb-12">
         {items
           .map((item, index) => {

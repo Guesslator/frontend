@@ -49,6 +49,7 @@ export default function LanguageClient({ languages }: LanguageClientProps) {
                             key={lang.code}
                             href={`/${lang.code}`}
                             className="block w-full"
+                            aria-label={`Switch to ${lang.name}`}
                         >
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}

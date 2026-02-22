@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import { fetchContentDetail } from '../../../../lib/api';
 import Leaderboard from '@/components/Leaderboard';
 import { Film, Image as ImageIcon, Play, Globe, Edit } from 'lucide-react';
@@ -14,11 +15,31 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
     const session = await getServerSession(authOptions);
     const validLang = (['tr', 'en', 'ar', 'de'].includes(lang) ? lang : 'en') as 'tr' | 'en' | 'ar' | 'de';
 
-    const item = await fetchContentDetail(id, validLang);
+    let item = await fetchContentDetail(id, validLang);
+
+    // [SEO FALLBACK] If not found and ID looks like an old slug with suffix, try stripping it
+    if (!item && id.includes('-')) {
+        const parts = id.split('-');
+        if (parts.length > 1) {
+            const lastPart = parts[parts.length - 1];
+            // Check if suffix looks like our random pattern (5-7 chars)
+            if (/^[a-z0-9]{5,7}$/.test(lastPart)) {
+                const baseId = parts.slice(0, -1).join('-');
+                item = await fetchContentDetail(baseId, validLang);
+            }
+        }
+    }
 
     if (!item) {
         console.error(`ContentDetailPage: Item not found for ID: ${id}`);
         return <div>Content not found</div>;
+    }
+
+    // [SEO] Canonical Redirect: If accessed via UUID ID but slug exists, redirect to slug-based URL
+    if (item.slug && id !== item.slug) {
+        // Only redirect if id is actually the UUID (not the slug itself)
+        // Back-compat ensures old links still work but redirect to the clean one
+        redirect(`/${lang}/content/${item.slug}`);
     }
 
     if (item.questions && item.questions.length > 0) {
@@ -178,7 +199,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
                             <div className="bg-zinc-900/60 p-8 md:p-12 rounded-[2.5rem] border border-white/5 backdrop-blur-3xl mb-12 max-w-2xl shadow-2xl relative overflow-hidden group min-h-[160px]">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -translate-y-16 translate-x-16" />
-                                <h3 className="text-[10px] uppercase tracking-[0.4em] text-primary/60 font-black mb-6">Synopsis</h3>
+                                <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/60 font-black mb-6">Synopsis</h2>
                                 <p className="text-xl md:text-2xl text-foreground/90 leading-relaxed font-light">
                                     {(translation as any)?.description || (translation as any)?.text || t(validLang, 'noDescription' as any) || 'No description available for this language.'}
                                 </p>

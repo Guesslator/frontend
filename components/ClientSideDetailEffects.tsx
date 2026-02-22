@@ -173,7 +173,7 @@ export function PremiumPoster({ src, alt, badge, status }: { src: string; alt: s
 
 export function AnimatedHeading({ children, className, ...props }: { children: React.ReactNode, className?: string, [key: string]: any }) {
     return (
-        <motion.h3
+        <motion.h2
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -181,7 +181,7 @@ export function AnimatedHeading({ children, className, ...props }: { children: R
             {...props}
         >
             {children}
-        </motion.h3>
+        </motion.h2>
     );
 }
 

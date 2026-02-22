@@ -16,7 +16,7 @@ export default function UserMenu({ lang }: { lang: string }) {
 
   if (!session?.user) {
     return (
-      <Link href={`/${lang}/auth`}>
+      <Link href={`/${lang}/auth`} aria-label={t(validLang, "login")}>
         <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -38,7 +38,7 @@ export default function UserMenu({ lang }: { lang: string }) {
         aria-label="Open user menu"
         className="flex items-center gap-2 md:gap-3 pl-1 pr-1 h-9 md:h-10 rounded-full hover:bg-foreground/5 transition-all duration-300 group"
       >
-        <div className="flex flex-col items-end hidden md:flex">
+        <div className="hidden md:flex flex-col items-end">
           <span className="text-xs font-bold leading-none">
             {session.user.name?.split(" ")[0]}
           </span>
@@ -46,7 +46,7 @@ export default function UserMenu({ lang }: { lang: string }) {
             {session.user.role === "ADMIN" ? "SUPER ADMIN" : "Member"}
           </span>
         </div>
-        <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-primary to-purple-500 text-white flex items-center justify-center font-bold text-xs md:text-sm shadow-md ring-2 ring-background group-hover:ring-offset-2 transition-all">
+        <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-linear-to-br from-primary to-purple-500 text-white flex items-center justify-center font-bold text-xs md:text-sm shadow-md ring-2 ring-background group-hover:ring-offset-2 transition-all">
           {session.user.name?.[0]?.toUpperCase() ||
             session.user.email?.[0]?.toUpperCase() ||
             "U"}

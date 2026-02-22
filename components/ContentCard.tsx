@@ -150,7 +150,7 @@ export default function ContentCard({
       className="group relative h-full flex flex-col will-change-transform"
     >
       <Link
-        href={`/${lang}/content/${id}`}
+        href={`/${lang}/content/${slug || id}`}
         aria-label={`${t(lang as Language, "playNow")}: ${title}`}
         className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-500 ease-out hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(129,140,248,0.15)] hover:border-primary/50 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5"
       >

@@ -69,6 +69,7 @@ export default function Navbar({ lang }: NavbarProps) {
           <Link
             href={`/${lang}`}
             className="group relative flex items-center gap-1.5 md:gap-2 shrink-0"
+            aria-label="Guessalator - Home"
           >
             <span
               className={cn(

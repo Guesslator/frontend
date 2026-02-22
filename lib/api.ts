@@ -216,7 +216,11 @@ export async function fetchContentDetail(id: string, lang: string = 'en'): Promi
             cache: 'no-store' // Temporary no-store to ensure the user sees the fix
         });
         if (!res.ok) return null;
-        const item = await res.json();
+
+        // [BUGFIX] Handle empty response body to avoid "Unexpected end of JSON input"
+        const text = await res.text();
+        if (!text) return null;
+        const item = JSON.parse(text);
 
         // Determine quiz type from first question if available
         const rawQuestions = (item as any).questions;
@@ -270,7 +274,9 @@ export async function fetchQuizLevel(contentId: string, level: number, lang: str
     try {
         const res = await fetch(`${API_URL}/quiz/${contentId}/${level}?lang=${lang}`, { cache: 'no-store' });
         if (!res.ok) return null;
-        const data = await res.json();
+        const text = await res.text();
+        if (!text) return null;
+        const data = JSON.parse(text);
 
         return {
             id: data.id,

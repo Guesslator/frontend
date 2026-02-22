@@ -43,7 +43,7 @@ export default function Leaderboard({ contentId }: { contentId: string }) {
                 <div className="p-2 bg-warning/20 rounded-xl">
                     <Trophy className="text-warning" size={24} />
                 </div>
-                <h3 className="text-xl font-black text-foreground tracking-[0.1em] uppercase">High Scores</h3>
+                <h2 className="text-xl font-black text-foreground tracking-widest uppercase">High Scores</h2>
             </div>
 
             <div className="space-y-3">
