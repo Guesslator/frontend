@@ -1,14 +1,15 @@
 "use client";
 
 import { t, Language } from "@/lib/i18n";
-import {
-  Plus,
-  Trash,
-  Image as ImageIcon,
-  Video,
-  Type,
-} from "lucide-react";
+import { Plus, Trash, Image as ImageIcon, Video, Type } from "lucide-react";
 import FileUploader from "@/components/FileUploader";
+
+const getYoutubeId = (url: string) => {
+  if (!url) return "";
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : "";
+};
 
 interface Step3QuestionsProps {
   lang: Language;
@@ -89,106 +90,105 @@ export default function Step3Questions({
     setFormData({ ...formData, levels: newLevels });
   };
 
-  const derivedBannerUrl = questions.find(
+  const firstVideo = questions.find(
     (q: any) => q.type === "VIDEO" && q.mediaUrl,
-  )?.mediaUrl
-    ? `https://img.youtube.com/vi/${questions
-      .find((q: any) => q.type === "VIDEO" && q.mediaUrl)
-      .mediaUrl.split("v=")[1]
-      ?.split("&")[0]
-    }/hqdefault.jpg`
+  );
+  const bannerVideoId = firstVideo ? getYoutubeId(firstVideo.mediaUrl) : "";
+  const derivedBannerUrl = bannerVideoId
+    ? `https://img.youtube.com/vi/${bannerVideoId}/hqdefault.jpg`
     : "/placeholder-banner.jpg";
 
   return (
-    <div className="space-y-12 animate-in fade-in slide-in-from-right-8 duration-500">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
       {/* Banner Preview */}
-      <div className="bg-card p-6 rounded-xl border border-border flex items-center gap-6">
-        <div className="w-[120px] aspect-2/3 bg-muted rounded-lg overflow-hidden border border-border shadow-sm shrink-0 relative group">
+      <div className="bg-background/40 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex flex-col md:flex-row items-center gap-6 md:gap-8 group relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="w-full md:w-[160px] aspect-video md:aspect-2/3 bg-background/50 rounded-xl overflow-hidden border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] shrink-0 relative group/image">
           <img
             src={derivedBannerUrl}
             alt="Quiz Banner Preview"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-110"
             onError={(e) =>
               ((e.target as HTMLImageElement).src = "/placeholder-banner.jpg")
             }
           />
-          <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/image:opacity-100 transition-opacity duration-500" />
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-foreground mb-1">
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-xl font-bold text-white mb-2 tracking-tight">
             {t(lang, "bannerPreview") || "Banner Preview"}
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             {derivedBannerUrl.includes("placeholder")
               ? "Add a video question to generate the quiz banner automatically."
-              : "This image will be used as the quiz banner (derived from first video)."}
+              : "This cinematic image will be used as the quiz banner (derived from first video)."}
           </p>
         </div>
       </div>
 
       {questions.map((q: any, qIndex: number) => (
-        <div key={q.id} className="bg-card p-6 rounded-xl border border-border">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex gap-4">
-              <span className="bg-muted px-3 py-1 rounded-md text-sm font-bold text-muted-foreground">
+        <div
+          key={q.id}
+          className="bg-background/40 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden group/q"
+        >
+          {/* subtle highlight edge */}
+          <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+              <span className="bg-primary/20 border border-primary/30 px-4 py-1.5 rounded-full text-sm font-black text-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]">
                 Q{qIndex + 1}
               </span>
-              <div className="flex gap-2 bg-muted/50 rounded-lg p-1">
+              <div className="flex gap-1 bg-background/50 backdrop-blur-md rounded-xl p-1 border border-white/5">
                 {["VIDEO", "IMAGE", "TEXT"].map((type) => (
                   <button
                     key={type}
                     onClick={() => updateQuestion(qIndex, "type", type)}
-                    className={`p-2 rounded-md transition-colors ${q.type === type ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                    className={`p-2.5 rounded-lg transition-all duration-300 ${q.type === type ? "bg-white text-black shadow-md scale-105" : "text-muted-foreground hover:text-white hover:bg-white/5"}`}
                     title={t(lang, type.toLowerCase() as any)}
                   >
-                    {type === "VIDEO" && <Video size={16} />}
-                    {type === "IMAGE" && <ImageIcon size={16} />}
-                    {type === "TEXT" && <Type size={16} />}
+                    {type === "VIDEO" && <Video size={18} />}
+                    {type === "IMAGE" && <ImageIcon size={18} />}
+                    {type === "TEXT" && <Type size={18} />}
                   </button>
                 ))}
               </div>
             </div>
             <button
               onClick={() => removeQuestion(qIndex)}
-              className="text-muted-foreground hover:text-destructive transition-colors"
+              className="text-muted-foreground hover:text-red-400 hover:bg-red-400/10 p-2.5 rounded-xl transition-all duration-300 ml-auto md:ml-0"
             >
-              <Trash size={16} />
+              <Trash size={20} />
             </button>
           </div>
 
           {q.type === "VIDEO" && (
-            <div className="mb-6 space-y-4">
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {t(lang, "mediaType")} (YouTube URL Only)
+            <div className="mb-8 space-y-4">
+              <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
+                {t(lang, "mediaType")}{" "}
+                <span className="text-primary/70 ml-1">(YouTube URL)</span>
               </label>
-              <p className="text-[10px] text-blue-500 mb-2">
-                * The thumbnail of the first video will be used as the Quiz
-                Banner.
-              </p>
 
               <input
                 type="text"
                 placeholder="https://www.youtube.com/watch?v=..."
-                className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors"
+                className="w-full h-14 bg-background/50 backdrop-blur-md border border-white/5 rounded-2xl px-5 text-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 placeholder:text-muted-foreground/50 hover:bg-white/5 font-medium"
                 value={q.mediaUrl || ""}
                 onChange={(e) =>
                   updateQuestion(qIndex, "mediaUrl", e.target.value)
                 }
               />
 
-              <p className="text-[10px] text-muted-foreground mt-1">
-                Only YouTube videos are supported. Please paste the full video
-                URL.
-              </p>
-
               {q.mediaUrl && (
-                <div className="relative rounded-lg overflow-hidden bg-black aspect-video border border-border mt-2">
+                <div className="relative rounded-2xl overflow-hidden bg-black aspect-video border border-white/10 mt-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] group/video">
+                  <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10 rounded-2xl z-10" />
                   <iframe
                     width="100%"
                     height="100%"
-                    src={`https://www.youtube.com/embed/${q.mediaUrl.split("v=")[1]?.split("&")[0] || ""}?autoplay=0`}
+                    src={`https://www.youtube.com/embed/${getYoutubeId(q.mediaUrl)}?autoplay=0`}
                     title="Video Preview"
                     frameBorder="0"
+                    className="relative z-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
@@ -197,18 +197,16 @@ export default function Step3Questions({
             </div>
           )}
 
-
-
           {/* Question Content Per Language */}
           <div className="grid grid-cols-1 gap-6">
             {/* Question & Answers */}
             {formData.languages.map((l: string) => (
               <div
                 key={l}
-                className="space-y-3 p-4 bg-muted/20 rounded-lg border border-border"
+                className="space-y-4 p-5 md:p-6 bg-background/30 backdrop-blur-md rounded-2xl border border-white/5 relative group/translation"
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold text-muted-foreground bg-muted px-2 py-1 rounded">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-[10px] font-black tracking-widest text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-lg">
                     {l.toUpperCase()}
                   </span>
                 </div>
@@ -219,7 +217,7 @@ export default function Step3Questions({
                     type="text"
                     maxLength={100}
                     placeholder={`${t(lang, "enterQuestion")} (${l.toUpperCase()})`}
-                    className="w-full bg-background border border-input rounded-lg px-4 py-3 text-sm focus:border-primary focus:outline-none placeholder-muted-foreground text-foreground transition-colors pr-16"
+                    className="w-full h-14 bg-background/50 backdrop-blur-md border border-white/5 rounded-2xl px-5 text-foreground focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 placeholder:text-muted-foreground/50 hover:bg-white/5 font-medium pr-16"
                     value={q.translations[l]?.question || ""}
                     onChange={(e) =>
                       updateQuestionTranslation(
@@ -230,31 +228,34 @@ export default function Step3Questions({
                       )
                     }
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground bg-white/5 px-2 py-1 rounded-md">
                     {(q.translations[l]?.question || "").length}/100
                   </span>
                 </div>
 
                 {/* Answers List */}
-                <div className="space-y-2 mt-2">
-                  <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                <div className="space-y-3 mt-6">
+                  <div className="flex justify-between items-center px-1">
+                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                       {t(lang, "answers")}
                     </label>
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                    <span className="text-[10px] font-black text-primary/70 uppercase tracking-widest">
                       {t(lang, "correctAnswer")}
                     </span>
                   </div>
 
                   {(q.translations[l]?.answers || [""]).map(
                     (ans: string, ansIndex: number) => (
-                      <div key={ansIndex} className="flex gap-2 items-center">
+                      <div
+                        key={ansIndex}
+                        className="flex gap-3 items-center group/answer"
+                      >
                         <div className="flex-1 relative">
                           <input
                             type="text"
                             maxLength={50}
                             placeholder={`${t(lang, "enterAnswer")} ${ansIndex + 1}`}
-                            className={`w-full bg-background border ${q.correctAnswerIndex === ansIndex ? "border-green-500" : "border-input"} rounded-lg px-4 py-2 text-sm focus:border-green-500 focus:outline-none transition-colors text-foreground pr-12`}
+                            className={`w-full h-12 bg-background/50 backdrop-blur-md border ${q.correctAnswerIndex === ansIndex ? "border-primary/50 shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)]" : "border-white/5"} rounded-xl px-4 text-foreground focus:outline-none focus:border-primary/30 transition-all duration-300 placeholder:text-muted-foreground/50 hover:bg-white/5 font-medium pr-14`}
                             value={ans}
                             onChange={(e) => {
                               const newAnswers = [
@@ -279,12 +280,12 @@ export default function Step3Questions({
                               setFormData({ ...formData, levels: newLevels });
                             }}
                           />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground">
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">
                             {ans.length}/50
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-2 shrink-0">
                           <button
                             onClick={() =>
                               updateQuestion(
@@ -293,12 +294,12 @@ export default function Step3Questions({
                                 ansIndex,
                               )
                             }
-                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${q.correctAnswerIndex === ansIndex ? "border-green-500 bg-green-500/20 text-green-500" : "border-muted-foreground text-muted-foreground hover:border-foreground"}`}
+                            className={`w-10 h-10 rounded-xl border-2 flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 ${q.correctAnswerIndex === ansIndex ? "border-primary bg-primary/20 text-primary shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]" : "border-white/10 text-muted-foreground hover:border-white/30 bg-background/50"}`}
                             title={t(lang, "makeCorrect")}
                           >
-                            {q.correctAnswerIndex === ansIndex && (
-                              <div className="w-2 h-2 bg-green-500 rounded-full" />
-                            )}
+                            <div
+                              className={`w-3 h-3 rounded-full transition-all duration-500 ${q.correctAnswerIndex === ansIndex ? "bg-primary shadow-[0_0_10px_rgba(var(--primary-rgb),0.8)] scale-100" : "bg-transparent scale-0"}`}
+                            />
                           </button>
 
                           {(q.translations[l]?.answers || [""]).length > 1 && (
@@ -334,7 +335,7 @@ export default function Step3Questions({
                                 };
                                 setFormData({ ...formData, levels: newLevels });
                               }}
-                              className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                              className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all duration-300"
                             >
                               <Trash size={16} />
                             </button>
@@ -365,9 +366,9 @@ export default function Step3Questions({
                       };
                       setFormData({ ...formData, levels: newLevels });
                     }}
-                    className="text-xs font-bold text-green-500 hover:text-green-400 flex items-center gap-1 mt-1 transition-colors"
+                    className="inline-flex items-center gap-2 mt-4 text-[11px] font-black uppercase tracking-widest text-primary hover:text-primary-foreground hover:bg-primary/20 px-4 py-2 rounded-lg transition-all duration-300"
                   >
-                    <Plus size={12} />{" "}
+                    <Plus size={14} strokeWidth={3} />{" "}
                     {t(lang, "addQuestion").replace("Question", "Answer")}
                   </button>
                 </div>
@@ -376,15 +377,19 @@ export default function Step3Questions({
           </div>
 
           {/* Timing Controls */}
-          <div className="mt-6 grid grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg border border-border">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 p-6 bg-background/30 backdrop-blur-md rounded-2xl border border-white/5 relative overflow-hidden group/time">
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-white/10 to-transparent" />
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                {t(lang, "startTime")} ({t(lang, "seconds")})
+              <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
+                {t(lang, "startTime")}{" "}
+                <span className="text-white/30 truncate">
+                  ({t(lang, "seconds")})
+                </span>
               </label>
               <input
                 type="number"
                 min={0}
-                className="w-full bg-background border border-input rounded-lg px-4 py-2 text-sm text-center focus:border-primary focus:outline-none text-foreground transition-colors"
+                className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-foreground font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 hover:bg-white/5"
                 value={q.startTime || 0}
                 onChange={(e) =>
                   updateQuestion(qIndex, "startTime", parseInt(e.target.value))
@@ -392,13 +397,16 @@ export default function Step3Questions({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                {t(lang, "stopTime")} ({t(lang, "seconds")})
+              <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
+                {t(lang, "stopTime")}{" "}
+                <span className="text-white/30 truncate">
+                  ({t(lang, "seconds")})
+                </span>
               </label>
               <input
                 type="number"
                 min={0}
-                className="w-full bg-background border border-input rounded-lg px-4 py-2 text-sm text-center focus:border-primary focus:outline-none text-foreground transition-colors"
+                className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-primary font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)] hover:bg-white/5"
                 value={q.stopTime || 0}
                 onChange={(e) =>
                   updateQuestion(qIndex, "stopTime", parseInt(e.target.value))
@@ -407,13 +415,16 @@ export default function Step3Questions({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                {t(lang, "endTime")} ({t(lang, "seconds")})
+              <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
+                {t(lang, "endTime")}{" "}
+                <span className="text-white/30 truncate">
+                  ({t(lang, "seconds")})
+                </span>
               </label>
               <input
                 type="number"
                 min={0}
-                className="w-full bg-background border border-input rounded-lg px-4 py-2 text-sm text-center focus:border-primary focus:outline-none text-foreground transition-colors"
+                className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-foreground font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 hover:bg-white/5"
                 value={q.endTime || 0}
                 onChange={(e) =>
                   updateQuestion(qIndex, "endTime", parseInt(e.target.value))
@@ -426,9 +437,12 @@ export default function Step3Questions({
 
       <button
         onClick={addQuestion}
-        className="w-full py-4 border-2 border-dashed border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors flex items-center justify-center gap-2 font-bold"
+        className="w-full py-6 md:py-8 border-2 border-dashed border-white/10 rounded-3xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-500 flex flex-col items-center justify-center gap-3 font-black tracking-widest uppercase mb-10 group"
       >
-        <Plus size={20} /> {t(lang, "addQuestion")}
+        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-transform duration-500">
+          <Plus size={24} className="group-hover:text-primary" />
+        </div>
+        {t(lang, "addQuestion")}
       </button>
     </div>
   );

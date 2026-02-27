@@ -144,21 +144,35 @@ export default function QuizWizard({ lang, accessToken }: QuizWizardProps) {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-4xl mx-auto animate-in fade-in zoom-in-95 duration-700">
             {/* Stepper Header */}
-            <div className="flex items-center justify-between mb-8 relative">
-                <div className="absolute top-1/2 left-0 w-full h-1 bg-border -z-10" />
+            <div className="flex items-center justify-between mb-12 relative px-2">
+                {/* Connecting Line */}
+                <div className="absolute top-1/2 left-0 w-full h-1 bg-white/5 rounded-full -z-10" />
+                <div
+                    className="absolute top-1/2 left-0 h-1 bg-primary rounded-full -z-10 transition-all duration-700 ease-out shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]"
+                    style={{ width: `${((step - 1) / 2) * 100}%` }}
+                />
+
                 {[1, 2, 3].map((s) => (
                     <div
                         key={s}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-4 transition-colors ${step >= s ? 'bg-primary border-primary text-primary-foreground' : 'bg-card border-border text-muted-foreground'}`}
+                        className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-sm transition-all duration-500 relative ${step > s
+                                ? 'bg-primary text-primary-foreground shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] scale-100'
+                                : step === s
+                                    ? 'bg-background border-2 border-primary text-primary shadow-[0_0_30px_rgba(var(--primary-rgb),0.5)] scale-110'
+                                    : 'bg-background/50 backdrop-blur-md border border-white/10 text-muted-foreground scale-90'
+                            }`}
                     >
-                        {step > s ? <Check size={16} /> : s}
+                        {step > s ? <Check size={20} strokeWidth={3} /> : s}
+                        {step === s && (
+                            <div className="absolute -inset-2 rounded-full border border-primary/30 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
+                        )}
                     </div>
                 ))}
             </div>
 
-            <h1 className="text-3xl font-bold mb-8 text-center text-foreground">
+            <h1 className="text-3xl md:text-4xl font-black mb-10 text-center text-foreground tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
                 {step === 1 && t(lang, 'setup')}
                 {step === 2 && t(lang, 'metadata')}
                 {step === 3 && t(lang, 'questions')}
@@ -169,34 +183,39 @@ export default function QuizWizard({ lang, accessToken }: QuizWizardProps) {
             {step === 3 && <Step3Questions lang={lang} formData={formData} setFormData={setFormData} />}
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-12 bg-card/80 backdrop-blur p-4 rounded-xl border border-border sticky bottom-4 shadow-lg">
+            <div className="flex justify-between mt-12 bg-background/60 backdrop-blur-2xl p-4 md:p-6 rounded-2xl border border-white/5 sticky bottom-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-50">
                 <button
                     onClick={prevStep}
                     disabled={step === 1 || loading}
-                    className="px-6 py-3 rounded-lg text-muted-foreground hover:text-foreground disabled:opacity-50 flex items-center gap-2 font-bold transition-colors"
+                    className="px-6 py-3 md:px-8 md:py-4 rounded-xl text-muted-foreground hover:text-foreground hover:bg-white/5 disabled:opacity-0 disabled:pointer-events-none flex items-center gap-2 font-bold transition-all duration-300"
                 >
-                    <ArrowLeft size={20} /> {t(lang, 'back')}
+                    <ArrowLeft size={20} /> <span className="hidden md:inline">{t(lang, 'back')}</span>
                 </button>
 
                 {step < 3 ? (
                     <button
                         onClick={nextStep}
-                        className="px-8 py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-all flex items-center gap-2 font-bold shadow-sm"
+                        className="group relative overflow-hidden px-8 py-3 md:px-10 md:py-4 bg-white text-black rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center gap-2 font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
                     >
-                        {t(lang, 'next')} <ArrowRight size={20} />
+                        {t(lang, 'next')} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 ) : (
                     <button
                         onClick={handleSubmit}
                         disabled={loading}
-                        className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2 font-bold shadow-lg shadow-primary/20"
+                        className="group relative overflow-hidden px-8 py-3 md:px-10 md:py-4 bg-primary text-primary-foreground rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center gap-2 font-black tracking-widest uppercase shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.5)] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {loading ? (
-                            <div className="animate-spin h-5 w-5 border-2 border-primary-foreground border-t-transparent rounded-full" />
-                        ) : (
-                            <Save size={20} />
-                        )}
-                        {t(lang, 'finish')}
+                        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none rounded-xl">
+                            <div className="absolute top-0 -inset-full h-full w-[150%] z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                        </div>
+                        <span className="relative z-10 flex items-center gap-2">
+                            {loading ? (
+                                <div className="animate-spin h-5 w-5 border-2 border-primary-foreground border-t-transparent rounded-full" />
+                            ) : (
+                                <Save size={20} />
+                            )}
+                            {t(lang, 'finish')}
+                        </span>
                     </button>
                 )}
             </div>
