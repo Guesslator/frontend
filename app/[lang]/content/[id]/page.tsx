@@ -175,13 +175,14 @@ export default async function ContentDetailPage({
         <div className="absolute inset-0 z-1 film-grain pointer-events-none opacity-[0.08]" />
 
         {/* Subdued Quiet Luxury Background Ambient Glares */}
-        <div className="absolute top-1/4 -right-1/4 w-[80vw] h-[80vw] bg-primary/5 blur-[120px] rounded-full pointer-events-none z-0" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-[60vw] h-[60vw] bg-violet-600/5 blur-[120px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-primary/3 blur-[140px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-1/2 left-0 w-[50vw] h-[50vw] bg-indigo-500/3 blur-[140px] rounded-full -translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
+        <div className="absolute bottom-0 right-1/4 w-[70vw] h-[70vw] bg-violet-600/3 blur-[140px] rounded-full translate-y-1/3 pointer-events-none z-0" />
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(var(--primary-rgb),0.03),transparent_60%)] z-0" />
-        <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/80 to-background pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(var(--primary-rgb),0.02),transparent_50%)] z-0" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/90 to-background pointer-events-none z-0" />
 
-        <div className="relative z-30 container mx-auto px-4 md:px-8 pt-20 md:pt-40 pb-32 md:pb-24 min-h-svh flex flex-col">
+        <div className="relative z-30 container mx-auto px-4 md:px-6 lg:px-12 pt-16 md:pt-32 pb-32 md:pb-24 min-h-svh flex flex-col">
           <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20 items-start">
             {/* Left Column: Poster & Metadata */}
             <div className="w-full max-w-[300px] md:max-w-[360px] mx-auto lg:mx-0 lg:w-[360px] shrink-0 lg:sticky lg:top-32 z-10 transition-all duration-700">
@@ -195,21 +196,21 @@ export default async function ContentDetailPage({
               {/* Info Chips - Desktop Only */}
               <div className="mt-12 hidden lg:flex flex-col gap-5">
                 {quizTypeInfo && (
-                  <div className="premium-card px-7 py-5 flex items-center gap-5 hover:premium-card-hover">
+                  <div className="premium-card px-6 py-4 flex items-center gap-4 hover:premium-card-hover rounded-2xl border border-white/5 bg-white/1 backdrop-blur-sm">
                     <div
-                      className={`p-2.5 rounded-2xl bg-current/10 ${quizTypeInfo.color} flex items-center justify-center shrink-0`}
+                      className={`p-2.5 rounded-xl bg-current/10 ${quizTypeInfo.color} flex items-center justify-center shrink-0`}
                     >
                       <quizTypeInfo.icon
-                        size={18}
+                        size={16}
                         className={quizTypeInfo.color}
                       />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-none mb-1.5">
+                      <span className="text-[9px] text-white/40 font-bold uppercase tracking-[0.25em] leading-none mb-1">
                         {t(validLang, "categoryLabel")}
                       </span>
                       <span
-                        className={`text-sm font-black uppercase tracking-widest ${quizTypeInfo.color}`}
+                        className={`text-xs font-black uppercase tracking-widest ${quizTypeInfo.color}`}
                       >
                         {quizTypeInfo.label}
                       </span>
@@ -217,15 +218,15 @@ export default async function ContentDetailPage({
                   </div>
                 )}
 
-                <div className="premium-card px-7 py-5 flex items-center gap-5 hover:premium-card-hover">
-                  <div className="p-2.5 rounded-2xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                    <Globe size={18} className="text-blue-400" />
+                <div className="premium-card px-6 py-4 flex items-center gap-4 hover:premium-card-hover rounded-2xl border border-white/5 bg-white/1 backdrop-blur-sm mt-4">
+                  <div className="p-2.5 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                    <Globe size={16} className="text-blue-400" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-none mb-1.5">
+                    <span className="text-[9px] text-white/40 font-bold uppercase tracking-[0.25em] leading-none mb-1">
                       {t(validLang, "language")}
                     </span>
-                    <span className="text-sm font-black uppercase tracking-widest text-blue-400">
+                    <span className="text-xs font-black uppercase tracking-widest text-blue-400">
                       {getLangLabel()}
                     </span>
                   </div>
@@ -248,11 +249,11 @@ export default async function ContentDetailPage({
               </div>
 
               <div className="flex flex-col mb-10">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-normal tracking-tight drop-shadow-sm text-white/90 leading-[1.15] mb-6 text-pretty">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter drop-shadow-2xl bg-clip-text text-transparent bg-linear-to-b from-white to-white/60 leading-[1.1] mb-6 text-pretty">
                   {title}
                 </h1>
 
-                <div className="flex items-center gap-4 text-sm md:text-base font-semibold text-foreground/60 dark:text-gray-400">
+                <div className="flex items-center gap-4 text-sm font-semibold text-white/50">
                   <div className="flex items-center gap-2">
                     <Play
                       size={16}
@@ -286,14 +287,12 @@ export default async function ContentDetailPage({
                 </div>
               </div>
 
-              {/* Synopsis Box - Refined */}
               <div className="relative mb-16 lg:mb-20">
-                <div className="absolute -left-4 top-1 mb-1 w-1 bg-linear-to-b from-primary/80 via-primary/40 to-transparent rounded-full" />
-                <div className="pl-6">
-                  <h2 className="text-[10px] uppercase tracking-[0.4em] text-primary/70 dark:text-primary/70 font-bold mb-5">
+                <div className="pl-6 border-l-2 border-primary/30">
+                  <h2 className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold mb-4">
                     {t(validLang, "summaryLabel")}
                   </h2>
-                  <p className="text-lg md:text-xl text-foreground/70 dark:text-gray-400 font-light leading-[1.8] max-w-2xl text-pretty">
+                  <p className="text-base md:text-lg text-white/60 font-light leading-relaxed max-w-3xl text-pretty">
                     {(translation as any)?.description ||
                       (translation as any)?.text ||
                       t(validLang, "noDescription" as any) ||
@@ -302,18 +301,22 @@ export default async function ContentDetailPage({
                 </div>
               </div>
 
-              <div className="hidden sm:flex flex-wrap items-center gap-6 mb-20 lg:mb-24">
+              <div className="hidden sm:flex flex-wrap items-center gap-6 mb-16 lg:mb-20">
                 <Link
                   href={`/${lang}/quiz/${itemData.id}`}
-                  className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-4 px-10 py-5 bg-white/5 border border-white/10 text-white/90 hover:text-white hover:bg-white/10 hover:border-primary/50 text-base font-bold uppercase tracking-[0.2em] rounded-full overflow-hidden hover:scale-[1.02] active:scale-95 transition-all duration-500 shadow-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/50"
+                  className="group relative z-30 w-full sm:w-auto inline-flex items-center justify-center gap-4 px-10 py-5 bg-primary/10 border border-primary/20 backdrop-blur-md text-white hover:bg-primary/20 hover:border-primary/50 text-base font-black uppercase tracking-[0.2em] rounded-full overflow-hidden transition-all duration-500 shadow-[0_0_30px_rgba(var(--primary-rgb),0.1)] hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.2)] hover:-translate-y-1 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/50 active:scale-95"
                   aria-label={t(validLang, "startQuiz")}
                 >
-                  <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent" />
                   <div className="relative flex items-center gap-3 translate-z-10">
-                    <Play
-                      size={18}
-                      className="text-primary group-hover:scale-110 transition-transform duration-500"
-                    />
+                    <div className="p-2 bg-primary/20 rounded-full group-hover:bg-primary group-hover:text-black transition-colors duration-500">
+                      <Play
+                        size={18}
+                        className="text-primary group-hover:text-black transition-colors"
+                        fill="currentColor"
+                      />
+                    </div>
                     <span>{t(validLang, "startQuiz")}</span>
                   </div>
                 </Link>
@@ -354,11 +357,11 @@ export default async function ContentDetailPage({
 
               {/* Preview Section */}
               {itemData.questions && itemData.questions.length > 0 && (
-                <div className="space-y-12">
-                  <AnimatedHeading className="text-3xl font-black flex items-center gap-4 uppercase tracking-[0.2em] text-white/50 border-b border-white/10 pb-6 mb-12">
+                <div className="space-y-8 mt-12 pb-24">
+                  <AnimatedHeading className="text-lg font-bold flex items-center gap-3 uppercase tracking-[0.3em] text-white/40 pb-4 mb-4">
                     <Film
-                      className="text-primary"
-                      size={24}
+                      className="text-primary/70"
+                      size={18}
                       aria-hidden="true"
                     />
                     {t(validLang, "quizIntel")}
@@ -373,18 +376,18 @@ export default async function ContentDetailPage({
                           : 0;
                       const statsColor =
                         rate > 75
-                          ? "bg-green-500"
+                          ? "bg-emerald-500/80"
                           : rate > 40
-                            ? "bg-yellow-500"
-                            : "bg-red-500";
+                            ? "bg-amber-500/80"
+                            : "bg-rose-500/80";
 
                       return (
                         <AnimatedQuestionCard
                           key={q.id || idx}
                           idx={idx}
-                          className="group/card premium-card hover:premium-card-hover flex flex-col md:flex-row gap-5 md:gap-10 p-4 md:p-8"
+                          className="group/card flex flex-col md:flex-row gap-5 md:gap-8 p-4 md:p-6 rounded-3xl bg-white/1.5 border border-white/5 hover:bg-white/3 hover:border-white/10 transition-all duration-500"
                         >
-                          <div className="w-full max-w-[280px] md:max-w-none md:w-72 mx-auto md:mx-0 aspect-video rounded-3xl overflow-hidden bg-zinc-950 relative shadow-2xl shrink-0 border border-white/10">
+                          <div className="w-full max-w-[280px] md:max-w-none md:w-64 mx-auto md:mx-0 aspect-video rounded-2xl overflow-hidden bg-black/50 relative shadow-lg shrink-0 border border-white/5">
                             {q.videoUrl ? (
                               <YouTubeThumbnail
                                 videoUrl={q.videoUrl}
@@ -415,11 +418,11 @@ export default async function ContentDetailPage({
                                 <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/40">
                                   {t(validLang, "difficultyRating")}
                                 </h3>
-                                <span className="text-[10px] font-bold text-white/70 tabular-nums tracking-widest">
+                                <span className="text-[10px] font-bold text-white/60 tabular-nums tracking-widest">
                                   {rate}% {t(validLang, "passRate")}
                                 </span>
                               </div>
-                              <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                              <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                                 <AnimatedProgressBar
                                   progress={rate}
                                   idx={idx}
@@ -457,13 +460,16 @@ export default async function ContentDetailPage({
 
           <Link
             href={`/${lang}/quiz/${itemData.id}`}
-            className="relative w-full h-16 bg-[#18181b]/80 backdrop-blur-xl text-white/90 border border-white/10 rounded-[1.25rem] flex items-center justify-center gap-3 shadow-2xl overflow-hidden active:scale-[0.98] transition-all pointer-events-auto"
+            className="relative w-full h-16 bg-[#18181b]/60 backdrop-blur-2xl text-white/90 border border-white/10 rounded-[1.25rem] flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden active:scale-[0.98] transition-all pointer-events-auto"
             aria-label={t(validLang, "startQuiz")}
           >
             <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
             <div className="relative flex items-center gap-3 z-10">
-              <Play size={16} className="text-primary" />
-              <span className="text-sm font-bold uppercase tracking-[0.2em]">
+              <div className="p-1.5 bg-primary/20 rounded-full">
+                <Play size={14} fill="currentColor" className="text-primary" />
+              </div>
+              <span className="text-sm font-black uppercase tracking-[0.2em]">
                 {t(validLang, "startQuiz")}
               </span>
             </div>
