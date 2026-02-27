@@ -55,12 +55,24 @@ export default function Step1Config({
                   })
                 }
               >
-                <option value="MOVIE" className="bg-[#0f0f13] text-white py-2">{t(lang, "movie")}</option>
-                <option value="SERIES" className="bg-[#0f0f13] text-white py-2">{t(lang, "tvSeries")}</option>
-                <option value="GAME" className="bg-[#0f0f13] text-white py-2">{t(lang, "game")}</option>
-                <option value="SPORTS" className="bg-[#0f0f13] text-white py-2">{t(lang, "sport")}</option>
-                <option value="MUSIC" className="bg-[#0f0f13] text-white py-2">{t(lang, "music")}</option>
-                <option value="MIXED" className="bg-[#0f0f13] text-white py-2">{t(lang, "mixed")}</option>
+                <option value="MOVIE" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "movie")}
+                </option>
+                <option value="SERIES" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "tvSeries")}
+                </option>
+                <option value="GAME" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "game")}
+                </option>
+                <option value="SPORTS" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "sport")}
+                </option>
+                <option value="MUSIC" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "music")}
+                </option>
+                <option value="MIXED" className="bg-[#0f0f13] text-white py-2">
+                  {t(lang, "mixed")}
+                </option>
               </select>
               <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground group-hover/select:text-primary transition-colors">
                 ▼
@@ -81,10 +93,24 @@ export default function Step1Config({
                     setFormData({ ...formData, subcategory: e.target.value })
                   }
                 >
-                  <option value="" className="bg-[#0f0f13] text-white py-2">{t(lang, "selectSubcategory")}</option>
-                  <option value="FOOTBALL" className="bg-[#0f0f13] text-white py-2">{t(lang, "football")}</option>
-                  <option value="BASKETBALL" className="bg-[#0f0f13] text-white py-2">{t(lang, "basketball")}</option>
-                  <option value="MMA" className="bg-[#0f0f13] text-white py-2">{t(lang, "mma")}</option>
+                  <option value="" className="bg-[#0f0f13] text-white py-2">
+                    {t(lang, "selectSubcategory")}
+                  </option>
+                  <option
+                    value="FOOTBALL"
+                    className="bg-[#0f0f13] text-white py-2"
+                  >
+                    {t(lang, "football")}
+                  </option>
+                  <option
+                    value="BASKETBALL"
+                    className="bg-[#0f0f13] text-white py-2"
+                  >
+                    {t(lang, "basketball")}
+                  </option>
+                  <option value="MMA" className="bg-[#0f0f13] text-white py-2">
+                    {t(lang, "mma")}
+                  </option>
                 </select>
                 <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground group-hover/select:text-primary transition-colors">
                   ▼
@@ -118,10 +144,11 @@ export default function Step1Config({
               <div
                 key={l}
                 onClick={() => toggleLanguage(l)}
-                className={`group/lang relative p-4 rounded-xl border transition-all duration-300 flex items-center justify-between overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-95 ${formData.languages.includes(l)
+                className={`group/lang relative p-4 rounded-xl border transition-all duration-300 flex items-center justify-between overflow-hidden cursor-pointer hover:scale-[1.02] active:scale-95 ${
+                  formData.languages.includes(l)
                     ? "border-primary/50 bg-primary/10 shadow-[0_0_20px_rgba(var(--primary-rgb),0.15)]"
                     : "border-white/5 hover:border-white/20 bg-background/50 backdrop-blur-md"
-                  }`}
+                }`}
               >
                 <div className="relative z-10 flex items-center gap-3">
                   <span className="text-xs font-black px-2 py-1 rounded-md bg-white/5 border border-white/10 text-muted-foreground uppercase transition-colors group-hover/lang:text-foreground">
