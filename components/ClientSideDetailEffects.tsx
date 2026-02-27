@@ -116,7 +116,7 @@ export function PremiumPoster({
 
   return (
     <motion.div
-      className="group/poster relative aspect-3/4 rounded-3xl p-[2px] bg-linear-to-br from-white/20 via-white/5 to-transparent shadow-[0_20px_50px_rgba(0,0,0,0.5)] preserve-3d cursor-pointer overflow-hidden border border-white/10 active:scale-[0.99] transition-all duration-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+      className="group/poster relative aspect-3/4 rounded-4xl p-[3px] bg-linear-to-br from-white/30 via-white/5 to-transparent shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/5 active:scale-[0.98] transition-all duration-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       tabIndex={0}
@@ -131,8 +131,8 @@ export function PremiumPoster({
       }}
     >
       {/* Elegant Reflective Frame with Depth */}
-      <div className="absolute inset-0 border border-white/20 rounded-4xl pointer-events-none z-50 bg-linear-to-br from-white/10 via-transparent to-transparent opacity-40" />
-      <div className="absolute inset-px border border-black/40 rounded-4xl pointer-events-none z-50" />
+      <div className="absolute inset-0 border border-white/10 rounded-4xl pointer-events-none z-50 bg-linear-to-br from-white/20 via-transparent to-transparent opacity-40 group-hover/poster:opacity-60 transition-opacity duration-700" />
+      <div className="absolute inset-px border border-black/50 rounded-4xl pointer-events-none z-50" />
 
       {/* Subtle Marquee Accent - Top (Integrated into frame) */}
       <div className="absolute top-[10px] left-[25%] right-[25%] h-px flex justify-between px-6 z-50 opacity-30">
@@ -146,7 +146,7 @@ export function PremiumPoster({
       </div>
 
       {/* Main Poster Container */}
-      <div className="relative w-full h-full rounded-[1.4rem] overflow-hidden bg-zinc-950">
+      <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-zinc-950 shadow-inner">
         <Image
           src={src}
           alt={alt}
@@ -167,7 +167,7 @@ export function PremiumPoster({
         </div>
 
         {/* Sophisticated Vignette */}
-        <div className="absolute inset-0 z-10 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover/poster:opacity-60 transition-all duration-1000 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_70%,rgba(0,0,0,0.8)_100%)] opacity-80 group-hover/poster:opacity-40 transition-all duration-1000 pointer-events-none" />
       </div>
 
       {/* Glaze Reflection - Reduced opacity for softer look */}
@@ -179,23 +179,25 @@ export function PremiumPoster({
         }}
       />
 
-      {/* Refined Footer - Improved Contrast */}
-      <div className="absolute inset-x-0 bottom-0 z-50 p-6 bg-linear-to-t from-black via-black/95 to-transparent flex flex-col items-center gap-2 translate-z-20">
-        <div className="w-8 h-1 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]" />
-        <span className="text-[10px] font-black text-white uppercase tracking-[0.3em] drop-shadow-md">
-          {t(lang as any, "featuredExperience")}
-        </span>
-        {status && (
-          <span className="text-[8px] font-bold text-white/70 uppercase tracking-[0.2em]">
-            {status}
+      {/* Refined Footer - Frosted Glass Banner */}
+      <div className="absolute inset-x-0 bottom-4 z-50 px-4 flex justify-center translate-z-20 pointer-events-none">
+        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl py-2.5 px-6 flex flex-col items-center gap-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transform transition-transform duration-500 group-hover/poster:-translate-y-1">
+          <div className="w-6 h-0.5 bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.8)] opacity-80" />
+          <span className="text-[9px] font-black text-white/90 uppercase tracking-[0.35em] drop-shadow-md">
+            {t(lang as any, "featuredExperience")}
           </span>
-        )}
+          {status && (
+            <span className="text-[7.5px] font-bold text-white/50 uppercase tracking-[0.25em]">
+              {status}
+            </span>
+          )}
+        </div>
       </div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent z-20" />
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/60 via-black/10 to-transparent z-20 pointer-events-none" />
 
       {/* Inner Depth Glow Detail */}
-      <div className="absolute inset-[10px] border border-white/5 rounded-4xl z-50 pointer-events-none opacity-10 group-hover/poster:opacity-40 transition-opacity duration-1000" />
+      <div className="absolute inset-[15px] border border-white/5 rounded-3xl z-50 pointer-events-none opacity-0 group-hover/poster:opacity-30 transition-opacity duration-1000" />
     </motion.div>
   );
 }
