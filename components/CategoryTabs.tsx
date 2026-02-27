@@ -158,41 +158,45 @@ export default function CategoryTabs({
 
   return (
     <div className="sticky top-[68px] md:top-[80px] z-40 bg-background/85 backdrop-blur-xl border-b border-border/40 py-4 mb-10 -mx-4 md:-mx-12 px-4 md:px-12 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.02)] min-h-[72px]">
-      <div className="flex items-center gap-4 max-w-[1600px] mx-auto">
+      <div className="flex items-center gap-2 md:gap-4 max-w-[1600px] mx-auto">
         {/* Main Categories (Always Visible) */}
-        <div className="flex-1 overflow-x-auto scrollbar-hide py-1">
-          <div className="flex items-center gap-2">
-            {[
-              { key: undefined, label: "all" },
-              { key: "MOVIE", label: "movies" },
-              { key: "SERIES", label: "series" },
-              { key: "GAME", label: "games" },
-              { key: "SPORTS", label: "sports" },
-              { key: "MIXED", label: "other" },
-            ].map(({ key, label }) => {
-              const isActive = activeType === key || (!activeType && !key);
-              return (
-                <button
-                  key={label}
-                  onClick={() =>
-                    handleNavigation(
-                      buildUrl({ type: key, subcategory: undefined }),
-                    )
-                  }
-                  aria-label={`${t(lang, "filterBy")}: ${t(lang, label)}`}
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap overflow-hidden group shrink-0 border ${
-                    isActive
+        <div className="flex-1 relative min-w-0">
+          {/* Smooth fade-out gradient for mobile scrolling edge */}
+          <div className="absolute right-0 top-0 bottom-0 w-10 md:w-16 bg-linear-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+
+          <div className="overflow-x-auto scrollbar-hide py-1">
+            <div className="flex items-center gap-2 pr-10 md:pr-16">
+              {[
+                { key: undefined, label: "all" },
+                { key: "MOVIE", label: "movies" },
+                { key: "SERIES", label: "series" },
+                { key: "GAME", label: "games" },
+                { key: "SPORTS", label: "sports" },
+                { key: "MIXED", label: "other" },
+              ].map(({ key, label }) => {
+                const isActive = activeType === key || (!activeType && !key);
+                return (
+                  <button
+                    key={label}
+                    onClick={() =>
+                      handleNavigation(
+                        buildUrl({ type: key, subcategory: undefined }),
+                      )
+                    }
+                    aria-label={`${t(lang, "filterBy")}: ${t(lang, label)}`}
+                    className={`relative px-5 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap overflow-hidden group shrink-0 border ${isActive
                       ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_rgba(var(--primary-rgb),0.35)]"
                       : "bg-background/40 backdrop-blur-xl border-white/5 text-muted-foreground hover:bg-white/5 hover:border-white/10 hover:text-foreground"
-                  } cursor-pointer`}
-                >
-                  {isActive && (
-                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2.5s_infinite]" />
-                  )}
-                  {t(lang, label)}
-                </button>
-              );
-            })}
+                      } cursor-pointer`}
+                  >
+                    {isActive && (
+                      <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2.5s_infinite]" />
+                    )}
+                    {t(lang, label)}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -202,11 +206,10 @@ export default function CategoryTabs({
           aria-label={
             isFiltersOpen ? t(lang, "closeFilters") : t(lang, "openFilters")
           }
-          className={`group shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${
-            isFiltersOpen || activeFilterCount > 0
-              ? "bg-primary/10 text-primary border-primary/30 shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)]"
-              : "bg-background/40 backdrop-blur-xl border-white/5 hover:border-white/10 hover:bg-white/5 text-muted-foreground hover:text-foreground"
-          } cursor-pointer`}
+          className={`group shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${isFiltersOpen || activeFilterCount > 0
+            ? "bg-primary/10 text-primary border-primary/30 shadow-[0_0_15px_rgba(var(--primary-rgb),0.15)]"
+            : "bg-background/40 backdrop-blur-xl border-white/5 hover:border-white/10 hover:bg-white/5 text-muted-foreground hover:text-foreground"
+            } cursor-pointer`}
         >
           <Filter size={16} className={isFiltersOpen ? "animate-pulse" : ""} />
           <span className="hidden md:inline">{t(lang, "filter")}</span>
@@ -293,12 +296,11 @@ export default function CategoryTabs({
                         onClick={() =>
                           handleNavigation(buildUrl({ sortBy: s.key }))
                         }
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                          activeSortBy === s.key ||
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSortBy === s.key ||
                           (!activeSortBy && s.key === "recent")
-                            ? "bg-background border-primary text-primary shadow-sm"
-                            : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                        }`}
+                          ? "bg-background border-primary text-primary shadow-sm"
+                          : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                          }`}
                       >
                         {t(lang, s.label)}
                       </button>
@@ -324,11 +326,10 @@ export default function CategoryTabs({
                         onClick={() =>
                           handleNavigation(buildUrl({ quizType: key }))
                         }
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                          activeQuizType === key || (!activeQuizType && !key)
-                            ? "bg-background border-primary text-primary shadow-sm"
-                            : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                        }`}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeQuizType === key || (!activeQuizType && !key)
+                          ? "bg-background border-primary text-primary shadow-sm"
+                          : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                          }`}
                       >
                         <Icon size={14} strokeWidth={2.5} />
                         {t(lang, label)}
@@ -385,12 +386,11 @@ export default function CategoryTabs({
                             onClick={() =>
                               handleNavigation(buildUrl({ subcategory: key }))
                             }
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                              activeSubcategory === key ||
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeSubcategory === key ||
                               (!activeSubcategory && !key)
-                                ? "bg-background border-primary text-primary shadow-sm"
-                                : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
-                            } cursor-pointer`}
+                              ? "bg-background border-primary text-primary shadow-sm"
+                              : "bg-background border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+                              } cursor-pointer`}
                           >
                             {t(lang, label)}
                           </button>
