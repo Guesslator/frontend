@@ -148,8 +148,8 @@ export function PremiumPoster({
       {/* Main Poster Container */}
       <div className="relative w-full h-full rounded-[1.8rem] overflow-hidden bg-zinc-950 shadow-inner">
         <Image
-          src={src}
-          alt={alt}
+          src={src || "/placeholder-banner.jpg"}
+          alt={alt || "Poster"}
           fill
           priority
           fetchPriority="high"

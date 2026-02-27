@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { t, Language } from "@/lib/i18n";
 import { Plus, Trash, Image as ImageIcon, Video, Type } from "lucide-react";
 import FileUploader from "@/components/FileUploader";
@@ -9,6 +10,71 @@ const getYoutubeId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : "";
+};
+
+const formatSecondsToHHMMSS = (totalSeconds: number) => {
+  if (isNaN(totalSeconds) || totalSeconds < 0) return "00:00";
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+
+  if (h > 0) {
+    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
+  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+};
+
+const parseHHMMSSToSeconds = (timeStr: string) => {
+  if (!timeStr) return 0;
+  const parts = timeStr.split(":").map(Number);
+  if (parts.some(isNaN)) return 0;
+
+  if (parts.length === 3) {
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  } else if (parts.length === 2) {
+    return parts[0] * 60 + parts[1];
+  } else if (parts.length === 1) {
+    return parts[0];
+  }
+  return 0;
+};
+
+const TimeInput = ({ value, onChange, placeholder, className }: any) => {
+  const [localValue, setLocalValue] = useState(() =>
+    formatSecondsToHHMMSS(value || 0),
+  );
+
+  useEffect(() => {
+    // Only update local state if it differs significantly to prevent cursor jumping
+    if (parseHHMMSSToSeconds(localValue) !== value) {
+      setLocalValue(formatSecondsToHHMMSS(value || 0));
+    }
+  }, [value]);
+
+  const handleBlur = () => {
+    const seconds = parseHHMMSSToSeconds(localValue);
+    setLocalValue(formatSecondsToHHMMSS(seconds));
+    onChange(seconds);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (/^[\d:]*$/.test(val)) {
+      setLocalValue(val);
+      onChange(parseHHMMSSToSeconds(val));
+    }
+  };
+
+  return (
+    <input
+      type="text"
+      placeholder={placeholder || "00:00"}
+      className={className}
+      value={localValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
+    />
+  );
 };
 
 interface Step3QuestionsProps {
@@ -382,34 +448,26 @@ export default function Step3Questions({
             <div>
               <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
                 {t(lang, "startTime")}{" "}
-                <span className="text-white/30 truncate">
-                  ({t(lang, "seconds")})
-                </span>
+                <span className="text-white/30 truncate">(HH:MM:SS)</span>
               </label>
-              <input
-                type="number"
-                min={0}
+              <TimeInput
                 className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-foreground font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 hover:bg-white/5"
                 value={q.startTime || 0}
-                onChange={(e) =>
-                  updateQuestion(qIndex, "startTime", parseInt(e.target.value))
+                onChange={(seconds: number) =>
+                  updateQuestion(qIndex, "startTime", seconds)
                 }
               />
             </div>
             <div>
               <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
                 {t(lang, "stopTime")}{" "}
-                <span className="text-white/30 truncate">
-                  ({t(lang, "seconds")})
-                </span>
+                <span className="text-white/30 truncate">(HH:MM:SS)</span>
               </label>
-              <input
-                type="number"
-                min={0}
+              <TimeInput
                 className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-primary font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)] hover:bg-white/5"
                 value={q.stopTime || 0}
-                onChange={(e) =>
-                  updateQuestion(qIndex, "stopTime", parseInt(e.target.value))
+                onChange={(seconds: number) =>
+                  updateQuestion(qIndex, "stopTime", seconds)
                 }
                 placeholder="Freeze Time"
               />
@@ -417,17 +475,13 @@ export default function Step3Questions({
             <div>
               <label className="block text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3 text-center sm:text-left">
                 {t(lang, "endTime")}{" "}
-                <span className="text-white/30 truncate">
-                  ({t(lang, "seconds")})
-                </span>
+                <span className="text-white/30 truncate">(HH:MM:SS)</span>
               </label>
-              <input
-                type="number"
-                min={0}
+              <TimeInput
                 className="w-full h-12 bg-background/50 backdrop-blur-md border border-white/5 rounded-xl px-4 text-center text-foreground font-black text-lg focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 hover:bg-white/5"
                 value={q.endTime || 0}
-                onChange={(e) =>
-                  updateQuestion(qIndex, "endTime", parseInt(e.target.value))
+                onChange={(seconds: number) =>
+                  updateQuestion(qIndex, "endTime", seconds)
                 }
               />
             </div>
