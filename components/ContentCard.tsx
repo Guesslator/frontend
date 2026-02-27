@@ -115,7 +115,7 @@ export default function ContentCard({
       },
       cancel: {
         label: t(lang as Language, "cancel"),
-        onClick: () => { },
+        onClick: () => {},
       },
     });
   };
@@ -152,7 +152,7 @@ export default function ContentCard({
       <Link
         href={`/${lang}/content/${slug || id}`}
         aria-label={`${t(lang as Language, "playNow")}: ${title}`}
-        className="block flex-1 bg-card rounded-[1.2rem] overflow-hidden border border-border shadow-sm transition-all duration-500 ease-out hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_20px_40px_rgba(129,140,248,0.15)] hover:border-primary/50 dark:bg-card/40 dark:backdrop-blur-sm dark:border-white/5"
+        className="block flex-1 bg-background/40 backdrop-blur-2xl rounded-[1.2rem] overflow-hidden border border-white/5 shadow-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.2)] hover:border-primary/30 group-hover:bg-white/5"
       >
         {/* Image Container */}
         <div className="relative aspect-3/4 overflow-hidden w-full bg-muted">
@@ -176,7 +176,7 @@ export default function ContentCard({
           <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-start z-10">
             {/* Quiz Type Badge */}
             {quizTypeInfo && (
-              <div className="px-3 py-1.5 rounded-full text-[10px] font-black bg-black/40 backdrop-blur-xl text-white border border-white/10 flex items-center gap-2 shadow-2xl transition-transform duration-300 group-hover:scale-105">
+              <div className="px-3 py-1.5 rounded-full text-[10px] font-black bg-black/60 backdrop-blur-xl text-white border border-white/10 flex items-center gap-2 shadow-2xl transition-all duration-500 group-hover:scale-105 group-hover:bg-black/80">
                 <quizTypeInfo.icon size={12} className={quizTypeInfo.color} />
                 <span className="uppercase tracking-widest">
                   {quizTypeInfo.label}
@@ -194,10 +194,15 @@ export default function ContentCard({
 
           {/* Hover Play Button - Animated */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="relative flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100 translate-y-4 group-hover:translate-y-0">
-              <div className="absolute inset-0 bg-primary blur-2xl opacity-40" />
-              <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-2xl relative z-10">
-                <PlayCircle size={36} fill="currentColor" strokeWidth={1} />
+            <div className="relative flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out scale-75 group-hover:scale-100">
+              <div className="absolute inset-0 bg-primary blur-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-1000" />
+              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)] relative z-10 group-hover:bg-primary group-hover:border-primary/50 transition-colors duration-500">
+                <PlayCircle
+                  size={32}
+                  fill="currentColor"
+                  strokeWidth={1}
+                  className="ml-1"
+                />
               </div>
             </div>
           </div>
