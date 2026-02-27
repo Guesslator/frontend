@@ -166,7 +166,7 @@ export default async function ContentDetailPage({
 
     return t(validLang, i18nKey as any) || contentLang.toUpperCase();
   };
-  const isCreator = session?.user?.id === itemData.creator?.id;
+  const isCreator = session?.user?.id === itemData.creator?.id || session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN";
 
   return (
     <ClientSideDetailEffects>

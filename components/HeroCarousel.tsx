@@ -103,8 +103,8 @@ export default function HeroCarousel({
           >
             <div className="relative w-full h-full overflow-hidden">
               <Image
-                src={currentItem.imageUrl}
-                alt={currentItem.title}
+                src={currentItem.imageUrl || "/placeholder-banner.jpg"}
+                alt={currentItem.title || "Featured Quiz"}
                 fill
                 priority={currentIndex === 0}
                 unoptimized={isYouTube}

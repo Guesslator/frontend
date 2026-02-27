@@ -89,12 +89,17 @@ export default function Step3Questions({
   setFormData,
 }: Step3QuestionsProps) {
   // Ensure at least one level exists (container for questions)
+  useEffect(() => {
+    if (formData.levels.length === 0) {
+      setFormData({
+        ...formData,
+        levels: [{ id: "main", questions: [] }],
+      });
+    }
+  }, [formData.levels.length, setFormData, formData]);
+
   if (formData.levels.length === 0) {
-    setFormData({
-      ...formData,
-      levels: [{ id: "main", questions: [] }],
-    });
-    return null; // Rerender
+    return null; // Await initial structural injection
   }
 
   const levelIndex = 0; // Always work on first "level" container
