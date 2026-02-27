@@ -3,7 +3,6 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { t } from "@/lib/i18n";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import UserMenu from "@/components/UserMenu";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
@@ -59,10 +58,12 @@ export default function Navbar({ lang }: NavbarProps) {
           )}
         >
           {/* Top highlight for premium feel */}
-          <div className={cn(
-            "absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
-            isScrolled ? "opacity-100" : "opacity-0"
-          )} />
+          <div
+            className={cn(
+              "absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
+              isScrolled ? "opacity-100" : "opacity-0",
+            )}
+          />
         </div>
 
         <div className="relative z-10 flex justify-between items-center gap-2 md:gap-4">
@@ -112,8 +113,6 @@ export default function Navbar({ lang }: NavbarProps) {
             <div className="hidden md:block h-6 w-px bg-border/60 mx-1" />
 
             <div className="flex items-center gap-1 md:gap-2 pr-0 md:pr-1">
-              <ThemeToggle />
-
               <div className="flex justify-end">
                 <UserMenu lang={lang} />
               </div>
