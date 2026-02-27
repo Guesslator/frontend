@@ -25,15 +25,21 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
   const firstItem = items[0];
 
   // YouTube Detection for LCP optimization
-  const isYouTube = firstItem.imageUrl.includes('youtube.com') || firstItem.imageUrl.includes('ytimg.com');
+  const isYouTube =
+    firstItem.imageUrl.includes("youtube.com") ||
+    firstItem.imageUrl.includes("ytimg.com");
 
   const getQuizTypeLabel = (type?: string) => {
     if (!type) return t(lang, "quiz");
     switch (type) {
-      case "VIDEO": return t(lang, "videoQuiz");
-      case "IMAGE": return t(lang, "imageQuiz");
-      case "AUDIO": return t(lang, "audioQuiz");
-      default: return t(lang, "standardQuiz");
+      case "VIDEO":
+        return t(lang, "videoQuiz");
+      case "IMAGE":
+        return t(lang, "imageQuiz");
+      case "AUDIO":
+        return t(lang, "audioQuiz");
+      default:
+        return t(lang, "standardQuiz");
     }
   };
 
@@ -72,18 +78,20 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
         <div className="absolute inset-0 z-5 flex flex-col justify-end pb-16 md:pb-24 lg:pb-32 pt-20 px-4 md:px-12">
           <div className="w-full max-w-[1400px] mx-auto">
             <div className="max-w-4xl space-y-4 md:space-y-6 lg:space-y-8">
-
               {/* Title - The Primary LCP Text Element */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] tracking-tight drop-shadow-xl">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tighter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                 {firstItem.title}
               </h1>
 
               <div className="flex items-center gap-4 text-xs md:text-sm font-bold">
                 <span className="flex items-center gap-1.5 text-primary/70 dark:text-primary/70">
-                  <Play size={12} className="fill-current" /> {getQuizTypeLabel(firstItem.quizType)}
+                  <Play size={12} className="fill-current" />{" "}
+                  {getQuizTypeLabel(firstItem.quizType)}
                 </span>
                 <span className="w-1 h-1 rounded-full bg-foreground/10 dark:bg-white/20" />
-                <span className="text-foreground/60 dark:text-gray-400">{firstItem.questionCount || 0} {t(lang as any, "questions")}</span>
+                <span className="text-foreground/60 dark:text-gray-400">
+                  {firstItem.questionCount || 0} {t(lang as any, "questions")}
+                </span>
               </div>
 
               {/* Description */}
@@ -92,19 +100,31 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 md:gap-6 pt-6">
+              <div className="flex flex-wrap items-center gap-4 md:gap-5 pt-8">
                 <Link
                   href={`/${lang}/content/${firstItem.id}`}
-                  className="px-7 py-3 rounded-xl bg-primary text-[#0F0F12] font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/10 flex items-center gap-2.5"
+                  className="group relative overflow-hidden rounded-full font-bold text-[13px] md:text-[15px] tracking-widest uppercase transition-all duration-700 bg-white text-zinc-950 px-8 py-3.5 md:px-10 md:py-4 flex items-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 hover:shadow-[0_0_40px_rgba(255,255,255,0.6)]"
                 >
-                  <Play fill="currentColor" size={18} />
-                  <span>{t(lang as any, "playNow")}</span>
+                  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <div className="absolute top-0 -inset-full h-full w-[150%] z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-zinc-950/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                  </div>
+                  <Play
+                    fill="currentColor"
+                    size={20}
+                    className="relative z-10 transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <span className="relative z-10">
+                    {t(lang as any, "playNow")}
+                  </span>
                 </Link>
+
                 <Link
                   href={`/${lang}/content/${firstItem.id}`}
-                  className="px-7 py-3 rounded-xl bg-foreground/5 dark:bg-white/5 border border-foreground/10 dark:border-white/10 backdrop-blur-md hover:bg-foreground/10 dark:hover:bg-white/10 text-foreground/90 dark:text-white/90 transition-all font-semibold text-lg"
+                  className="group relative overflow-hidden rounded-full font-bold text-[13px] md:text-[15px] tracking-widest uppercase transition-all duration-700 bg-white/10 text-white border border-white/20 backdrop-blur-xl hover:bg-white/20 hover:border-white/40 px-8 py-3.5 md:px-10 md:py-4 active:scale-95"
                 >
-                  <span>{t(lang as any, "moreInfo")}</span>
+                  <span className="relative z-10">
+                    {t(lang as any, "moreInfo")}
+                  </span>
                 </Link>
               </div>
             </div>
@@ -116,9 +136,7 @@ export default function HeroSection({ items, lang }: HeroSectionProps) {
         Hydrate interactive features ONLY if there are multiple items.
         HeroCarousel at z-10 will mount and replace/layer over the static content 
       */}
-      {items.length > 1 && (
-        <HeroCarousel items={items} lang={lang} />
-      )}
+      {items.length > 1 && <HeroCarousel items={items} lang={lang} />}
     </div>
   );
 }

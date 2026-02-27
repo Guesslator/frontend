@@ -42,26 +42,26 @@ export default function Navbar({ lang }: NavbarProps) {
     >
       <nav
         className={cn(
-          "relative pointer-events-auto w-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+          "relative pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
           isScrolled
-            ? "max-w-full md:max-w-7xl mx-auto py-2 px-3 md:px-6 shadow-sm"
-            : "max-w-full py-3 px-4 md:py-4 md:px-12",
+            ? "w-full md:max-w-7xl mx-auto py-2 px-3 md:px-6 shadow-sm"
+            : "w-[96%] md:max-w-7xl mx-auto mt-2 md:mt-4 py-2 px-3 md:py-4 md:px-8",
         )}
       >
-        {/* Background & Effects Layer (Clipped) */}
+        {/* Background & Effects Layer (Floating Pill) */}
         <div
           className={cn(
-            "absolute inset-0 overflow-hidden transition-all duration-500 backdrop-blur-xl",
+            "absolute inset-0 overflow-hidden transition-all duration-700 backdrop-blur-2xl ring-1 ring-white/10",
             isScrolled
-              ? "rounded-xl md:rounded-2xl bg-white/80 dark:bg-zinc-900/80 shadow-2xl shadow-primary/10 border border-primary/20 dark:border-primary/20"
-              : "rounded-none bg-transparent border-b border-transparent",
+              ? "rounded-2xl md:rounded-3xl bg-white/5 dark:bg-[#18181b]/60 shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-none"
+              : "rounded-4xl bg-white/2 dark:bg-[#18181b]/30 shadow-2xl border-none",
           )}
         >
           {/* Top highlight for premium feel */}
           <div
             className={cn(
-              "absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-500",
-              isScrolled ? "opacity-100" : "opacity-0",
+              "absolute top-0 left-0 right-0 h-[1.5px] bg-linear-to-r from-transparent via-primary/50 to-transparent transition-opacity duration-700",
+              isScrolled ? "opacity-100" : "opacity-30",
             )}
           />
         </div>
@@ -69,16 +69,17 @@ export default function Navbar({ lang }: NavbarProps) {
         <div className="relative z-10 flex justify-between items-center gap-2 md:gap-4">
           <Link
             href={`/${lang}`}
-            className="group relative flex items-center gap-1.5 md:gap-2 shrink-0"
+            className="group relative flex items-center gap-1.5 md:gap-2 shrink-0 pl-1 md:pl-0"
             aria-label="Guessalator - Home"
           >
             <span
               className={cn(
-                "text-xl sm:text-2xl md:text-3xl font-black tracking-tighter transition-all duration-300",
-                !isScrolled && "drop-shadow-sm", // Ensure readability on hero
+                "text-[1.1rem] sm:text-xl md:text-3xl font-black tracking-tighter md:tracking-tighter transition-all duration-700",
+                !isScrolled &&
+                  "drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]",
               )}
             >
-              <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-purple-400">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-indigo-400 dark:to-indigo-300">
                 GUESSALATOR
               </span>
             </span>
@@ -88,20 +89,22 @@ export default function Navbar({ lang }: NavbarProps) {
             <Link
               href={`/${lang}/create`}
               className={cn(
-                "group relative overflow-hidden rounded-xl md:rounded-2xl font-black text-xs md:text-sm transition-all duration-300",
-                "bg-primary text-primary-foreground shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95",
-                "px-3 md:px-6 h-9 md:h-12 flex items-center gap-2",
+                "group relative overflow-hidden rounded-full font-bold text-[10px] md:text-sm tracking-widest uppercase transition-all duration-700",
+                "bg-primary/10 text-primary shadow-[0_0_20px_rgba(var(--primary-rgb),0.1)] ring-1 ring-primary/20",
+                "hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.4)] hover:ring-primary/50 active:scale-95",
+                "w-9 h-9 md:w-auto md:px-6 md:h-12 flex items-center justify-center gap-2",
               )}
+              aria-label={t(validLang, "createQuiz")}
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
-                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/40 to-transparent opacity-40 animate-shimmer" />
+                <div className="absolute top-0 -inset-full h-full w-[150%] z-5 block transform -skew-x-12 bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
               </div>
 
               <div className="relative flex items-center gap-2">
                 <Plus
                   size={16}
-                  strokeWidth={4}
-                  className="transition-transform group-hover:rotate-90 md:w-[18px] md:h-[18px]"
+                  strokeWidth={3}
+                  className="transition-transform duration-500 group-hover:rotate-90 md:w-[18px] md:h-[18px]"
                 />
                 <span className="hidden md:inline">
                   {t(validLang, "createQuiz")}
@@ -110,7 +113,7 @@ export default function Navbar({ lang }: NavbarProps) {
             </Link>
 
             {/* Divider */}
-            <div className="hidden md:block h-6 w-px bg-border/60 mx-1" />
+            <div className="hidden md:block h-6 w-px bg-white/5 mx-1 rounded-full" />
 
             <div className="flex items-center gap-1 md:gap-2 pr-0 md:pr-1">
               <div className="flex justify-end">
