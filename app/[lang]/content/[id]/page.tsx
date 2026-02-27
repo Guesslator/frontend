@@ -33,6 +33,7 @@ import {
 
 const ClientSideDetailEffects = dynamic(() => import("@/components/ClientSideDetailEffects"));
 const QuizClient = dynamic(() => import("@/components/QuizClient"));
+const ClientSidePreviewList = dynamic(() => import("@/components/ClientSidePreviewList"));
 
 export default async function ContentDetailPage({ params }: { params: Promise<{ lang: string; id: string }> }) {
     const { lang, id } = await params;
@@ -298,7 +299,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                         {t(validLang, 'quizIntel')}
                                     </AnimatedHeading>
 
-                                    <div className="grid gap-8">
+                                    <ClientSidePreviewList lang={validLang} initialCount={3}>
                                         {itemData.questions.map((q: any, idx: number) => {
                                             const attempts = q.attempts || 0;
                                             const rate = attempts > 0 ? Math.round((q.correctCount / attempts) * 100) : 0;
@@ -341,7 +342,7 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
                                                 </AnimatedQuestionCard>
                                             );
                                         })}
-                                    </div>
+                                    </ClientSidePreviewList>
                                 </div>
                             )}
                         </div>

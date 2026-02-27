@@ -196,7 +196,10 @@ export const translations = {
     testingPhase: 'Test aşamasında',
     contentLabel: 'İçeriği',
     editLabel: 'Düzenle',
-    language: 'Dil'
+    language: 'Dil',
+    showMore: 'Daha Fazla Göster',
+    showLess: 'Daha Az Göster',
+    videosRemaining: 'video'
   },
   en: {
     search: 'Search',
@@ -350,7 +353,10 @@ export const translations = {
     testingPhase: 'In testing phase',
     contentLabel: 'Content',
     editLabel: 'Edit',
-    language: 'Language'
+    language: 'Language',
+    showMore: 'Show More',
+    showLess: 'Show Less',
+    videosRemaining: 'videos'
   },
   ar: {
     // ... existing ...
@@ -494,7 +500,10 @@ export const translations = {
     testingPhase: 'في مرحلة الاختبار',
     contentLabel: 'محتوى',
     editLabel: 'تعديل',
-    language: 'اللغة'
+    language: 'اللغة',
+    showMore: 'أظهر المزيد',
+    showLess: 'أظهر أقل',
+    videosRemaining: 'فيديو'
   },
   de: {
     search: 'Suchen',
@@ -636,7 +645,10 @@ export const translations = {
     testingPhase: 'In Testphase',
     contentLabel: 'Inhalt',
     editLabel: 'Bearbeiten',
-    language: 'Sprache'
+    language: 'Sprache',
+    showMore: 'Mehr anzeigen',
+    showLess: 'Weniger anzeigen',
+    videosRemaining: 'Videos'
   },
 };
 

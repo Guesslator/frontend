@@ -7,7 +7,7 @@ export default function ContentDetailLoading() {
 
                 {/* Left Column Skeleton: Poster */}
                 <div className="w-full max-w-[300px] md:max-w-[360px] mx-auto lg:mx-0 shrink-0">
-                    <div className="aspect-[3/4] w-full bg-card/50 rounded-3xl animate-pulse flex items-center justify-center border border-white/5">
+                    <div className="aspect-3/4 w-full bg-card/50 rounded-3xl animate-pulse flex items-center justify-center border border-white/5">
                         <Loader2 className="animate-spin text-primary/50" size={40} />
                     </div>
 
@@ -34,7 +34,7 @@ export default function ContentDetailLoading() {
 
                     {/* Synopsis Skeleton */}
                     <div className="space-y-3 mt-12 max-w-2xl pl-6 relative">
-                        <div className="absolute -left-0 top-0 mb-1 w-1 h-full bg-card/50 rounded-full" />
+                        <div className="absolute left-0 top-0 mb-1 w-1 h-full bg-card/50 rounded-full" />
                         <div className="h-4 w-full bg-card/40 rounded-full animate-pulse" />
                         <div className="h-4 w-[90%] bg-card/40 rounded-full animate-pulse" />
                         <div className="h-4 w-[80%] bg-card/40 rounded-full animate-pulse" />
