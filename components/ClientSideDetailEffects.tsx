@@ -43,11 +43,11 @@ export default function ClientSideDetailEffects({ children }: ClientSideDetailEf
                 "--mouse-y": useTransform(springY, (v) => `${v}px`),
             } as any}
         >
-            {/* Refined Ambient Background Lighting - Reduced intensity for performance/contrast */}
+            {/* Refined Ambient Background Lighting - Reduced intensity for professional look */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none">
-                <div className="absolute top-0 right-[-10%] w-[60%] h-[70%] bg-primary/3 blur-[80px] rounded-full animate-pulse-slow mix-blend-screen" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[60%] bg-violet-500/3 blur-[80px] rounded-full animate-pulse-slow mix-blend-screen delay-700" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--primary-rgb),0.02)_0%,transparent_60%)]" />
+                <div className="absolute top-0 right-[-10%] w-[60%] h-[70%] bg-primary/1 dark:bg-primary/1.5 blur-[120px] rounded-full animate-pulse-slow mix-blend-screen" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[60%] bg-violet-500/1 dark:bg-violet-500/1.5 blur-[120px] rounded-full animate-pulse-slow mix-blend-screen delay-700" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--primary-rgb),0.01)_0%,transparent_60%)]" />
             </div>
 
             {children}
@@ -89,7 +89,7 @@ export function PremiumPoster({ src, alt, status, lang }: { src: string; alt: st
 
     return (
         <motion.div
-            className="group/poster relative aspect-3/4 rounded-4xl p-[3px] bg-linear-to-br from-white/30 via-white/10 to-transparent shadow-[0_30px_60px_rgba(0,0,0,0.6)] preserve-3d cursor-pointer overflow-hidden border border-white/15 active:scale-[0.98] transition-all duration-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+            className="group/poster relative aspect-3/4 rounded-3xl p-[2px] bg-linear-to-br from-white/20 via-white/5 to-transparent shadow-[0_20px_50px_rgba(0,0,0,0.5)] preserve-3d cursor-pointer overflow-hidden border border-white/10 active:scale-[0.99] transition-all duration-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             tabIndex={0}
@@ -115,7 +115,7 @@ export function PremiumPoster({ src, alt, status, lang }: { src: string; alt: st
             </div>
 
             {/* Main Poster Container */}
-            <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-zinc-950">
+            <div className="relative w-full h-full rounded-[1.4rem] overflow-hidden bg-zinc-950">
                 <Image
                     src={src}
                     alt={alt}
@@ -139,9 +139,9 @@ export function PremiumPoster({ src, alt, status, lang }: { src: string; alt: st
                 <div className="absolute inset-0 z-10 bg-linear-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover/poster:opacity-60 transition-all duration-1000 pointer-events-none" />
             </div>
 
-            {/* Glaze Reflection */}
+            {/* Glaze Reflection - Reduced opacity for softer look */}
             <motion.div
-                className="absolute inset-0 z-40 opacity-0 group-hover/poster:opacity-15 transition-opacity duration-1000 pointer-events-none"
+                className="absolute inset-0 z-40 opacity-0 group-hover/poster:opacity-10 transition-opacity duration-1000 pointer-events-none"
                 style={{
                     background: glazeBackground,
                     transform: "translateZ(40px) scale(1.15)"
@@ -213,10 +213,10 @@ export function AnimatedStatCard({ label, value, color, delay }: { label: string
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
-            className="flex flex-col items-center justify-center p-5 sm:p-6 rounded-3xl md:rounded-4xl bg-white/5 border border-white/10 backdrop-blur-2xl shadow-xl hover:bg-white/8 transition-all duration-300 w-full"
+            className="flex flex-col items-center justify-center p-5 sm:p-6 rounded-2xl md:rounded-3xl bg-foreground/3 dark:bg-white/3 border border-foreground/5 dark:border-white/5 backdrop-blur-2xl shadow-lg hover:bg-foreground/5 dark:hover:bg-white/5 transition-all duration-500 w-full"
         >
-            <span className="text-[9px] md:text-[11px] text-gray-300 font-bold uppercase tracking-[0.2em] mb-2 text-center">{label}</span>
-            <span className={`text-xl sm:text-2xl md:text-3xl font-black tracking-tighter ${color}`}>{value}</span>
+            <span className="text-[9px] md:text-[10px] text-foreground/50 dark:text-gray-500 font-bold uppercase tracking-[0.2em] mb-2 text-center">{label}</span>
+            <span className={`text-xl sm:text-2xl md:text-3xl font-bold tracking-tight ${color}`}>{value}</span>
         </motion.div>
     );
 }
