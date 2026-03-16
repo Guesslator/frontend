@@ -6,35 +6,16 @@ import { fetchContentDetail } from "@/lib/api";
 import Leaderboard from "@/components/Leaderboard";
 import { t, Language } from "@/lib/i18n";
 import YouTubeThumbnail from "@/components/YouTubeThumbnail";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import {
+import ContentEditButton from "@/components/ContentEditButton";
+import ClientSideDetailEffects, {
   PremiumPoster,
   AnimatedHeading,
   AnimatedQuestionCard,
   AnimatedProgressBar,
   AnimatedStatCard,
 } from "@/components/ClientSideDetailEffects";
-import {
-  Play,
-  Clock,
-  Award,
-  Edit,
-  Film,
-  Globe,
-  CheckCircle2,
-  BarChart3,
-  Share2,
-  Zap,
-  TrendingUp,
-  Shield,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Play, Film, Globe, Image as ImageIcon } from "lucide-react";
 
-const ClientSideDetailEffects = dynamic(
-  () => import("@/components/ClientSideDetailEffects"),
-);
-const QuizClient = dynamic(() => import("@/components/QuizClient"));
 const ClientSidePreviewList = dynamic(
   () => import("@/components/ClientSidePreviewList"),
 );
@@ -51,10 +32,7 @@ export default async function ContentDetailPage({
     | "ar"
     | "de";
 
-  const [session, item] = await Promise.all([
-    getServerSession(authOptions),
-    fetchContentDetail(id, validLang),
-  ]);
+  const item = await fetchContentDetail(id, validLang);
 
   // [SEO FALLBACK] If not found and ID looks like an old slug with suffix, try stripping it
   let finalItem = item;
@@ -166,7 +144,6 @@ export default async function ContentDetailPage({
 
     return t(validLang, i18nKey as any) || contentLang.toUpperCase();
   };
-  const isCreator = session?.user?.id === itemData.creator?.id || session?.user?.role === "ADMIN" || session?.user?.role === "SUPER_ADMIN";
 
   return (
     <ClientSideDetailEffects>
@@ -174,12 +151,8 @@ export default async function ContentDetailPage({
         {/* Film Texture Overlay */}
         <div className="absolute inset-0 z-1 film-grain pointer-events-none opacity-[0.08]" />
 
-        {/* Subdued Quiet Luxury Background Ambient Glares */}
-        <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-primary/3 blur-[140px] rounded-full pointer-events-none z-0" />
-        <div className="absolute top-1/2 left-0 w-[50vw] h-[50vw] bg-indigo-500/3 blur-[140px] rounded-full -translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
-        <div className="absolute bottom-0 right-1/4 w-[70vw] h-[70vw] bg-violet-600/3 blur-[140px] rounded-full translate-y-1/3 pointer-events-none z-0" />
+        {/* Removed heavy glares to improve TTFB and First Paint performance */}
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(var(--primary-rgb),0.02),transparent_50%)] z-0" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/90 to-background pointer-events-none z-0" />
 
         <div className="relative z-30 container mx-auto px-4 md:px-6 lg:px-12 pt-16 md:pt-32 pb-32 md:pb-24 min-h-svh flex flex-col">
@@ -272,18 +245,11 @@ export default async function ContentDetailPage({
                     {itemData.questions?.length || 0}{" "}
                     {t(validLang, "questions" as any) || "Questions"}
                   </span>
-                  {isCreator && (
-                    <>
-                      <span className="w-1 h-1 rounded-full bg-foreground/10 dark:bg-white/10" />
-                      <Link
-                        href={`/${lang}/quiz/${id}/edit`}
-                        className="text-primary/80 hover:text-primary flex items-center gap-1.5 font-bold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary rounded-sm"
-                        aria-label={t(validLang, "editLabel")}
-                      >
-                        <Edit size={16} /> {t(validLang, "editLabel")}
-                      </Link>
-                    </>
-                  )}
+                  <ContentEditButton
+                    creatorId={itemData.creator?.id}
+                    contentId={id}
+                    lang={validLang}
+                  />
                 </div>
               </div>
 
