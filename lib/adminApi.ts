@@ -24,6 +24,10 @@ async function getAuthHeader() {
 }
 
 export async function adminFetch(endpoint: string, options: RequestInit = {}, token?: string) {
+    if (!token) {
+        throw new Error(`Missing admin access token for ${endpoint}`);
+    }
+
     const headers: any = {
         'Content-Type': 'application/json',
         ...options.headers,
@@ -35,7 +39,8 @@ export async function adminFetch(endpoint: string, options: RequestInit = {}, to
 
     const res = await fetch(`${API_URL}/admin${endpoint}`, {
         ...options,
-        headers
+        headers,
+        cache: 'no-store',
     });
 
     if (!res.ok) {

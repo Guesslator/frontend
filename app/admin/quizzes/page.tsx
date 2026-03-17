@@ -15,10 +15,21 @@ export default async function QuizzesPage({ searchParams }: { searchParams: Prom
     const skip = (pageNum - 1) * take;
 
     let data;
+    let loadError = "";
     try {
-        data = await getQuizzes({ skip, take, search, status, creator, hasReports: hasReports === 'true', startDate, endDate }, token);
-    } catch (e) {
+        data = await getQuizzes({
+            skip,
+            take,
+            search,
+            status,
+            creator,
+            hasReports: hasReports === 'true' ? true : undefined,
+            startDate,
+            endDate
+        }, token);
+    } catch (e: any) {
         console.error(e);
+        loadError = e?.message || "Failed to load quizzes";
         data = { data: [], total: 0 };
     }
 
@@ -128,7 +139,13 @@ export default async function QuizzesPage({ searchParams }: { searchParams: Prom
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-800">
-                        {data.data.length === 0 ? (
+                        {loadError ? (
+                            <tr>
+                                <td colSpan={7} className="px-6 py-8 text-center text-red-400">
+                                    {loadError}
+                                </td>
+                            </tr>
+                        ) : data.data.length === 0 ? (
                             <tr>
                                 <td colSpan={7} className="px-6 py-8 text-center text-neutral-500">
                                     No quizzes found matching your filters.
