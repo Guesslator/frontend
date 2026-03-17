@@ -2,8 +2,15 @@ import { fetchQuizById } from '../../../../lib/api';
 import { notFound } from 'next/navigation';
 import QuizClient from '@/components/QuizClient';
 
-export default async function QuizPage({ params }: { params: Promise<{ lang: string; id: string }> }) {
+export default async function QuizPage({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ lang: string; id: string }>;
+    searchParams: Promise<{ q?: string }>;
+}) {
     const { lang, id } = await params;
+    const { q } = await searchParams;
 
     // fetchQuizById expects (id, lang)
     const quiz = await fetchQuizById(id, lang);
@@ -25,5 +32,14 @@ export default async function QuizPage({ params }: { params: Promise<{ lang: str
         );
     }
 
-    return <QuizClient quiz={quiz} lang={lang} />;
+    const parsedIndex = Number.parseInt(q || "0", 10);
+    const initialQuestionIndex = Number.isFinite(parsedIndex) ? parsedIndex : 0;
+
+    return (
+        <QuizClient
+            quiz={quiz}
+            lang={lang}
+            initialQuestionIndex={initialQuestionIndex}
+        />
+    );
 }

@@ -16,7 +16,7 @@ export default async function EditQuizPage({ params }: { params: Promise<{ lang:
     const validLang = (['tr', 'en', 'ar', 'de'].includes(lang) ? lang : 'en');
 
     // Fetch Data
-    const item = await fetchContentDetail(id, validLang);
+    const item = await fetchContentDetail(id, validLang, { preview: false });
 
     if (!item) {
         return <div className="flex min-h-screen items-center justify-center text-xl font-bold">Quiz not found</div>;

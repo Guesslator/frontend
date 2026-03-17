@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { t } from "@/lib/i18n";
 
@@ -14,7 +13,7 @@ interface ClientSidePreviewListProps {
 export default function ClientSidePreviewList({
   children,
   lang,
-  initialCount = 3,
+  initialCount = 6,
 }: ClientSidePreviewListProps) {
   const [visibleCount, setVisibleCount] = useState(initialCount);
 
@@ -37,9 +36,7 @@ export default function ClientSidePreviewList({
 
   return (
     <div className="flex flex-col gap-8 relative">
-      <div className="grid gap-8">
-        <AnimatePresence initial={false}>{visibleChildren}</AnimatePresence>
-      </div>
+      <div className="grid gap-8">{visibleChildren}</div>
 
       {/* Fade Out Effect when collapsed so it hints that there's more */}
       {!isFullyExpanded && (

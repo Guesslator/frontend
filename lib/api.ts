@@ -109,6 +109,10 @@ export interface FetchOptions {
     revalidate?: number;
 }
 
+export interface ContentDetailOptions {
+    preview?: boolean;
+}
+
 export async function fetchContent(lang: string = 'en'): Promise<APIContentItem[]> {
     try {
         const res = await fetch(`${API_URL}/content?lang=${lang}`, { cache: 'no-store' });
@@ -208,11 +212,19 @@ export async function fetchContentPaginated(
     }
 }
 
-export async function fetchContentDetail(id: string, lang: string = 'en'): Promise<APIContentItem | null> {
+export async function fetchContentDetail(
+    id: string,
+    lang: string = 'en',
+    options?: ContentDetailOptions,
+): Promise<APIContentItem | null> {
     try {
-        // [SENIOR FIX] Do NOT pass ?lang= to ensure we get ALL translations. 
-        // The remote backend filters out other translations if ?lang= is present.
-        const res = await fetch(`${API_URL}/content/${id}`, {
+        const params = new URLSearchParams();
+        if (options?.preview) {
+            params.set('preview', '1');
+        }
+
+        const queryString = params.toString();
+        const res = await fetch(`${API_URL}/content/${id}${queryString ? `?${queryString}` : ''}`, {
             next: { revalidate: 60 }
         });
         if (!res.ok) return null;
@@ -455,8 +467,16 @@ export async function submitScore(data: { guestName: string; contentId: string; 
     return res.json();
 }
 
-export async function getTopScores(contentId: string): Promise<ScoreDto[]> {
-    const res = await fetch(`${API_URL}/score/top/${contentId}`, { cache: 'no-store' });
+export async function getTopScores(contentId: string, options?: FetchOptions): Promise<ScoreDto[]> {
+    const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
+        cache: options?.cache ?? 'no-store'
+    };
+
+    if (options?.revalidate !== undefined) {
+        fetchOptions.next = { revalidate: options.revalidate };
+    }
+
+    const res = await fetch(`${API_URL}/score/top/${contentId}`, fetchOptions);
     if (!res.ok) return [];
     return res.json();
 }

@@ -27,18 +27,30 @@ import { t } from "@/lib/i18n";
 interface QuizClientProps {
   quiz: Quiz;
   lang: string;
+  initialQuestionIndex?: number;
 }
 
 const ANSWER_TIME_LIMIT = 15; // seconds
 
-export default function QuizClient({ quiz, lang }: QuizClientProps) {
+export default function QuizClient({
+  quiz,
+  lang,
+  initialQuestionIndex = 0,
+}: QuizClientProps) {
   const validLang = (["tr", "en", "ar", "de"].includes(lang) ? lang : "en") as
     | "tr"
     | "en"
     | "ar"
     | "de";
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const safeInitialQuestionIndex = Math.min(
+    Math.max(initialQuestionIndex, 0),
+    Math.max(quiz.questions.length - 1, 0),
+  );
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(
+    safeInitialQuestionIndex,
+  );
   const [isQuestionActive, setIsQuestionActive] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
