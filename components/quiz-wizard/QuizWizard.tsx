@@ -144,14 +144,16 @@ export default function QuizWizard({ lang, accessToken }: QuizWizardProps) {
       await addQuestions({
         contentId,
         questions: questionsPayload,
-      });
+      }, accessToken);
       console.log(`Questions added.`);
 
       // Success!
       router.push(`/${lang}/content/${contentId}`);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to create quiz");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create quiz",
+      );
     } finally {
       setLoading(false);
     }

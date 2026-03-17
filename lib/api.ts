@@ -416,15 +416,18 @@ export interface AddQuestionsDto {
     }[];
 }
 
-export async function addQuestions(data: AddQuestionsDto) {
+export async function addQuestions(data: AddQuestionsDto, token?: string) {
     const res = await fetch(`${API_URL}/quiz/questions`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify(data),
     });
     if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || 'Failed to add questions');
+        const error = await res.json().catch(() => null);
+        throw new Error(error?.message || 'Failed to add questions');
     }
     return res.json();
 }
@@ -475,7 +478,10 @@ export async function createUserContent(token: string, data: CreateContentDto) {
         },
         body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error('Failed to create user content');
+    if (!res.ok) {
+        const error = await res.json().catch(() => null);
+        throw new Error(error?.message || 'Failed to create user content');
+    }
     return res.json();
 }
 
