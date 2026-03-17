@@ -414,7 +414,7 @@ export default async function ContentDetailPage({
                           </div>
 
                           <p className="text-[10px] text-primary/80 font-bold uppercase tracking-[0.22em]">
-                            {idx + 1}. sahneden basla
+                            {idx + 1}. {t(validLang, "startFromScene")}
                           </p>
                         </div>
                       </Link>

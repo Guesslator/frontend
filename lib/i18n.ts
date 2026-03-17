@@ -329,6 +329,7 @@ export const translations = {
     showMore: "Daha Fazla Göster",
     showLess: "Daha Az Göster",
     videosRemaining: "video",
+    startFromScene: "Bu sahneden başla",
     // Auth Labels
     welcomeBack: "Hoş Geldin",
     joinClub: "Kulübe Katıl",
@@ -508,6 +509,7 @@ export const translations = {
     showMore: "Show More",
     showLess: "Show Less",
     videosRemaining: "videos",
+    startFromScene: "Start from this scene",
     // Auth Labels
     welcomeBack: "Welcome Back",
     joinClub: "Join the Club",
@@ -676,6 +678,7 @@ export const translations = {
     showMore: "أظهر المزيد",
     showLess: "أظهر أقل",
     videosRemaining: "فيديو",
+    startFromScene: "ابدأ من هذا المشهد",
   },
   de: {
     search: "Suchen",
@@ -825,6 +828,7 @@ export const translations = {
     showMore: "Mehr anzeigen",
     showLess: "Weniger anzeigen",
     videosRemaining: "Videos",
+    startFromScene: "Von dieser Szene starten",
   },
 };
 
